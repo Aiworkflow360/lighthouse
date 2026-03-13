@@ -4,7 +4,7 @@ import { T } from '../../constants/theme';
 
 const STEP_LABELS = ['Condition', 'Age', 'Location', 'Needs'];
 const STEP_LABELS_SHORT = ['Cond.', 'Age', 'Loc.', 'Needs'];
-const STEP_FULL_NAMES = ['Condition', 'Age selection', 'Location', 'Needs selection'];
+const STEP_FULL_NAMES = ["Your child's condition", "Your child's age", 'Your location', 'Your needs'];
 
 const SMALL_SCREEN_BREAKPOINT = 380;
 

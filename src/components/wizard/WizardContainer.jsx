@@ -10,16 +10,24 @@ import { StepNeeds } from './StepNeeds';
 // Static per-step encouragement (always visible)
 const ENCOURAGEMENT = {
   condition: "Let's find the right support for you.",
-  age: "Great start -- just a few more details.",
-  postcode: "Nearly there -- you're doing brilliantly.",
-  needs: "Last step -- almost done!",
+  age: "You're doing great -- just a few more details.",
+  postcode: "That helps a lot -- nearly there.",
+  needs: "Nearly there -- one more step!",
 };
 
 // Transition micro-copy (shown briefly when arriving FROM a completed step)
 const TRANSITION_MESSAGES = {
   age: "Great, we know what to look for",
-  postcode: "Perfect, that helps us filter",
+  postcode: "That helps a lot -- we can narrow things down",
   needs: "Nearly there!",
+};
+
+// Subtle warm amber hue shift per step (barely visible, opacity 0.02-0.03)
+const STEP_AMBER_TINT = {
+  condition: 'rgba(245, 158, 11, 0.02)',
+  age: 'rgba(251, 191, 36, 0.025)',
+  postcode: 'rgba(245, 158, 11, 0.03)',
+  needs: 'rgba(217, 119, 6, 0.025)',
 };
 
 export function WizardContainer({ wizard, dark }) {
@@ -59,6 +67,9 @@ export function WizardContainer({ wizard, dark }) {
       minHeight: '60vh',
       display: 'flex',
       flexDirection: 'column',
+      background: STEP_AMBER_TINT[currentStep] || 'transparent',
+      transition: 'background 0.6s ease',
+      borderRadius: T.radiusLg,
     }}>
       <div style={{ marginBottom: '12px' }}>
         <ProgressBar step={step - 1} total={4} dark={dark} wizard={wizard} />
@@ -69,14 +80,14 @@ export function WizardContainer({ wizard, dark }) {
         {transitionMsg && (
           <motion.p
             key="transition-msg"
-            initial={{ opacity: 0, y: -6 }}
+            initial={{ opacity: 0.3, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.25 }}
             style={{
               fontFamily: T.font,
               fontSize: T.sizeSmall,
-              color: T.primary,
+              color: T.warm,
               margin: '0 0 12px',
               textAlign: 'center',
               fontWeight: 600,
@@ -91,7 +102,7 @@ export function WizardContainer({ wizard, dark }) {
       <AnimatePresence mode="wait">
         <motion.p
           key={currentStep + '-msg'}
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 0.3 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
@@ -134,10 +145,10 @@ export function WizardContainer({ wizard, dark }) {
       <AnimatePresence mode="wait">
         <motion.div
           key={currentStep}
-          initial={{ opacity: 0, x: 30 }}
+          initial={{ opacity: 0.3, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -30 }}
-          transition={{ duration: 0.2, ease: 'easeOut' }}
+          exit={{ opacity: 0, x: -50 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 25 }}
           style={{ flex: 1 }}
         >
           {steps[currentStep]}

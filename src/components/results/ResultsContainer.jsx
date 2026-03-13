@@ -144,6 +144,7 @@ function SkeletonCard({ dark }) {
 // Empty-state magnifying glass with question mark SVG
 function EmptyStateIcon({ size = 80, dark }) {
   const strokeColor = dark ? T.textMutedDark : T.textMuted;
+  const amberTint = dark ? 'rgba(245,158,11,0.15)' : 'rgba(245,158,11,0.08)';
   return (
     <svg
       width={size}
@@ -152,6 +153,8 @@ function EmptyStateIcon({ size = 80, dark }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      {/* Warm amber glow behind glass */}
+      <circle cx="34" cy="34" r="24" fill={amberTint} />
       {/* Glass circle */}
       <circle cx="34" cy="34" r="22" stroke={strokeColor} strokeWidth="3" fill="none" />
       {/* Handle */}
@@ -287,14 +290,22 @@ export function ResultsContainer({ wizard, dark }) {
     }}>
       {/* Header */}
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0.3, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
         style={{ marginBottom: '8px' }}
       >
         <h1 role="status" aria-live="polite" style={{ fontFamily: T.font, fontSize: T.sizeH1, color: textColor, margin: '0 0 8px', fontWeight: 700 }}>
-          We found <span style={{ fontVariantNumeric: 'tabular-nums' }}>{animatedCount}</span> resources for you
+          We've found <span style={{ fontVariantNumeric: 'tabular-nums' }}>{animatedCount}</span> resources that could help
         </h1>
+        {/* Decorative warm amber underline */}
+        <div style={{
+          width: '40px',
+          height: '3px',
+          background: T.warm,
+          borderRadius: '2px',
+          marginBottom: '8px',
+        }} />
         <p style={{ fontFamily: T.font, fontSize: T.sizeBody, color: subColor, margin: 0, lineHeight: T.lineHeight }}>
           For {conditionLabel}
           {wizard.postcodeData ? ` near ${wizard.postcodeData.localAuthority || wizard.postcodeData.outcode}` : ' (nationwide)'}
@@ -303,7 +314,7 @@ export function ResultsContainer({ wizard, dark }) {
 
       {/* Results summary bar */}
       <motion.p
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 0.3 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, delay: 0.2 }}
         style={{
@@ -320,43 +331,39 @@ export function ResultsContainer({ wizard, dark }) {
 
       {/* Crisis banner */}
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0.3, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.15 }}
         style={{
-          background: dark ? '#3B1C1C' : '#FEF2F2',
-          border: `1px solid ${dark ? '#7F1D1D' : '#FECACA'}`,
-          borderLeft: `4px solid ${dark ? '#EF4444' : '#DC2626'}`,
+          background: dark ? '#3B2020' : '#FFF3F0',
+          border: `1px solid ${dark ? '#6B2C2C' : '#FECACA'}`,
+          borderLeft: `4px solid ${dark ? '#EF9A9A' : '#E57373'}`,
           borderRadius: T.radius,
           padding: '14px 18px',
           marginBottom: '24px',
           fontFamily: T.font,
           fontSize: T.sizeSmall,
-          color: dark ? '#FCA5A5' : '#991B1B',
+          color: dark ? '#FFAB91' : '#8B3A3A',
           lineHeight: '1.5',
         }}
       >
         <strong>Need to talk right now?</strong>{' '}
         Samaritans:{' '}
-        <motion.a
+        <a
           href="tel:116123"
-          style={{ color: 'inherit', fontWeight: 700, textDecoration: 'none' }}
-          animate={{ opacity: [1, 0.6, 1] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ color: 'inherit', fontWeight: 700, textDecoration: 'underline' }}
         >
           116 123
-        </motion.a>
+        </a>
         {' '}(24/7, free)
         {' '}&bull;{' '}
         NSPCC:{' '}
-        <motion.a
+        <a
           href="tel:08088005000"
-          style={{ color: 'inherit', fontWeight: 700, textDecoration: 'none' }}
-          animate={{ opacity: [1, 0.6, 1] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
+          style={{ color: 'inherit', fontWeight: 700, textDecoration: 'underline' }}
         >
           0808 800 5000
-        </motion.a>
+        </a>
       </motion.div>
 
       {/* Triage — Your first 3 steps */}
@@ -410,7 +417,7 @@ export function ResultsContainer({ wizard, dark }) {
               {[0, 1, 2].map(i => (
                 <motion.div
                   key={`skel-${i}`}
-                  initial={{ opacity: 0, y: 16 }}
+                  initial={{ opacity: 0.3, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: i * 0.08 }}
                 >
@@ -421,7 +428,7 @@ export function ResultsContainer({ wizard, dark }) {
           ) : (
             <motion.div
               key="results"
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 0.3 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
               style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
@@ -430,12 +437,12 @@ export function ResultsContainer({ wizard, dark }) {
                 {displayed.map((r, i) => (
                   <motion.div
                     key={r.id || `card-${i}`}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0.3, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10, scale: 0.97 }}
                     transition={{
                       duration: 0.35,
-                      delay: i * 0.08,
+                      delay: i * 0.06,
                       ease: 'easeOut',
                     }}
                     layout
@@ -453,7 +460,7 @@ export function ResultsContainer({ wizard, dark }) {
       <AnimatePresence>
         {!loading && displayed.length === 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0.3, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35 }}
@@ -474,7 +481,7 @@ export function ResultsContainer({ wizard, dark }) {
               color: textColor,
               margin: '8px 0 0',
             }}>
-              No resources match this filter
+              No matches for this filter
             </p>
             <p style={{
               fontFamily: T.font,
@@ -483,7 +490,7 @@ export function ResultsContainer({ wizard, dark }) {
               margin: 0,
               lineHeight: T.lineHeight,
             }}>
-              Try selecting &ldquo;All&rdquo; or a different category
+              Try 'All' or a different category
             </p>
             <Button
               onClick={() => setActiveFilter('all')}
@@ -498,7 +505,7 @@ export function ResultsContainer({ wizard, dark }) {
 
       {/* Actions */}
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 0.3 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 }}
         style={{
@@ -514,35 +521,35 @@ export function ResultsContainer({ wizard, dark }) {
             {copied ? (
               <motion.span
                 key="check"
-                initial={{ opacity: 0, scale: 0.5 }}
+                initial={{ opacity: 0.3, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.5 }}
                 transition={{ duration: 0.2 }}
                 style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
-                <span style={{ color: T.secondary, fontSize: '18px' }}>&#10003;</span> Copied!
+                <span style={{ color: T.warm, fontSize: '18px' }}>&#10003;</span> Copied!
               </motion.span>
             ) : (
               <motion.span
                 key="share"
-                initial={{ opacity: 0, scale: 0.5 }}
+                initial={{ opacity: 0.3, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.5 }}
                 transition={{ duration: 0.2 }}
               >
-                Share these results
+                Share this with someone
               </motion.span>
             )}
           </AnimatePresence>
         </Button>
         <Button onClick={() => window.print()} variant="ghost" style={{ flex: '1 1 auto', minWidth: '120px' }}>
-          Print this page
+          Print for later
         </Button>
         <Button onClick={wizard.back} variant="outline" style={{ flex: '1 1 auto', minWidth: '140px' }}>
           Refine search
         </Button>
         <Button onClick={wizard.restart} variant="ghost" style={{ flex: '1 1 auto', minWidth: '120px' }}>
-          Start again
+          Start over
         </Button>
       </motion.div>
 
@@ -550,7 +557,7 @@ export function ResultsContainer({ wizard, dark }) {
       <AnimatePresence>
         {showBackToTop && (
           <motion.button
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            initial={{ opacity: 0.3, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
@@ -612,7 +619,7 @@ function FilterTab({ filterKey, label, active, onClick, dark, color, count }) {
             position: 'absolute',
             inset: '-1.5px',
             borderRadius: T.radiusFull,
-            background: color || T.primary,
+            background: `linear-gradient(135deg, ${T.warm} 0%, ${color || T.primary} 100%)`,
             zIndex: -1,
           }}
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}

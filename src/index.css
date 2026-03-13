@@ -22,15 +22,15 @@ body {
   line-height: 1.6;
 }
 
-/* Selection color — primary blue */
+/* Selection color — warm amber */
 ::selection {
-  background: #2563EB;
-  color: #FFFFFF;
+  background: #FEF3C7;
+  color: #1C1917;
 }
 
 ::-moz-selection {
-  background: #2563EB;
-  color: #FFFFFF;
+  background: #FEF3C7;
+  color: #1C1917;
 }
 
 /* ── Skip-to-content link ────────────────────────────────── */
@@ -93,29 +93,29 @@ textarea:focus-visible,
   outline-offset: 2px;
 }
 
-/* Scrollbar styling — thin and subtle */
+/* Scrollbar styling — thin with warm amber tint */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(245, 158, 11, 0.04);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(217, 119, 6, 0.25);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(217, 119, 6, 0.4);
 }
 
 /* Firefox thin scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+  scrollbar-color: rgba(217, 119, 6, 0.25) rgba(245, 158, 11, 0.04);
 }
 
 /* ── Print stylesheet ────────────────────────────────────── */

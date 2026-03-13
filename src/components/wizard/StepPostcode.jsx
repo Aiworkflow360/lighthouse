@@ -17,7 +17,7 @@ function LoadingDots() {
             width: '6px',
             height: '6px',
             borderRadius: '50%',
-            background: T.primaryText,
+            background: T.warm,
           }}
         />
       ))}
@@ -25,32 +25,36 @@ function LoadingDots() {
   );
 }
 
-const CONFETTI_PARTICLES = [
-  { angle: -40, color: T.primary, delay: 0 },
-  { angle: -110, color: T.secondary, delay: 0.05 },
-  { angle: -160, color: T.financial, delay: 0.1 },
-  { angle: -70, color: T.emotional, delay: 0.08 },
+/* Warm amber glow burst particles instead of confetti */
+const GLOW_PARTICLES = [
+  { angle: -40, delay: 0 },
+  { angle: -110, delay: 0.05 },
+  { angle: -160, delay: 0.1 },
+  { angle: -70, delay: 0.08 },
+  { angle: -20, delay: 0.03 },
+  { angle: -130, delay: 0.07 },
 ];
 
-function ConfettiParticle({ angle, color, delay }) {
+function GlowParticle({ angle, delay }) {
   const rad = (angle * Math.PI) / 180;
-  const dist = 40;
+  const dist = 35;
   return (
     <motion.div
-      initial={{ scale: 0, opacity: 1, x: 0, y: 0 }}
+      initial={{ scale: 0, opacity: 0.8, x: 0, y: 0 }}
       animate={{
-        scale: [0, 1.2, 0],
-        opacity: [1, 1, 0],
+        scale: [0, 1.5, 0],
+        opacity: [0.8, 0.6, 0],
         x: Math.cos(rad) * dist,
         y: Math.sin(rad) * dist,
       }}
-      transition={{ duration: 0.6, delay, ease: 'easeOut' }}
+      transition={{ duration: 0.7, delay, ease: 'easeOut' }}
       style={{
         position: 'absolute',
-        width: '8px',
-        height: '8px',
+        width: '10px',
+        height: '10px',
         borderRadius: '50%',
-        background: color,
+        background: T.warm,
+        boxShadow: `0 0 8px ${T.warmGlowStrong}`,
       }}
     />
   );
@@ -59,7 +63,7 @@ function ConfettiParticle({ angle, color, delay }) {
 function SuccessCheck() {
   return (
     <motion.div
-      initial={{ scale: 0, opacity: 0 }}
+      initial={{ scale: 0, opacity: 0.3 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       style={{
@@ -72,10 +76,22 @@ function SuccessCheck() {
         position: 'relative',
       }}
     >
-      {/* Confetti burst */}
+      {/* Warm amber glow burst */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: [0, 0.4, 0], scale: [0.5, 1.5, 2] }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        style={{
+          position: 'absolute',
+          width: '80px',
+          height: '80px',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${T.warmGlowStrong} 0%, transparent 70%)`,
+        }}
+      />
       <div style={{ position: 'absolute', left: '50%', top: '50%' }}>
-        {CONFETTI_PARTICLES.map((p, i) => (
-          <ConfettiParticle key={i} angle={p.angle} color={p.color} delay={p.delay} />
+        {GLOW_PARTICLES.map((p, i) => (
+          <GlowParticle key={i} angle={p.angle} delay={p.delay} />
         ))}
       </div>
       <motion.span
@@ -84,7 +100,7 @@ function SuccessCheck() {
         transition={{ duration: 0.5, ease: 'easeOut' }}
         style={{
           fontSize: '44px',
-          color: T.secondary,
+          color: T.warm,
           lineHeight: 1,
         }}
       >
@@ -93,7 +109,7 @@ function SuccessCheck() {
       <span style={{
         fontFamily: T.font,
         fontSize: T.sizeH2,
-        color: T.secondary,
+        color: T.warm,
         fontWeight: 700,
       }}>
         Found it!
@@ -206,17 +222,17 @@ export function StepPostcode({ wizard, dark }) {
   return (
     <div>
       <h1 style={{ fontFamily: T.font, fontSize: T.sizeH1, color: textColor, margin: '0 0 8px', fontWeight: 700 }}>
-        What's your postcode?
+        Whereabouts are you?
       </h1>
       <p style={{ fontFamily: T.font, fontSize: T.sizeBody, color: subColor, margin: '0 0 8px', lineHeight: T.lineHeight }}>
-        This helps us find local hospitals, support groups, and services near you.
+        So we can find local services near you.
       </p>
       <p style={{ fontFamily: T.font, fontSize: T.sizeSmall, color: T.textMuted, margin: '0 0 24px' }}>
         We don't store your full postcode. We only use the first half to find your area.
       </p>
 
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0.3, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
         style={{ display: 'flex', gap: '12px' }}
@@ -228,7 +244,7 @@ export function StepPostcode({ wizard, dark }) {
             top: '50%',
             transform: 'translateY(-50%)',
             fontSize: '18px',
-            color: inputFocused ? T.primary : T.textMuted,
+            color: inputFocused ? T.warm : T.textMuted,
             pointerEvents: 'none',
             transition: 'color 0.2s ease',
           }}>
@@ -244,8 +260,8 @@ export function StepPostcode({ wizard, dark }) {
             placeholder="e.g. SW1A 1AA"
             autoFocus
             animate={{
-              borderColor: error ? T.urgent : (inputFocused ? T.primary : borderColor),
-              boxShadow: inputFocused && !error ? `0 0 0 3px ${T.primaryLight}` : '0 0 0 0px transparent',
+              borderColor: error ? T.urgent : (inputFocused ? T.warm : borderColor),
+              boxShadow: inputFocused && !error ? `0 0 0 3px rgba(245,158,11,0.3)` : '0 0 0 0px transparent',
             }}
             transition={{ duration: 0.2 }}
             style={{
@@ -261,7 +277,7 @@ export function StepPostcode({ wizard, dark }) {
               boxSizing: 'border-box',
               minHeight: T.touchMin,
             }}
-            aria-label="Enter your postcode"
+            aria-label="Your postcode"
           />
         </div>
         <Button onClick={handleLookup} disabled={loading || !input.trim()}>
@@ -370,7 +386,7 @@ export function StepPostcode({ wizard, dark }) {
 
       <motion.button
         onClick={handleSkip}
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 0.3 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, delay: 0.4 }}
         whileHover={{ color: dark ? T.textDark : T.text }}
@@ -380,7 +396,7 @@ export function StepPostcode({ wizard, dark }) {
           padding: '16px 0', marginTop: '24px', display: 'block',
         }}
       >
-        I'd rather not say -- show national resources only
+        Skip — just show nationwide results
       </motion.button>
     </div>
   );

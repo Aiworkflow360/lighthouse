@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { T } from '../../constants/theme';
 
 // Compass SVG icon (inline)
-function CompassIcon({ size = 22, color }) {
+function CompassIcon({ size = 22, color, needleColor }) {
+  const needle = needleColor || color;
   return (
     <svg
       width={size}
@@ -19,8 +20,8 @@ function CompassIcon({ size = 22, color }) {
       <circle cx="12" cy="12" r="10" />
       <polygon
         points="16.24,7.76 14.12,14.12 7.76,16.24 9.88,9.88"
-        fill={color}
-        stroke={color}
+        fill={needle}
+        stroke={needle}
         strokeWidth="1.5"
       />
     </svg>
@@ -101,7 +102,7 @@ export function TriageCard({ triage, dark }) {
           top: 0,
           bottom: 0,
           width: '4px',
-          background: 'linear-gradient(180deg, #2563EB 0%, #7C3AED 100%)',
+          background: 'linear-gradient(180deg, #F59E0B 0%, #2563EB 100%)',
           borderRadius: '16px 0 0 16px',
         }}
       />
@@ -127,7 +128,7 @@ export function TriageCard({ triage, dark }) {
           gap: '10px',
           marginBottom: expanded ? '20px' : '0',
         }}>
-          <CompassIcon size={22} color={T.primary} />
+          <CompassIcon size={22} color={T.primary} needleColor={T.warm} />
           <h2 style={{
             fontFamily: T.font,
             fontSize: T.sizeH2,
@@ -136,7 +137,7 @@ export function TriageCard({ triage, dark }) {
             margin: 0,
             flex: 1,
           }}>
-            Your first 3 steps
+            Where to start
           </h2>
           <button
             onClick={() => setExpanded(prev => !prev)}
@@ -150,7 +151,7 @@ export function TriageCard({ triage, dark }) {
               fontFamily: T.font,
               fontSize: T.sizeSmall,
               fontWeight: 500,
-              color: subColor,
+              color: T.warm,
               padding: '4px 8px',
               borderRadius: T.radius,
               transition: T.transition,
@@ -159,7 +160,7 @@ export function TriageCard({ triage, dark }) {
             aria-label={expanded ? 'Collapse steps' : 'Expand steps'}
           >
             {expanded ? 'Hide' : 'Show'}
-            <ChevronIcon size={18} color={subColor} up={expanded} />
+            <ChevronIcon size={18} color={T.warm} up={expanded} />
           </button>
         </div>
 
@@ -207,8 +208,8 @@ export function TriageCard({ triage, dark }) {
                         height: '32px',
                         minWidth: '32px',
                         borderRadius: '50%',
-                        background: T.primary,
-                        color: T.primaryText,
+                        background: T.warm,
+                        color: '#FFFFFF',
                         fontFamily: T.font,
                         fontSize: '15px',
                         fontWeight: 700,
@@ -228,7 +229,7 @@ export function TriageCard({ triage, dark }) {
                           width: '2px',
                           flex: 1,
                           minHeight: '18px',
-                          borderLeft: `2px dashed ${lineColor}`,
+                          borderLeft: `2px dashed ${T.warmLight}`,
                           marginTop: '4px',
                           zIndex: 1,
                         }} />
@@ -324,7 +325,10 @@ export function TriageCard({ triage, dark }) {
                     gap: '8px',
                     marginTop: '20px',
                     paddingTop: '16px',
+                    paddingLeft: '12px',
                     borderTop: `1px solid ${borderColor}`,
+                    borderLeft: `3px solid ${T.warm}`,
+                    borderRadius: '0 0 0 4px',
                     fontFamily: T.font,
                     fontSize: T.sizeSmall,
                     color: subColor,
@@ -332,7 +336,7 @@ export function TriageCard({ triage, dark }) {
                     lineHeight: '1.5',
                   }}
                 >
-                  <HeartIcon size={16} color={dark ? T.emotionalLight : T.emotional} />
+                  <HeartIcon size={16} color={T.warm} />
                   {triage.encouragement}
                 </motion.div>
               )}

@@ -52,11 +52,11 @@ function InfoIcon({ color }) {
 }
 
 const staggerContainer = {
-  animate: { transition: { staggerChildren: 0.06 } },
+  animate: { transition: { staggerChildren: 0.08 } },
 };
 
 const staggerItem = {
-  initial: { opacity: 0, y: 12 },
+  initial: { opacity: 0.3, y: 12 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -8 },
 };
@@ -111,10 +111,10 @@ export function StepCondition({ wizard, dark }) {
     return (
       <div>
         <h1 style={{ fontFamily: T.font, fontSize: T.sizeH1, color: textColor, margin: '0 0 8px', fontWeight: 700 }}>
-          Which area is closest?
+          Which area best describes it?
         </h1>
         <p style={{ fontFamily: T.font, fontSize: T.sizeBody, color: subColor, margin: '0 0 24px', lineHeight: T.lineHeight }}>
-          We'll show resources for this type of condition.
+          We'll find support matched to this area.
         </p>
         <motion.div
           style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
@@ -154,10 +154,10 @@ export function StepCondition({ wizard, dark }) {
   return (
     <div>
       <h1 style={{ fontFamily: T.font, fontSize: T.sizeH1, color: textColor, margin: '0 0 8px', fontWeight: 700 }}>
-        What is your child's condition?
+        What is your child's condition or need?
       </h1>
       <p style={{ fontFamily: T.font, fontSize: T.sizeBody, color: subColor, margin: '0 0 24px', lineHeight: T.lineHeight }}>
-        Start typing to search, or browse by category.
+        Start typing — we'll help you find it
       </p>
 
       <div style={{ position: 'relative' }}>
@@ -170,7 +170,7 @@ export function StepCondition({ wizard, dark }) {
           color: T.textMuted,
           pointerEvents: 'none',
           transition: 'color 0.2s ease',
-          ...(inputFocused ? { color: T.primary } : {}),
+          ...(inputFocused ? { color: T.warm } : {}),
         }}>
           {'\u{1F50D}'}
         </span>
@@ -180,11 +180,11 @@ export function StepCondition({ wizard, dark }) {
           onChange={e => setQuery(e.target.value)}
           onFocus={() => setInputFocused(true)}
           onBlur={() => setInputFocused(false)}
-          placeholder="e.g. autism, ADHD, anxiety, dyslexia, epilepsy..."
+          placeholder="e.g. autism, ADHD, selective mutism, dyslexia..."
           autoFocus
           animate={{
-            borderColor: inputFocused ? T.primary : borderColor,
-            boxShadow: inputFocused ? `0 0 0 3px ${T.primaryLight}` : '0 0 0 0px transparent',
+            borderColor: inputFocused ? T.warm : borderColor,
+            boxShadow: inputFocused ? `0 0 0 3px rgba(245,158,11,0.3)` : '0 0 0 0px transparent',
           }}
           transition={{ duration: 0.2 }}
           style={{
@@ -200,7 +200,7 @@ export function StepCondition({ wizard, dark }) {
             boxSizing: 'border-box',
             minHeight: T.touchMin,
           }}
-          aria-label="Search for your child's condition"
+          aria-label="Search for your child's condition or need"
         />
       </div>
 
@@ -254,7 +254,7 @@ export function StepCondition({ wizard, dark }) {
         {query.trim().length >= 2 && filtered.length === 0 && (
           <motion.div
             key="empty-state"
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0.3, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
@@ -285,16 +285,17 @@ export function StepCondition({ wizard, dark }) {
 
       <motion.div
         style={{ marginTop: '32px', display: 'flex', flexDirection: 'column', gap: '12px' }}
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0.3, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.2, ease: 'easeOut' }}
       >
         <motion.button
           onClick={handleDontKnow}
-          whileHover={{ scale: 1.01, borderColor: T.primary }}
+          whileHover={{ scale: 1.01, borderColor: T.warm }}
           whileTap={{ scale: 0.98 }}
           style={{
             background: 'none', border: `2px solid ${borderColor}`,
+            borderLeft: `2px solid ${T.warm}`,
             borderRadius: T.radius, padding: '14px 20px', cursor: 'pointer',
             fontFamily: T.font, fontSize: T.sizeBody, color: subColor,
             minHeight: T.touchMin, textAlign: 'left',
@@ -302,14 +303,15 @@ export function StepCondition({ wizard, dark }) {
           }}
         >
           <QuestionIcon color={subColor} />
-          I don't know the exact name &rarr;
+          I'm not sure of the exact name &rarr;
         </motion.button>
         <motion.button
           onClick={handleWaiting}
-          whileHover={{ scale: 1.01, borderColor: T.primary }}
+          whileHover={{ scale: 1.01, borderColor: T.warm }}
           whileTap={{ scale: 0.98 }}
           style={{
             background: 'none', border: `2px solid ${borderColor}`,
+            borderLeft: `2px solid ${T.warm}`,
             borderRadius: T.radius, padding: '14px 20px', cursor: 'pointer',
             fontFamily: T.font, fontSize: T.sizeBody, color: subColor,
             minHeight: T.touchMin, textAlign: 'left',
@@ -317,14 +319,15 @@ export function StepCondition({ wizard, dark }) {
           }}
         >
           <ClockIcon color={subColor} />
-          Still waiting for an assessment &rarr;
+          We're still waiting for an assessment &rarr;
         </motion.button>
         <motion.button
           onClick={handleNoDiagnosis}
-          whileHover={{ scale: 1.01, borderColor: T.primary }}
+          whileHover={{ scale: 1.01, borderColor: T.warm }}
           whileTap={{ scale: 0.98 }}
           style={{
             background: 'none', border: `2px solid ${borderColor}`,
+            borderLeft: `2px solid ${T.warm}`,
             borderRadius: T.radius, padding: '14px 20px', cursor: 'pointer',
             fontFamily: T.font, fontSize: T.sizeBody, color: subColor,
             minHeight: T.touchMin, textAlign: 'left',
@@ -332,7 +335,7 @@ export function StepCondition({ wizard, dark }) {
           }}
         >
           <InfoIcon color={subColor} />
-          My child hasn't been formally diagnosed &rarr;
+          No formal diagnosis yet &rarr;
         </motion.button>
       </motion.div>
     </div>

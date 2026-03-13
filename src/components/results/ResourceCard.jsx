@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { T, CATEGORIES } from '../../constants/theme';
 
-// Shimmer keyframes for the award badge
+// Shimmer keyframes for the award badge — warm amber tones
 const shimmerStyle = {
   position: 'absolute',
   top: 0,
   left: '-100%',
   width: '100%',
   height: '100%',
-  background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)',
+  background: 'linear-gradient(90deg, transparent 0%, rgba(245,158,11,0.25) 50%, transparent 100%)',
   borderRadius: T.radiusFull,
 };
 
@@ -21,14 +21,12 @@ export function ResourceCard({ resource, dark }) {
   const subColor = dark ? T.textSecondaryDark : T.textSecondary;
   const cat = CATEGORIES[resource.category] || CATEGORIES.practical;
 
-  // Gradient for left border stripe
-  const stripeGradient = `linear-gradient(180deg, ${cat.color} 0%, ${cat.color}BB 100%)`;
+  // Gradient for left border stripe — amber at top, category colour at bottom
+  const stripeGradient = `linear-gradient(180deg, ${T.warm} 0%, ${cat.color} 100%)`;
 
-  // Subtle background tint when expanded
+  // Subtle warm amber background tint when expanded
   const expandedTint = expanded
-    ? dark
-      ? `${cat.color}0A`
-      : `${cat.color}06`
+    ? 'rgba(245,158,11,0.03)'
     : 'transparent';
 
   const hasPhone = !!resource.apply_phone;
@@ -70,7 +68,7 @@ export function ResourceCard({ resource, dark }) {
           padding: '6px',
           fontSize: '20px',
           lineHeight: 1,
-          color: saved ? T.urgent : (dark ? T.textMutedDark : T.textMuted),
+          color: saved ? T.warm : (dark ? T.textMutedDark : T.textMuted),
           transition: 'color 0.2s ease, transform 0.15s ease',
           zIndex: 2,
         }}
@@ -105,7 +103,7 @@ export function ResourceCard({ resource, dark }) {
         {resource.max_award_gbp && (
           <div style={{
             fontFamily: T.font, fontSize: '18px', fontWeight: 700,
-            color: T.financial, background: T.financialLight,
+            color: '#92400E', background: T.warmLight,
             padding: '6px 14px', borderRadius: T.radiusFull,
             whiteSpace: 'nowrap',
             position: 'relative',
@@ -156,7 +154,7 @@ export function ResourceCard({ resource, dark }) {
         onClick={() => setExpanded(!expanded)}
         aria-expanded={expanded}
         style={{
-          background: 'none', border: 'none', color: T.primary,
+          background: 'none', border: 'none', color: expanded ? T.warm : T.primary,
           fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 600,
           cursor: 'pointer', padding: '4px 0',
           display: 'inline-flex', alignItems: 'center', gap: '4px',

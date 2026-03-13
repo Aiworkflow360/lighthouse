@@ -55,18 +55,20 @@ function App() {
     }}>
       <a href="#main-content" className="skip-link">Skip to content</a>
 
-      {/* ── Glassmorphism header ─────────────────────────── */}
+      {/* ── Glassmorphism header (warm tint) ────────────── */}
       <header style={{
         position: 'sticky',
         top: 0,
         zIndex: 50,
-        background: dark ? T.glassBgDark : T.glassBg,
+        background: dark
+          ? 'rgba(28,25,23,0.75)'
+          : 'rgba(255,252,247,0.78)',
         backdropFilter: T.glassBlur,
         WebkitBackdropFilter: T.glassBlur,
-        borderBottom: `1px solid ${dark ? T.borderDark : T.border}`,
+        borderBottom: `1px solid ${dark ? T.borderDark : 'rgba(245,158,11,0.12)'}`,
       }}>
         <div style={{
-          padding: '14px 20px',
+          padding: '12px 20px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -79,20 +81,36 @@ function App() {
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              fontFamily: T.font,
-              fontSize: '20px',
-              fontWeight: 700,
-              color: dark ? T.textDark : T.text,
               padding: 0,
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              letterSpacing: '-0.01em',
+              gap: '10px',
             }}
             aria-label="Lighthouse - go to start"
           >
-            <LighthouseLogo size={28} animate />
-            Lighthouse
+            <LighthouseLogo variant="header" />
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <span style={{
+                fontFamily: T.font,
+                fontSize: '22px',
+                fontWeight: 700,
+                color: dark ? T.textDark : T.text,
+                letterSpacing: '-0.01em',
+                lineHeight: 1.2,
+              }}>
+                Lighthouse
+              </span>
+              <span style={{
+                fontFamily: T.font,
+                fontSize: '14px',
+                fontWeight: 400,
+                fontStyle: 'italic',
+                color: dark ? T.textSecondaryDark : T.textSecondary,
+                lineHeight: 1.3,
+              }}>
+                Find your way through.
+              </span>
+            </div>
           </button>
 
           {/* Dark mode toggle */}
@@ -186,7 +204,7 @@ function App() {
       }}>
         <p style={{ margin: '0 0 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
           <span style={{ color: '#DC2626', fontSize: '14px' }} role="img" aria-hidden="true">{'\u2764'}</span>
-          Lighthouse is free, open source, and does not store any personal data.
+          Lighthouse is free, always will be, and never stores your data.
         </p>
         <p style={{ margin: 0 }}>
           Need to talk? Samaritans: <a href="tel:116123" style={{ color: 'inherit', fontWeight: 600 }}>116 123</a> (24/7, free)
@@ -395,9 +413,9 @@ function Landing({ dark, wizard }) {
   };
 
   const howItWorksSteps = [
-    { num: 1, label: 'Tell us about your child', Icon: ClipboardIcon },
-    { num: 2, label: 'We find matching resources', Icon: SearchIcon },
-    { num: 3, label: 'Get your personalised action plan', Icon: CheckCircleIcon },
+    { num: 1, label: 'Tell us what you\'re dealing with', Icon: ClipboardIcon },
+    { num: 2, label: 'We search everything for you', Icon: SearchIcon },
+    { num: 3, label: 'Get a clear plan of action', Icon: CheckCircleIcon },
   ];
 
   return (
@@ -425,9 +443,9 @@ function Landing({ dark, wizard }) {
         <div style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: `radial-gradient(circle, ${dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.15)'} 1px, transparent 1px)`,
+          backgroundImage: `radial-gradient(circle, ${dark ? 'rgba(245,158,11,0.25)' : 'rgba(245,158,11,0.3)'} 1px, transparent 1px)`,
           backgroundSize: '24px 24px',
-          opacity: 0.04,
+          opacity: 0.06,
           pointerEvents: 'none',
         }} />
         {/* Hero illustration */}
@@ -458,6 +476,20 @@ function Landing({ dark, wizard }) {
           Every resource.<br />One place.<br />No signup.
         </motion.h1>
 
+        {/* Warm amber decorative line */}
+        <motion.div
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{ duration: 0.8, delay: 0.08 }}
+          style={{
+            width: '60px',
+            height: '3px',
+            borderRadius: '2px',
+            background: '#F59E0B',
+            margin: '0 auto 24px',
+          }}
+        />
+
         {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -473,7 +505,7 @@ function Landing({ dark, wizard }) {
             padding: '0 20px',
           }}
         >
-          Find grants, charities, therapists, and support groups for families of children with any condition or additional need. Personalised to your child and location. Free forever.
+          When your child has a condition or additional need, finding the right support shouldn't be this hard. We've gathered everything — grants, charities, therapists, support groups — so you don't have to.
         </motion.p>
 
         {/* CTA button */}
@@ -505,11 +537,7 @@ function Landing({ dark, wizard }) {
               gap: '10px',
             }}
           >
-            Find resources for my family
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ marginLeft: '2px' }}>
-              <line x1="3" y1="9" x2="15" y2="9" />
-              <polyline points="10 4 15 9 10 14" />
-            </svg>
+            {'Find your way through \u2192'}
           </motion.button>
         </motion.div>
 
@@ -525,7 +553,7 @@ function Landing({ dark, wizard }) {
             marginBottom: 0,
           }}
         >
-          Takes about 60 seconds. No account needed.
+          60 seconds. No account needed. Always free.
         </motion.p>
       </div>
 
@@ -542,19 +570,37 @@ function Landing({ dark, wizard }) {
           gap: '8px',
         }}
       >
-        {Object.entries(pillDotColors).map(([label, dotColor]) => (
-          <span key={label} style={makePillStyle()}>
-            <span style={{
-              width: '7px',
-              height: '7px',
-              borderRadius: '50%',
-              background: dotColor,
-              flexShrink: 0,
-              opacity: 0.85,
-            }} aria-hidden="true" />
-            {label}
-          </span>
-        ))}
+        {Object.entries(pillDotColors).map(([label, dotColor]) => {
+          const isHighlighted = ['Autism & ADHD', 'Mental Health', 'Rare Diseases'].includes(label);
+          return (
+            <span key={label} style={makePillStyle()}>
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                flexShrink: 0,
+              }} aria-hidden="true">
+                <span style={{
+                  width: '7px',
+                  height: '7px',
+                  borderRadius: '50%',
+                  background: dotColor,
+                  opacity: 0.85,
+                }} />
+                {isHighlighted && (
+                  <span style={{
+                    width: '7px',
+                    height: '7px',
+                    borderRadius: '50%',
+                    background: '#F59E0B',
+                    opacity: 0.85,
+                  }} />
+                )}
+              </span>
+              {label}
+            </span>
+          );
+        })}
       </motion.div>
 
       {/* Trust indicators row */}
@@ -673,7 +719,7 @@ function Landing({ dark, wizard }) {
                 <div style={{
                   width: '2px',
                   height: '28px',
-                  backgroundImage: `repeating-linear-gradient(to bottom, ${dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)'} 0px, ${dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)'} 4px, transparent 4px, transparent 8px)`,
+                  backgroundImage: `repeating-linear-gradient(to bottom, #FEF3C7 0px, #FEF3C7 4px, transparent 4px, transparent 8px)`,
                   flexShrink: 0,
                 }} />
               )}
@@ -696,7 +742,7 @@ function Landing({ dark, wizard }) {
                   width: '36px',
                   height: '36px',
                   borderRadius: '50%',
-                  background: T.primary,
+                  background: '#F59E0B',
                   color: '#FFFFFF',
                   display: 'flex',
                   alignItems: 'center',
@@ -763,25 +809,25 @@ function Landing({ dark, wizard }) {
             {
               Icon: CompassIcon,
               title: 'Just received a diagnosis',
-              desc: "Overwhelmed? We'll show you exactly where to start.",
+              desc: "Take a breath. We'll show you exactly where to start.",
               color: T.primary,
             },
             {
               Icon: BookIcon,
               title: 'Struggling at school',
-              desc: 'Find EHCP support, educational psychologists & SEN advocacy.',
+              desc: "EHCPs, educational psychologists, SEN advocacy \u2014 we'll find what's near you.",
               color: T.education,
             },
             {
               Icon: CoinIcon,
               title: 'Need financial help',
-              desc: 'Discover grants, benefits & emergency funds you may not know about.',
+              desc: "There are grants and benefits you probably don't know about. Let us find them.",
               color: T.financial,
             },
             {
               Icon: PeopleIcon,
               title: 'Looking for other parents',
-              desc: 'Connect with support groups who truly understand.',
+              desc: "You're not the only one going through this. Find your people.",
               color: T.emotional,
             },
           ].map((card, i) => (
@@ -796,6 +842,7 @@ function Landing({ dark, wizard }) {
                 borderRadius: T.radius,
                 background: dark ? T.bgCardDark : T.bgCard,
                 border: `1px solid ${dark ? T.borderDark : T.border}`,
+                borderLeft: '3px solid #F59E0B',
                 textAlign: 'left',
                 boxShadow: T.shadow,
                 cursor: 'default',
@@ -897,6 +944,7 @@ function Landing({ dark, wizard }) {
                   ? 'rgba(37,99,235,0.06)'
                   : 'rgba(37,99,235,0.03)',
                 border: `1px solid ${dark ? T.borderDark : T.border}`,
+                borderBottom: '3px solid #F59E0B',
                 textAlign: 'left',
                 position: 'relative',
               }}
@@ -909,7 +957,7 @@ function Landing({ dark, wizard }) {
                 fontFamily: 'Georgia, serif',
                 fontSize: '48px',
                 lineHeight: 1,
-                color: T.primary,
+                color: '#F59E0B',
                 opacity: 0.15,
                 pointerEvents: 'none',
                 userSelect: 'none',
@@ -945,6 +993,67 @@ function Landing({ dark, wizard }) {
             </motion.div>
           ))}
         </div>
+      </motion.div>
+
+      {/* ── Final CTA section ──────────────────────────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.7 }}
+        style={{
+          marginTop: '56px',
+          padding: '48px 24px',
+          borderRadius: T.radiusLg,
+          background: dark
+            ? 'radial-gradient(ellipse at center, rgba(245,158,11,0.08) 0%, transparent 70%)'
+            : 'radial-gradient(ellipse at center, rgba(245,158,11,0.1) 0%, rgba(254,243,199,0.15) 50%, transparent 70%)',
+          textAlign: 'center',
+          position: 'relative',
+        }}
+      >
+        <h2 style={{
+          fontFamily: T.font,
+          fontSize: 'clamp(28px, 6vw, 36px)',
+          fontWeight: 700,
+          color: textColor,
+          margin: '0 0 12px',
+          letterSpacing: '-0.02em',
+        }}>
+          Ready?
+        </h2>
+
+        <p style={{
+          fontFamily: T.font,
+          fontSize: T.sizeBody,
+          color: subColor,
+          margin: '0 auto 28px',
+          maxWidth: '400px',
+          lineHeight: T.lineHeight,
+        }}>
+          {"It takes 60 seconds. We'll show you everything that's out there."}
+        </p>
+
+        <motion.button
+          onClick={wizard.next}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          style={{
+            background: 'linear-gradient(135deg, #F59E0B 0%, #2563EB 100%)',
+            color: '#FFFFFF',
+            border: 'none',
+            borderRadius: T.radius,
+            padding: '18px 44px',
+            fontFamily: T.font,
+            fontSize: T.sizeBody,
+            fontWeight: 700,
+            cursor: 'pointer',
+            minHeight: T.touchMin,
+            boxShadow: '0 4px 20px rgba(245,158,11,0.25)',
+            transition: T.transition,
+          }}
+        >
+          {'Start now \u2192'}
+        </motion.button>
       </motion.div>
     </motion.div>
   );

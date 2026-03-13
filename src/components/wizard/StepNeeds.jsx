@@ -17,7 +17,7 @@ const staggerContainer = {
 };
 
 const staggerItem = {
-  initial: { opacity: 0, y: 14 },
+  initial: { opacity: 0.3, y: 14 },
   animate: { opacity: 1, y: 0 },
 };
 
@@ -53,7 +53,7 @@ export function StepNeeds({ wizard, dark }) {
     <div>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
         <h1 style={{ fontFamily: T.font, fontSize: T.sizeH1, color: textColor, margin: 0, fontWeight: 700 }}>
-          What help do you need most?
+          What kind of help are you looking for?
         </h1>
         <AnimatePresence>
           {selectionCount > 0 && (
@@ -62,10 +62,10 @@ export function StepNeeds({ wizard, dark }) {
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
               style={{
-                background: T.primary,
-                color: T.primaryText,
+                background: T.warm,
+                color: '#FFFFFF',
                 fontFamily: T.font,
                 fontSize: T.sizeSmall,
                 fontWeight: 700,
@@ -84,14 +84,14 @@ export function StepNeeds({ wizard, dark }) {
         </AnimatePresence>
       </div>
       <p style={{ fontFamily: T.font, fontSize: T.sizeBody, color: subColor, margin: '0 0 24px', lineHeight: T.lineHeight }}>
-        Select as many as you need. We'll prioritise these in your results.
+        Pick as many as you need.
       </p>
 
       <AnimatePresence>
         {selectionCount === 0 && (
           <motion.p
             key="tip"
-            initial={{ opacity: 0, y: -4 }}
+            initial={{ opacity: 0.3, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.2 }}
@@ -121,8 +121,15 @@ export function StepNeeds({ wizard, dark }) {
             <motion.div
               key={opt.id}
               variants={staggerItem}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
+              transition={isSelected
+                ? { type: 'spring', stiffness: 400, damping: 25 }
+                : { duration: 0.25, ease: 'easeOut' }
+              }
               whileTap={{ scale: 0.97 }}
+              whileHover={{
+                boxShadow: `0 0 16px ${T.warmGlow}`,
+                transition: { duration: 0.2 },
+              }}
             >
               <Card
                 dark={dark}
@@ -163,13 +170,13 @@ export function StepNeeds({ wizard, dark }) {
                       initial={{ scale: 0, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       exit={{ scale: 0, opacity: 0 }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                       style={{
                         width: '24px',
                         height: '24px',
                         borderRadius: T.radiusFull,
-                        background: `linear-gradient(135deg, ${T.primary} 0%, ${T.emotional} 100%)`,
-                        color: T.primaryText,
+                        background: `linear-gradient(135deg, ${T.warm} 0%, #D97706 100%)`,
+                        color: '#FFFFFF',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -190,7 +197,7 @@ export function StepNeeds({ wizard, dark }) {
 
       <motion.div
         style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0.3, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.35 }}
       >
@@ -210,15 +217,16 @@ export function StepNeeds({ wizard, dark }) {
         </motion.div>
         <motion.button
           onClick={() => { selectAll(); }}
-          whileHover={{ color: T.primary }}
+          whileHover={{ color: T.warm }}
           whileTap={{ scale: 0.98 }}
           style={{
             background: 'none', border: 'none', color: subColor,
             fontFamily: T.font, fontSize: T.sizeBody, cursor: 'pointer',
             padding: '12px 0',
+            borderBottom: `2px solid ${T.warmLight}`,
           }}
         >
-          Show me everything -- I'm not sure what I need yet
+          I need help with all of these
         </motion.button>
       </motion.div>
     </div>

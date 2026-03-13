@@ -23,11 +23,11 @@ const AGE_DESCRIPTIONS = {
 
 const staggerContainer = {
   initial: {},
-  animate: { transition: { staggerChildren: 0.07 } },
+  animate: { transition: { staggerChildren: 0.08 } },
 };
 
 const staggerItem = {
-  initial: { opacity: 0, y: 16, scale: 0.95 },
+  initial: { opacity: 0.3, y: 16, scale: 0.97 },
   animate: { opacity: 1, y: 0, scale: 1 },
 };
 
@@ -47,7 +47,7 @@ export function StepAge({ wizard, dark }) {
         How old is your child?
       </h1>
       <p style={{ fontFamily: T.font, fontSize: T.sizeBody, color: subColor, margin: '0 0 24px', lineHeight: T.lineHeight }}>
-        Some support is age-specific. This helps us show the right resources.
+        So we can find age-appropriate support.
       </p>
 
       <motion.div
@@ -62,9 +62,16 @@ export function StepAge({ wizard, dark }) {
             <motion.div
               key={range.id}
               variants={staggerItem}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
+              transition={isSelected
+                ? { type: 'spring', stiffness: 400, damping: 25 }
+                : { duration: 0.25, ease: 'easeOut' }
+              }
               whileTap={{ scale: 0.94 }}
-              animate={isSelected ? { scale: [1, 1.06, 1] } : { scale: 1 }}
+              whileHover={{
+                boxShadow: `0 0 16px ${T.warmGlow}`,
+                transition: { duration: 0.2 },
+              }}
+              animate={isSelected ? { scale: [1, 1.02, 1] } : { scale: 1 }}
             >
               <Card
                 dark={dark}
@@ -80,9 +87,11 @@ export function StepAge({ wizard, dark }) {
                   justifyContent: 'center',
                   gap: '6px',
                   ...(isSelected ? {
+                    borderLeft: `3px solid ${T.warm}`,
                     background: dark
-                      ? `linear-gradient(135deg, ${T.bgCardDark} 0%, rgba(37,99,235,0.15) 100%)`
-                      : `linear-gradient(135deg, ${T.primaryLight} 0%, ${T.bgCard} 100%)`,
+                      ? `linear-gradient(135deg, ${T.bgCardDark} 0%, rgba(245,158,11,0.12) 100%)`
+                      : `linear-gradient(135deg, ${T.warmLight} 0%, ${T.bgCard} 100%)`,
+                    boxShadow: `0 0 20px ${T.warmGlow}`,
                   } : {}),
                 }}
               >
