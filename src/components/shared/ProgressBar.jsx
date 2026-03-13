@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { T } from '../../constants/theme';
 
-const STEP_LABELS = ['Diagnosis', 'Age', 'Location', 'Needs'];
+const STEP_LABELS = ['Condition', 'Age', 'Location', 'Needs'];
 
 const springTransition = { type: 'spring', stiffness: 300, damping: 25 };
 

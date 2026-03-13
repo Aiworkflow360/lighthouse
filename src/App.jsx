@@ -276,7 +276,7 @@ function Landing({ dark, wizard }) {
             padding: '0 20px',
           }}
         >
-          Find hospitals, grants, charities, and support groups for families of seriously ill children. Personalised to your child's diagnosis and location. Free forever.
+          Find grants, charities, therapists, and support groups for families of children with any condition or additional need. Personalised to your child and location. Free forever.
         </motion.p>
 
         {/* CTA button */}
@@ -338,11 +338,12 @@ function Landing({ dark, wizard }) {
           gap: '8px',
         }}
       >
+        <span style={pillStyle}>Autism & ADHD</span>
+        <span style={pillStyle}>Mental Health</span>
+        <span style={pillStyle}>Learning Disabilities</span>
         <span style={pillStyle}>Cancer</span>
-        <span style={pillStyle}>Heart conditions</span>
-        <span style={pillStyle}>Neurological</span>
-        <span style={pillStyle}>Genetic</span>
-        <span style={pillStyle}>Rare diseases</span>
+        <span style={pillStyle}>Chronic Conditions</span>
+        <span style={pillStyle}>Rare Diseases</span>
       </motion.div>
 
       {/* Trust indicators row */}

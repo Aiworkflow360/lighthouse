@@ -50,6 +50,12 @@ export function StepCondition({ wizard, dark }) {
     wizard.next();
   };
 
+  const handleNoDiagnosis = () => {
+    wizard.setCondition('Not Yet Diagnosed');
+    wizard.setConditionCategory(null);
+    wizard.next();
+  };
+
   const textColor = dark ? T.textDark : T.text;
   const subColor = dark ? T.textSecondaryDark : T.textSecondary;
   const borderColor = dark ? T.borderDark : T.border;
@@ -101,7 +107,7 @@ export function StepCondition({ wizard, dark }) {
   return (
     <div>
       <h1 style={{ fontFamily: T.font, fontSize: T.sizeH1, color: textColor, margin: '0 0 8px', fontWeight: 700 }}>
-        What is your child's diagnosis?
+        What is your child's condition?
       </h1>
       <p style={{ fontFamily: T.font, fontSize: T.sizeBody, color: subColor, margin: '0 0 24px', lineHeight: T.lineHeight }}>
         Start typing to search, or browse by category.
@@ -127,7 +133,7 @@ export function StepCondition({ wizard, dark }) {
           onChange={e => setQuery(e.target.value)}
           onFocus={() => setInputFocused(true)}
           onBlur={() => setInputFocused(false)}
-          placeholder="e.g. leukaemia, heart defect, epilepsy..."
+          placeholder="e.g. autism, ADHD, anxiety, dyslexia, epilepsy..."
           autoFocus
           animate={{
             borderColor: inputFocused ? T.primary : borderColor,
@@ -147,7 +153,7 @@ export function StepCondition({ wizard, dark }) {
             boxSizing: 'border-box',
             minHeight: T.touchMin,
           }}
-          aria-label="Search for your child's diagnosis"
+          aria-label="Search for your child's condition"
         />
       </div>
 
@@ -212,7 +218,20 @@ export function StepCondition({ wizard, dark }) {
             minHeight: T.touchMin, textAlign: 'left',
           }}
         >
-          Still waiting for a diagnosis &rarr;
+          Still waiting for an assessment &rarr;
+        </motion.button>
+        <motion.button
+          onClick={handleNoDiagnosis}
+          whileHover={{ scale: 1.01, borderColor: T.primary }}
+          whileTap={{ scale: 0.98 }}
+          style={{
+            background: 'none', border: `2px solid ${borderColor}`,
+            borderRadius: T.radius, padding: '14px 20px', cursor: 'pointer',
+            fontFamily: T.font, fontSize: T.sizeBody, color: subColor,
+            minHeight: T.touchMin, textAlign: 'left',
+          }}
+        >
+          My child hasn't been formally diagnosed &rarr;
         </motion.button>
       </motion.div>
     </div>

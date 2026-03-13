@@ -5,9 +5,10 @@ import { Button } from '../shared/Button';
 
 const NEED_OPTIONS = [
   { id: 'financial', icon: '\u00A3', label: 'Money & Grants', desc: 'Financial support, benefits, charity grants' },
-  { id: 'medical', icon: '\u2695\uFE0F', label: 'Hospital & Medical', desc: 'Specialist centres, treatment, clinical trials' },
-  { id: 'emotional', icon: '\u2764\uFE0F', label: 'Someone to Talk To', desc: 'Helplines, counselling, support groups' },
-  { id: 'practical', icon: '\u2B50', label: 'Day-to-Day Help', desc: 'Transport, respite, equipment, accommodation' },
+  { id: 'medical', icon: '\u2695\uFE0F', label: 'Health & Therapies', desc: 'Specialist centres, therapies, assessments, CAMHS' },
+  { id: 'emotional', icon: '\u2764\uFE0F', label: 'Someone to Talk To', desc: 'Helplines, counselling, peer support, parent groups' },
+  { id: 'practical', icon: '\u2B50', label: 'Day-to-Day Help', desc: 'Transport, respite, equipment, adaptations, accommodation' },
+  { id: 'education', icon: '\uD83C\uDF93', label: 'Education & EHCP', desc: 'SEN support, EHCPs, school adaptations, educational psychology' },
 ];
 
 const staggerContainer = {
@@ -32,11 +33,11 @@ export function StepNeeds({ wizard, dark }) {
   };
 
   const selectAll = () => {
-    wizard.setNeeds(['financial', 'medical', 'emotional', 'practical']);
+    wizard.setNeeds(['financial', 'medical', 'emotional', 'practical', 'education']);
   };
 
   const handleContinue = () => {
-    const finalNeeds = wizard.needs.length > 0 ? wizard.needs : ['financial', 'medical', 'emotional', 'practical'];
+    const finalNeeds = wizard.needs.length > 0 ? wizard.needs : ['financial', 'medical', 'emotional', 'practical', 'education'];
     wizard.setNeeds(finalNeeds);
     wizard.goToResults();
   };

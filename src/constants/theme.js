@@ -42,6 +42,8 @@ export const T = {
   emotionalLight: '#EDE9FE',
   practical: '#059669',
   practicalLight: '#D1FAE5',
+  education: '#8B5CF6',
+  educationLight: '#F5F3FF',
 
   // Status
   urgent: '#DC2626',
@@ -95,4 +97,5 @@ export const CATEGORIES = {
   medical: { label: 'Hospital & Medical', color: T.medical, lightColor: T.medicalLight, icon: '\u2695' },
   emotional: { label: 'Someone to Talk To', color: T.emotional, lightColor: T.emotionalLight, icon: '\u2665' },
   practical: { label: 'Day-to-Day Help', color: T.practical, lightColor: T.practicalLight, icon: '\u2606' },
+  education: { label: 'Education & EHCP', color: T.education, lightColor: T.educationLight, icon: '\uD83C\uDF93' },
 };
