@@ -251,6 +251,36 @@ export function StepCondition({ wizard, dark }) {
             ))}
           </motion.div>
         )}
+        {query.trim().length >= 2 && filtered.length === 0 && (
+          <motion.div
+            key="empty-state"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            style={{
+              marginTop: '16px',
+              padding: '16px 20px',
+              borderRadius: T.radius,
+              background: dark ? T.bgCardDark : T.infoLight,
+              border: `1px solid ${dark ? T.borderDark : T.info}`,
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '12px',
+            }}
+          >
+            <InfoIcon color={T.info} />
+            <p style={{
+              fontFamily: T.font,
+              fontSize: T.sizeSmall,
+              color: dark ? T.textSecondaryDark : T.textSecondary,
+              margin: 0,
+              lineHeight: T.lineHeight,
+            }}>
+              No conditions found for &lsquo;{query.trim()}&rsquo;. Try a different term or browse by category below.
+            </p>
+          </motion.div>
+        )}
       </AnimatePresence>
 
       <motion.div

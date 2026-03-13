@@ -44,6 +44,14 @@ export function useWizardState() {
     setStep(s => Math.max(s - 1, 0));
   }, []);
 
+  const goToStep = useCallback((targetStep) => {
+    // Only allow navigating to completed steps (earlier than current) or current step
+    setStep(s => {
+      if (targetStep >= 0 && targetStep < s) return targetStep;
+      return s;
+    });
+  }, []);
+
   const restart = useCallback(() => {
     setStep(0);
     setCondition(null);
@@ -77,7 +85,7 @@ export function useWizardState() {
     postcode, setPostcode,
     postcodeData, setPostcodeData,
     needs, setNeeds,
-    next, back, restart,
+    next, back, goToStep, restart,
     getShareUrl, goToResults,
   };
 }

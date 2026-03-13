@@ -87,6 +87,28 @@ export function StepNeeds({ wizard, dark }) {
         Select as many as you need. We'll prioritise these in your results.
       </p>
 
+      <AnimatePresence>
+        {selectionCount === 0 && (
+          <motion.p
+            key="tip"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.2 }}
+            style={{
+              fontFamily: T.font,
+              fontSize: T.sizeSmall,
+              fontStyle: 'italic',
+              color: dark ? T.textMutedDark : T.textMuted,
+              margin: '0 0 16px',
+              lineHeight: T.lineHeight,
+            }}
+          >
+            Tip: Selecting fewer categories gives more targeted results
+          </motion.p>
+        )}
+      </AnimatePresence>
+
       <motion.div
         style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
         variants={staggerContainer}

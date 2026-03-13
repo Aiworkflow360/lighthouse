@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { T } from '../../constants/theme';
 import { lookupPostcode } from '../../lib/postcodes';
@@ -102,24 +102,85 @@ function SuccessCheck() {
   );
 }
 
+function ErrorInfoIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0, marginTop: '1px' }}>
+      <circle cx="10" cy="10" r="9" stroke={T.urgent} strokeWidth="1.5" fill="none" />
+      <line x1="10" y1="9" x2="10" y2="14" stroke={T.urgent} strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="10" cy="6.5" r="0.85" fill={T.urgent} />
+    </svg>
+  );
+}
+
 export function StepPostcode({ wizard, dark }) {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [inputFocused, setInputFocused] = useState(false);
+  const [showSlowHint, setShowSlowHint] = useState(false);
+  const abortRef = useRef(null);
+  const slowTimerRef = useRef(null);
 
   const textColor = dark ? T.textDark : T.text;
   const subColor = dark ? T.textSecondaryDark : T.textSecondary;
   const borderColor = dark ? T.borderDark : T.border;
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (abortRef.current) abortRef.current.abort();
+      if (slowTimerRef.current) clearTimeout(slowTimerRef.current);
+    };
+  }, []);
+
+  const cancelLookup = useCallback(() => {
+    if (abortRef.current) abortRef.current.abort();
+    if (slowTimerRef.current) clearTimeout(slowTimerRef.current);
+    setLoading(false);
+    setShowSlowHint(false);
+  }, []);
+
   const handleLookup = async () => {
     if (!input.trim()) return;
+
+    // Abort any in-flight request
+    if (abortRef.current) abortRef.current.abort();
+    if (slowTimerRef.current) clearTimeout(slowTimerRef.current);
+
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    // Auto-abort after 8 seconds
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+    // Show "taking too long" hint after 3 seconds
+    slowTimerRef.current = setTimeout(() => setShowSlowHint(true), 3000);
+
     setLoading(true);
     setError('');
-    const data = await lookupPostcode(input);
+    setShowSlowHint(false);
+
+    const data = await lookupPostcode(input, { signal: controller.signal });
+
+    clearTimeout(timeoutId);
+    if (slowTimerRef.current) clearTimeout(slowTimerRef.current);
+    setShowSlowHint(false);
+
+    // If this request was aborted by a newer one, ignore the result
+    if (abortRef.current !== controller) return;
+
     setLoading(false);
-    if (data) {
+
+    if (data && data.error) {
+      if (data.message === 'Request timed out') {
+        setError("Couldn't look up that postcode. Check it's correct or skip to see nationwide results.");
+      } else if (data.message === 'Invalid postcode') {
+        setError("Couldn't look up that postcode. Check it's correct or skip to see nationwide results.");
+      } else {
+        setError("Couldn't look up that postcode. Check it's correct or skip to see nationwide results.");
+      }
+    } else if (data) {
       wizard.setPostcode(input.trim().toUpperCase());
       wizard.setPostcodeData(data);
       setSuccess(true);
@@ -127,14 +188,19 @@ export function StepPostcode({ wizard, dark }) {
         wizard.next();
       }, 600);
     } else {
-      setError("We couldn't find that postcode. Please check and try again.");
+      setError("Couldn't look up that postcode. Check it's correct or skip to see nationwide results.");
     }
   };
 
   const handleSkip = () => {
+    cancelLookup();
     wizard.setPostcode(null);
     wizard.setPostcodeData(null);
     wizard.next();
+  };
+
+  const dismissError = () => {
+    setError('');
   };
 
   return (
@@ -203,17 +269,98 @@ export function StepPostcode({ wizard, dark }) {
         </Button>
       </motion.div>
 
+      {/* Slow-loading hint with retry/skip */}
       <AnimatePresence>
-        {error && (
-          <motion.p
+        {loading && showSlowHint && (
+          <motion.div
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.2 }}
-            style={{ fontFamily: T.font, fontSize: T.sizeSmall, color: T.urgent, marginTop: '12px' }}
+            transition={{ duration: 0.25 }}
+            style={{
+              marginTop: '12px',
+              fontFamily: T.font,
+              fontSize: T.sizeSmall,
+              color: subColor,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              flexWrap: 'wrap',
+            }}
           >
-            {error}
-          </motion.p>
+            <span>Taking too long?</span>
+            <button
+              onClick={() => { cancelLookup(); handleLookup(); }}
+              style={{
+                background: 'none', border: 'none', color: T.primary,
+                fontFamily: T.font, fontSize: T.sizeSmall, cursor: 'pointer',
+                padding: '2px 4px', textDecoration: 'underline', fontWeight: 600,
+              }}
+            >
+              Try again
+            </button>
+            <span>or</span>
+            <button
+              onClick={handleSkip}
+              style={{
+                background: 'none', border: 'none', color: T.primary,
+                fontFamily: T.font, fontSize: T.sizeSmall, cursor: 'pointer',
+                padding: '2px 4px', textDecoration: 'underline', fontWeight: 600,
+              }}
+            >
+              Skip
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Dismissible error box */}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.25 }}
+            onClick={dismissError}
+            role="button"
+            tabIndex={0}
+            onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') dismissError(); }}
+            aria-label="Dismiss error and try again"
+            style={{
+              marginTop: '12px',
+              padding: '14px 18px',
+              borderRadius: T.radius,
+              background: dark ? 'rgba(220, 38, 38, 0.1)' : T.urgentLight,
+              border: `1px solid ${dark ? 'rgba(220, 38, 38, 0.3)' : 'rgba(220, 38, 38, 0.25)'}`,
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '12px',
+              cursor: 'pointer',
+              transition: T.transition,
+            }}
+          >
+            <ErrorInfoIcon />
+            <div>
+              <p style={{
+                fontFamily: T.font,
+                fontSize: T.sizeSmall,
+                color: dark ? T.textSecondaryDark : T.text,
+                margin: 0,
+                lineHeight: T.lineHeight,
+              }}>
+                {error}
+              </p>
+              <p style={{
+                fontFamily: T.font,
+                fontSize: '12px',
+                color: T.textMuted,
+                margin: '6px 0 0',
+              }}>
+                Tap to dismiss and try again
+              </p>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
 

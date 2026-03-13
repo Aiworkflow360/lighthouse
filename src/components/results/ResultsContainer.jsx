@@ -7,6 +7,20 @@ import { Button } from '../shared/Button';
 import { DEMO_RESOURCES } from '../../lib/demoData';
 import { generateTriage } from '../../lib/triage';
 
+// Inject shimmer keyframes once
+const SHIMMER_STYLE_ID = 'lighthouse-shimmer';
+if (typeof document !== 'undefined' && !document.getElementById(SHIMMER_STYLE_ID)) {
+  const style = document.createElement('style');
+  style.id = SHIMMER_STYLE_ID;
+  style.textContent = `
+    @keyframes lighthouseShimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
 // Counting-up hook: animates from 0 to target over duration
 function useCountUp(target, duration = 500) {
   const [count, setCount] = useState(0);
@@ -35,14 +49,141 @@ function useCountUp(target, duration = 500) {
   return count;
 }
 
+// Skeleton card placeholder with shimmer
+function SkeletonCard({ dark }) {
+  const bg = dark ? T.bgCardDark : T.bgCard;
+  const shimmerBg = dark
+    ? 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)'
+    : 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%)';
+  const lineBg = dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+
+  return (
+    <div
+      style={{
+        background: bg,
+        borderRadius: T.radiusLg,
+        border: `1px solid ${dark ? T.borderDark : T.border}`,
+        padding: '20px',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
+      {/* Title line */}
+      <div style={{
+        height: '16px',
+        width: '65%',
+        background: lineBg,
+        borderRadius: '8px',
+        marginBottom: '12px',
+        overflow: 'hidden',
+        position: 'relative',
+      }}>
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: shimmerBg,
+          animation: 'lighthouseShimmer 1.5s ease-in-out infinite',
+        }} />
+      </div>
+      {/* Subtitle line */}
+      <div style={{
+        height: '12px',
+        width: '45%',
+        background: lineBg,
+        borderRadius: '8px',
+        marginBottom: '16px',
+        overflow: 'hidden',
+        position: 'relative',
+      }}>
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: shimmerBg,
+          animation: 'lighthouseShimmer 1.5s ease-in-out infinite',
+          animationDelay: '0.15s',
+        }} />
+      </div>
+      {/* Body lines */}
+      <div style={{
+        height: '12px',
+        width: '90%',
+        background: lineBg,
+        borderRadius: '8px',
+        marginBottom: '8px',
+        overflow: 'hidden',
+        position: 'relative',
+      }}>
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: shimmerBg,
+          animation: 'lighthouseShimmer 1.5s ease-in-out infinite',
+          animationDelay: '0.3s',
+        }} />
+      </div>
+      <div style={{
+        height: '12px',
+        width: '72%',
+        background: lineBg,
+        borderRadius: '8px',
+        overflow: 'hidden',
+        position: 'relative',
+      }}>
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: shimmerBg,
+          animation: 'lighthouseShimmer 1.5s ease-in-out infinite',
+          animationDelay: '0.45s',
+        }} />
+      </div>
+    </div>
+  );
+}
+
+// Empty-state magnifying glass with question mark SVG
+function EmptyStateIcon({ size = 80, dark }) {
+  const strokeColor = dark ? T.textMutedDark : T.textMuted;
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 80 80"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* Glass circle */}
+      <circle cx="34" cy="34" r="22" stroke={strokeColor} strokeWidth="3" fill="none" />
+      {/* Handle */}
+      <line x1="50" y1="50" x2="68" y2="68" stroke={strokeColor} strokeWidth="4" strokeLinecap="round" />
+      {/* Question mark */}
+      <path
+        d="M29 27c0-4 3.5-7 7.5-7s7.5 3 7.5 7c0 3-2 4.5-4.5 5.5-1.5.6-2.5 1.5-2.5 3v1"
+        stroke={strokeColor}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        fill="none"
+      />
+      <circle cx="37" cy="43" r="1.8" fill={strokeColor} />
+    </svg>
+  );
+}
+
 export function ResultsContainer({ wizard, dark }) {
   const [activeFilter, setActiveFilter] = useState('all');
   const [copied, setCopied] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [loading, setLoading] = useState(true);
   const cardsRef = useRef(null);
 
   const textColor = dark ? T.textDark : T.text;
   const subColor = dark ? T.textSecondaryDark : T.textSecondary;
+
+  // Skeleton loading delay
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Phase 1: filter demo data by wizard state
   // Phase 2: this becomes a Supabase query
@@ -78,6 +219,13 @@ export function ResultsContainer({ wizard, dark }) {
     : resources.filter(r => r.category === activeFilter);
 
   const animatedCount = useCountUp(resources.length, 500);
+
+  // Derive active filter label for summary bar
+  const activeFilterLabel = useMemo(() => {
+    if (activeFilter === 'all') return null;
+    const cat = CATEGORIES[activeFilter];
+    return cat ? cat.label : activeFilter;
+  }, [activeFilter]);
 
   // Back to top: show after scrolling past 3 cards
   useEffect(() => {
@@ -142,9 +290,9 @@ export function ResultsContainer({ wizard, dark }) {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
-        style={{ marginBottom: '24px' }}
+        style={{ marginBottom: '8px' }}
       >
-        <h1 style={{ fontFamily: T.font, fontSize: T.sizeH1, color: textColor, margin: '0 0 8px', fontWeight: 700 }}>
+        <h1 role="status" aria-live="polite" style={{ fontFamily: T.font, fontSize: T.sizeH1, color: textColor, margin: '0 0 8px', fontWeight: 700 }}>
           We found <span style={{ fontVariantNumeric: 'tabular-nums' }}>{animatedCount}</span> resources for you
         </h1>
         <p style={{ fontFamily: T.font, fontSize: T.sizeBody, color: subColor, margin: 0, lineHeight: T.lineHeight }}>
@@ -152,6 +300,23 @@ export function ResultsContainer({ wizard, dark }) {
           {wizard.postcodeData ? ` near ${wizard.postcodeData.localAuthority || wizard.postcodeData.outcode}` : ' (nationwide)'}
         </p>
       </motion.div>
+
+      {/* Results summary bar */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.2 }}
+        style={{
+          fontFamily: T.font,
+          fontSize: T.sizeSmall,
+          color: subColor,
+          margin: '0 0 24px',
+          lineHeight: T.lineHeight,
+        }}
+      >
+        Showing {displayed.length} of {resources.length} resources
+        {activeFilterLabel ? ` for ${activeFilterLabel}` : ''}
+      </motion.p>
 
       {/* Crisis banner */}
       <motion.div
@@ -200,11 +365,15 @@ export function ResultsContainer({ wizard, dark }) {
       )}
 
       {/* Filter tabs */}
-      <div style={{
-        display: 'flex', gap: '8px', marginBottom: '20px',
-        overflowX: 'auto', paddingBottom: '4px',
-        position: 'relative',
-      }}>
+      <div
+        role="tablist"
+        aria-label="Filter resources by category"
+        style={{
+          display: 'flex', gap: '8px', marginBottom: '20px',
+          overflowX: 'auto', paddingBottom: '4px',
+          position: 'relative',
+        }}
+      >
         {filterKeys.map((key) => {
           const isAll = key === 'all';
           const cat = isAll ? null : CATEGORIES[key];
@@ -227,40 +396,102 @@ export function ResultsContainer({ wizard, dark }) {
         })}
       </div>
 
-      {/* Resource cards */}
+      {/* Resource cards — skeleton or real */}
       <div ref={cardsRef} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <AnimatePresence mode="popLayout">
-          {displayed.map((r, i) => (
+        <AnimatePresence mode="wait">
+          {loading ? (
             <motion.div
-              key={r.id || `card-${i}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10, scale: 0.97 }}
-              transition={{
-                duration: 0.35,
-                delay: i * 0.08,
-                ease: 'easeOut',
-              }}
-              layout
+              key="skeletons"
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
             >
-              <ResourceCard resource={r} dark={dark} />
+              {[0, 1, 2].map(i => (
+                <motion.div
+                  key={`skel-${i}`}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: i * 0.08 }}
+                >
+                  <SkeletonCard dark={dark} />
+                </motion.div>
+              ))}
             </motion.div>
-          ))}
+          ) : (
+            <motion.div
+              key="results"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+              style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+            >
+              <AnimatePresence mode="popLayout">
+                {displayed.map((r, i) => (
+                  <motion.div
+                    key={r.id || `card-${i}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.97 }}
+                    transition={{
+                      duration: 0.35,
+                      delay: i * 0.08,
+                      ease: 'easeOut',
+                    }}
+                    layout
+                  >
+                    <ResourceCard resource={r} dark={dark} />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          )}
         </AnimatePresence>
       </div>
 
+      {/* Empty state */}
       <AnimatePresence>
-        {displayed.length === 0 && (
+        {!loading && displayed.length === 0 && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
             style={{
-              fontFamily: T.font, fontSize: T.sizeBody, color: subColor,
-              textAlign: 'center', padding: '40px 20px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              padding: '48px 20px',
+              gap: '12px',
             }}
           >
-            No resources found for this filter. Try selecting "All" above.
+            <EmptyStateIcon size={80} dark={dark} />
+            <p style={{
+              fontFamily: T.font,
+              fontSize: T.sizeBody,
+              fontWeight: 600,
+              color: textColor,
+              margin: '8px 0 0',
+            }}>
+              No resources match this filter
+            </p>
+            <p style={{
+              fontFamily: T.font,
+              fontSize: T.sizeSmall,
+              color: subColor,
+              margin: 0,
+              lineHeight: T.lineHeight,
+            }}>
+              Try selecting &ldquo;All&rdquo; or a different category
+            </p>
+            <Button
+              onClick={() => setActiveFilter('all')}
+              variant="outline"
+              style={{ marginTop: '8px' }}
+            >
+              Show all resources
+            </Button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -306,6 +537,9 @@ export function ResultsContainer({ wizard, dark }) {
         </Button>
         <Button onClick={() => window.print()} variant="ghost" style={{ flex: '1 1 auto', minWidth: '120px' }}>
           Print this page
+        </Button>
+        <Button onClick={wizard.back} variant="outline" style={{ flex: '1 1 auto', minWidth: '140px' }}>
+          Refine search
         </Button>
         <Button onClick={wizard.restart} variant="ghost" style={{ flex: '1 1 auto', minWidth: '120px' }}>
           Start again

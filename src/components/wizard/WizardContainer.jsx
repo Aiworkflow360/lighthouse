@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { T } from '../../constants/theme';
 import { ProgressBar } from '../shared/ProgressBar';
@@ -6,6 +7,7 @@ import { StepAge } from './StepAge';
 import { StepPostcode } from './StepPostcode';
 import { StepNeeds } from './StepNeeds';
 
+// Static per-step encouragement (always visible)
 const ENCOURAGEMENT = {
   condition: "Let's find the right support for you.",
   age: "Great start -- just a few more details.",
@@ -13,8 +15,32 @@ const ENCOURAGEMENT = {
   needs: "Last step -- almost done!",
 };
 
+// Transition micro-copy (shown briefly when arriving FROM a completed step)
+const TRANSITION_MESSAGES = {
+  age: "Great, we know what to look for",
+  postcode: "Perfect, that helps us filter",
+  needs: "Nearly there!",
+};
+
 export function WizardContainer({ wizard, dark }) {
   const { step, currentStep, back } = wizard;
+  const prevStepRef = useRef(step);
+  const [transitionMsg, setTransitionMsg] = useState(null);
+
+  // Show transition micro-copy briefly when step advances forward
+  useEffect(() => {
+    const prevStep = prevStepRef.current;
+    prevStepRef.current = step;
+
+    // Only show on forward navigation (not back)
+    if (step > prevStep && TRANSITION_MESSAGES[currentStep]) {
+      setTransitionMsg(TRANSITION_MESSAGES[currentStep]);
+      const timer = setTimeout(() => setTransitionMsg(null), 1800);
+      return () => clearTimeout(timer);
+    } else {
+      setTransitionMsg(null);
+    }
+  }, [step, currentStep]);
 
   const steps = {
     condition: <StepCondition wizard={wizard} dark={dark} />,
@@ -35,9 +61,33 @@ export function WizardContainer({ wizard, dark }) {
       flexDirection: 'column',
     }}>
       <div style={{ marginBottom: '12px' }}>
-        <ProgressBar step={step - 1} total={4} dark={dark} />
+        <ProgressBar step={step - 1} total={4} dark={dark} wizard={wizard} />
       </div>
 
+      {/* Transition micro-copy: fades in/out briefly */}
+      <AnimatePresence>
+        {transitionMsg && (
+          <motion.p
+            key="transition-msg"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.25 }}
+            style={{
+              fontFamily: T.font,
+              fontSize: T.sizeSmall,
+              color: T.primary,
+              margin: '0 0 12px',
+              textAlign: 'center',
+              fontWeight: 600,
+            }}
+          >
+            {transitionMsg}
+          </motion.p>
+        )}
+      </AnimatePresence>
+
+      {/* Static per-step encouragement */}
       <AnimatePresence mode="wait">
         <motion.p
           key={currentStep + '-msg'}

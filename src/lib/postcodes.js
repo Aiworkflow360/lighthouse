@@ -1,12 +1,19 @@
 // Postcodes.io — free UK postcode lookup (no auth required)
 
-export async function lookupPostcode(postcode) {
+export async function lookupPostcode(postcode, { signal } = {}) {
   const clean = postcode.replace(/\s+/g, '').toUpperCase();
   try {
-    const resp = await fetch(`https://api.postcodes.io/postcodes/${clean}`);
-    if (!resp.ok) return null;
+    const resp = await fetch(`https://api.postcodes.io/postcodes/${clean}`, { signal });
+    if (resp.status === 404) {
+      return { error: true, message: 'Invalid postcode' };
+    }
+    if (!resp.ok) {
+      return { error: true, message: 'Network error' };
+    }
     const data = await resp.json();
-    if (data.status !== 200 || !data.result) return null;
+    if (data.status !== 200 || !data.result) {
+      return { error: true, message: 'Invalid postcode' };
+    }
     return {
       postcode: data.result.postcode,
       outcode: data.result.outcode,
@@ -17,8 +24,11 @@ export async function lookupPostcode(postcode) {
       latitude: data.result.latitude,
       longitude: data.result.longitude,
     };
-  } catch {
-    return null;
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      return { error: true, message: 'Request timed out' };
+    }
+    return { error: true, message: 'Network error' };
   }
 }
 

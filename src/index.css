@@ -33,7 +33,45 @@ body {
   color: #FFFFFF;
 }
 
-/* Focus-visible outline — accessible, modern */
+/* ── Skip-to-content link ────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 9999;
+  padding: 12px 24px;
+  background: #2563EB;
+  color: #FFFFFF;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 8px 8px;
+  opacity: 0;
+  transition: top 0.15s ease, opacity 0.15s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  opacity: 1;
+  outline: 3px solid rgba(37, 99, 235, 0.4);
+  outline-offset: 2px;
+}
+
+/* ── Screen-reader-only utility ──────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Focus-visible outline — accessible, modern ──────────── */
 :focus-visible {
   outline: 3px solid rgba(37, 99, 235, 0.4);
   outline-offset: 2px;
@@ -42,6 +80,17 @@ body {
 
 :focus:not(:focus-visible) {
   outline: none;
+}
+
+/* Ensure all interactive elements get consistent focus ring */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.4);
+  outline-offset: 2px;
 }
 
 /* Scrollbar styling — thin and subtle */
@@ -69,25 +118,68 @@ body {
   scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
 }
 
-/* Print media — show only resource content */
+/* ── Print stylesheet ────────────────────────────────────── */
 @media print {
+  /* Hide non-content UI */
   header, footer, nav,
-  button, [role="button"],
-  .no-print {
+  .no-print,
+  .skip-link,
+  [aria-label="Back to top"],
+  [data-dark-toggle],
+  [data-filter-tabs],
+  [data-action-buttons] {
     display: none !important;
   }
 
-  body {
+  /* Force light, clean background */
+  html, body {
     background: #FFFFFF !important;
     color: #000000 !important;
     font-size: 12pt;
   }
 
+  /* Remove decorative effects */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    background-image: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Resource cards: expanded, no collapse, avoid page breaks */
   [data-resource-card] {
     break-inside: avoid;
-    border: 1px solid #ccc !important;
-    box-shadow: none !important;
     page-break-inside: avoid;
+    border: 1px solid #ccc !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  /* Show all content (no clamping) */
+  [data-resource-card] p {
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    overflow: visible !important;
+  }
+
+  /* Triage card: keep visible, avoid breaks */
+  [data-triage-card] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid #ccc !important;
+    background: #FFFFFF !important;
+  }
+
+  /* Links: show URL after text */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+    color: #666;
+  }
+
+  a[href^="tel"]::after {
+    content: none;
   }
 }
 
@@ -111,8 +203,12 @@ body {
   }
 }
 
-/* Reduced motion: respect user preferences */
+/* ── Reduced motion: respect user preferences ────────────── */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;

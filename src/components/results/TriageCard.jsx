@@ -1,4 +1,5 @@
-import { motion } from 'motion/react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { T } from '../../constants/theme';
 
 // Compass SVG icon (inline)
@@ -41,14 +42,39 @@ function HeartIcon({ size = 16, color }) {
   );
 }
 
+// Chevron icon for expand/collapse toggle
+function ChevronIcon({ size = 18, color, up }) {
+  return (
+    <motion.svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ flexShrink: 0 }}
+      animate={{ rotate: up ? 180 : 0 }}
+      transition={{ duration: 0.25, ease: 'easeInOut' }}
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </motion.svg>
+  );
+}
+
 export function TriageCard({ triage, dark }) {
-  if (!triage || !triage.steps || triage.steps.length === 0) return null;
+  // Guard: require at least 3 steps
+  if (!triage || !triage.steps || triage.steps.length < 3) return null;
+
+  const [expanded, setExpanded] = useState(true);
 
   const textColor = dark ? T.textDark : T.text;
   const subColor = dark ? T.textSecondaryDark : T.textSecondary;
   const mutedColor = dark ? T.textMutedDark : T.textMuted;
   const cardBg = dark ? T.bgCardDark : T.bgCard;
   const borderColor = dark ? T.borderDark : T.border;
+  const lineColor = dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.10)';
 
   return (
     <motion.div
@@ -94,12 +120,12 @@ export function TriageCard({ triage, dark }) {
       />
 
       <div style={{ position: 'relative', padding: '20px 20px 20px 24px' }}>
-        {/* Heading */}
+        {/* Heading with collapse toggle */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           gap: '10px',
-          marginBottom: '20px',
+          marginBottom: expanded ? '20px' : '0',
         }}>
           <CompassIcon size={22} color={T.primary} />
           <h2 style={{
@@ -108,149 +134,211 @@ export function TriageCard({ triage, dark }) {
             fontWeight: 700,
             color: textColor,
             margin: 0,
+            flex: 1,
           }}>
             Your first 3 steps
           </h2>
-        </div>
-
-        {/* Steps */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-          {triage.steps.map((step, i) => (
-            <motion.div
-              key={step.resource.id || i}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.35,
-                delay: 0.3 + i * 0.1,
-                ease: 'easeOut',
-              }}
-              style={{
-                display: 'flex',
-                gap: '14px',
-                alignItems: 'flex-start',
-              }}
-            >
-              {/* Numbered circle */}
-              <div style={{
-                width: '32px',
-                height: '32px',
-                minWidth: '32px',
-                borderRadius: '50%',
-                background: T.primary,
-                color: T.primaryText,
-                fontFamily: T.font,
-                fontSize: '15px',
-                fontWeight: 700,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: '2px',
-              }}>
-                {i + 1}
-              </div>
-
-              {/* Content */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{
-                  fontFamily: T.font,
-                  fontSize: T.sizeBody,
-                  fontWeight: 700,
-                  color: textColor,
-                  marginBottom: '4px',
-                  lineHeight: '1.4',
-                }}>
-                  {step.resource.title}
-                </div>
-
-                <div style={{
-                  fontFamily: T.font,
-                  fontSize: T.sizeSmall,
-                  color: mutedColor,
-                  fontStyle: 'italic',
-                  marginBottom: '8px',
-                  lineHeight: '1.5',
-                }}>
-                  {step.why}
-                </div>
-
-                {/* Action button */}
-                {step.resource.apply_phone ? (
-                  <motion.a
-                    href={`tel:${step.resource.apply_phone}`}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                    style={{
-                      fontFamily: T.font,
-                      fontSize: T.sizeSmall,
-                      fontWeight: 600,
-                      color: T.primaryText,
-                      background: T.primary,
-                      padding: '6px 14px',
-                      borderRadius: T.radius,
-                      textDecoration: 'none',
-                      display: 'inline-block',
-                      lineHeight: '1.4',
-                    }}
-                  >
-                    Call {step.resource.apply_phone}
-                  </motion.a>
-                ) : (
-                  step.resource.apply_url && (
-                    <motion.a
-                      href={step.resource.apply_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                      style={{
-                        fontFamily: T.font,
-                        fontSize: T.sizeSmall,
-                        fontWeight: 600,
-                        color: T.primary,
-                        background: 'transparent',
-                        padding: 0,
-                        textDecoration: 'none',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                      }}
-                    >
-                      Visit website &rarr;
-                    </motion.a>
-                  )
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Encouragement */}
-        {triage.encouragement && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.7 }}
+          <button
+            onClick={() => setExpanded(prev => !prev)}
             style={{
-              display: 'flex',
+              display: 'inline-flex',
               alignItems: 'center',
-              gap: '8px',
-              marginTop: '20px',
-              paddingTop: '16px',
-              borderTop: `1px solid ${borderColor}`,
+              gap: '4px',
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
               fontFamily: T.font,
               fontSize: T.sizeSmall,
+              fontWeight: 500,
               color: subColor,
-              fontStyle: 'italic',
-              lineHeight: '1.5',
+              padding: '4px 8px',
+              borderRadius: T.radius,
+              transition: T.transition,
             }}
+            aria-expanded={expanded}
+            aria-label={expanded ? 'Collapse steps' : 'Expand steps'}
           >
-            <HeartIcon size={16} color={dark ? T.emotionalLight : T.emotional} />
-            {triage.encouragement}
-          </motion.div>
-        )}
+            {expanded ? 'Hide' : 'Show'}
+            <ChevronIcon size={18} color={subColor} up={expanded} />
+          </button>
+        </div>
+
+        {/* Collapsible body */}
+        <AnimatePresence initial={false}>
+          {expanded && (
+            <motion.div
+              key="triage-body"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              style={{ overflow: 'hidden' }}
+            >
+              {/* Steps */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0px', position: 'relative' }}>
+                {triage.steps.map((step, i) => (
+                  <motion.div
+                    key={step.resource.id || i}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.35,
+                      delay: 0.3 + i * 0.1,
+                      ease: 'easeOut',
+                    }}
+                    style={{
+                      display: 'flex',
+                      gap: '14px',
+                      alignItems: 'flex-start',
+                      position: 'relative',
+                      paddingBottom: i < triage.steps.length - 1 ? '18px' : '0',
+                    }}
+                  >
+                    {/* Number column with connecting line */}
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      position: 'relative',
+                    }}>
+                      {/* Numbered circle */}
+                      <div style={{
+                        width: '32px',
+                        height: '32px',
+                        minWidth: '32px',
+                        borderRadius: '50%',
+                        background: T.primary,
+                        color: T.primaryText,
+                        fontFamily: T.font,
+                        fontSize: '15px',
+                        fontWeight: 700,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginTop: '2px',
+                        position: 'relative',
+                        zIndex: 2,
+                      }}>
+                        {i + 1}
+                      </div>
+
+                      {/* Dashed connecting line to next step */}
+                      {i < triage.steps.length - 1 && (
+                        <div style={{
+                          width: '2px',
+                          flex: 1,
+                          minHeight: '18px',
+                          borderLeft: `2px dashed ${lineColor}`,
+                          marginTop: '4px',
+                          zIndex: 1,
+                        }} />
+                      )}
+                    </div>
+
+                    {/* Content */}
+                    <div style={{ flex: 1, minWidth: 0, paddingTop: '2px' }}>
+                      <div style={{
+                        fontFamily: T.font,
+                        fontSize: T.sizeBody,
+                        fontWeight: 700,
+                        color: textColor,
+                        marginBottom: '4px',
+                        lineHeight: '1.4',
+                      }}>
+                        {step.resource.title}
+                      </div>
+
+                      <div style={{
+                        fontFamily: T.font,
+                        fontSize: T.sizeSmall,
+                        color: mutedColor,
+                        fontStyle: 'italic',
+                        marginBottom: '8px',
+                        lineHeight: '1.5',
+                      }}>
+                        {step.why}
+                      </div>
+
+                      {/* Action button */}
+                      {step.resource.apply_phone ? (
+                        <motion.a
+                          href={`tel:${step.resource.apply_phone}`}
+                          whileHover={{ scale: 1.03 }}
+                          whileTap={{ scale: 0.97 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                          style={{
+                            fontFamily: T.font,
+                            fontSize: T.sizeSmall,
+                            fontWeight: 600,
+                            color: T.primaryText,
+                            background: T.primary,
+                            padding: '6px 14px',
+                            borderRadius: T.radius,
+                            textDecoration: 'none',
+                            display: 'inline-block',
+                            lineHeight: '1.4',
+                          }}
+                        >
+                          Call {step.resource.apply_phone}
+                        </motion.a>
+                      ) : (
+                        step.resource.apply_url && (
+                          <motion.a
+                            href={step.resource.apply_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.97 }}
+                            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                            style={{
+                              fontFamily: T.font,
+                              fontSize: T.sizeSmall,
+                              fontWeight: 600,
+                              color: T.primary,
+                              background: 'transparent',
+                              padding: 0,
+                              textDecoration: 'none',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                            }}
+                          >
+                            Visit website &rarr;
+                          </motion.a>
+                        )
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Encouragement */}
+              {triage.encouragement && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.7 }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginTop: '20px',
+                    paddingTop: '16px',
+                    borderTop: `1px solid ${borderColor}`,
+                    fontFamily: T.font,
+                    fontSize: T.sizeSmall,
+                    color: subColor,
+                    fontStyle: 'italic',
+                    lineHeight: '1.5',
+                  }}
+                >
+                  <HeartIcon size={16} color={dark ? T.emotionalLight : T.emotional} />
+                  {triage.encouragement}
+                </motion.div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.div>
   );

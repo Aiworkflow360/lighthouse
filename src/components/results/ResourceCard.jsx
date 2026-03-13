@@ -16,12 +16,24 @@ const shimmerStyle = {
 export function ResourceCard({ resource, dark }) {
   const [expanded, setExpanded] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [saved, setSaved] = useState(false);
   const textColor = dark ? T.textDark : T.text;
   const subColor = dark ? T.textSecondaryDark : T.textSecondary;
   const cat = CATEGORIES[resource.category] || CATEGORIES.practical;
 
   // Gradient for left border stripe
   const stripeGradient = `linear-gradient(180deg, ${cat.color} 0%, ${cat.color}BB 100%)`;
+
+  // Subtle background tint when expanded
+  const expandedTint = expanded
+    ? dark
+      ? `${cat.color}0A`
+      : `${cat.color}06`
+    : 'transparent';
+
+  const hasPhone = !!resource.apply_phone;
+  const hasUrl = !!resource.apply_url;
+  const hasNoContact = !hasPhone && !hasUrl;
 
   return (
     <motion.div
@@ -35,22 +47,47 @@ export function ResourceCard({ resource, dark }) {
         borderRadius: T.radiusLg,
         padding: '20px',
         boxShadow: hovered ? T.shadowCardHover : T.shadow,
-        borderLeft: `5px solid transparent`,
-        backgroundImage: `linear-gradient(${dark ? T.bgCardDark : T.bgCard}, ${dark ? T.bgCardDark : T.bgCard}), ${stripeGradient}`,
+        borderLeft: `${expanded ? '7px' : '5px'} solid transparent`,
+        backgroundImage: `linear-gradient(${expandedTint}, ${expandedTint}), linear-gradient(${dark ? T.bgCardDark : T.bgCard}, ${dark ? T.bgCardDark : T.bgCard}), ${stripeGradient}`,
         backgroundOrigin: 'border-box',
-        backgroundClip: 'padding-box, border-box',
-        transition: 'box-shadow 0.25s ease, transform 0.25s ease',
+        backgroundClip: 'padding-box, padding-box, border-box',
+        transition: 'box-shadow 0.25s ease, transform 0.25s ease, border-left-width 0.25s ease',
         transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
+        position: 'relative',
       }}
     >
+      {/* Save/bookmark heart toggle */}
+      <button
+        onClick={(e) => { e.stopPropagation(); setSaved(!saved); }}
+        aria-label={saved ? 'Remove from saved' : 'Save resource'}
+        style={{
+          position: 'absolute',
+          top: '14px',
+          right: '14px',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: '6px',
+          fontSize: '20px',
+          lineHeight: 1,
+          color: saved ? T.urgent : (dark ? T.textMutedDark : T.textMuted),
+          transition: 'color 0.2s ease, transform 0.15s ease',
+          zIndex: 2,
+        }}
+      >
+        {saved ? '\u2764' : '\u2661'}
+      </button>
+
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px', paddingRight: '32px' }}>
         <div style={{ flex: 1 }}>
           <div style={{
             fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 600,
             color: cat.color, textTransform: 'uppercase', letterSpacing: '0.5px',
             marginBottom: '4px',
+            display: 'flex', alignItems: 'center', gap: '4px',
           }}>
+            <span style={{ fontSize: '14px', lineHeight: 1 }}>{cat.icon}</span>
             {cat.label}
           </div>
           <h3 style={{
@@ -67,9 +104,9 @@ export function ResourceCard({ resource, dark }) {
         </div>
         {resource.max_award_gbp && (
           <div style={{
-            fontFamily: T.font, fontSize: '16px', fontWeight: 700,
+            fontFamily: T.font, fontSize: '18px', fontWeight: 700,
             color: T.financial, background: T.financialLight,
-            padding: '4px 10px', borderRadius: T.radiusFull,
+            padding: '6px 14px', borderRadius: T.radiusFull,
             whiteSpace: 'nowrap',
             position: 'relative',
             overflow: 'hidden',
@@ -88,10 +125,16 @@ export function ResourceCard({ resource, dark }) {
         )}
       </div>
 
-      {/* Description */}
+      {/* Description — clamped to 2 lines when collapsed */}
       <p style={{
         fontFamily: T.font, fontSize: T.sizeBody, color: subColor,
         margin: '12px 0', lineHeight: T.lineHeight,
+        ...(expanded ? {} : {
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+        }),
       }}>
         {resource.description}
       </p>
@@ -111,6 +154,7 @@ export function ResourceCard({ resource, dark }) {
       {/* Expand/collapse */}
       <button
         onClick={() => setExpanded(!expanded)}
+        aria-expanded={expanded}
         style={{
           background: 'none', border: 'none', color: T.primary,
           fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 600,
@@ -145,11 +189,9 @@ export function ResourceCard({ resource, dark }) {
                 </div>
               )}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '4px' }}>
-                {resource.apply_url && (
+                {hasPhone && (
                   <motion.a
-                    href={resource.apply_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={`tel:${resource.apply_phone}`}
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 17 }}
@@ -161,25 +203,38 @@ export function ResourceCard({ resource, dark }) {
                       minHeight: T.touchMin, lineHeight: '28px',
                     }}
                   >
-                    Visit website &rarr;
+                    &#128222; Call {resource.apply_phone}
                   </motion.a>
                 )}
-                {resource.apply_phone && (
+                {hasUrl && (
                   <motion.a
-                    href={`tel:${resource.apply_phone}`}
+                    href={resource.apply_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                     style={{
                       fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 600,
-                      color: T.primary, background: T.primaryLight,
+                      color: hasPhone ? T.primary : '#FFFFFF',
+                      background: hasPhone ? 'transparent' : T.primary,
+                      border: hasPhone ? `2px solid ${T.primary}` : '2px solid transparent',
                       padding: '10px 20px', borderRadius: T.radius,
                       textDecoration: 'none', display: 'inline-block',
                       minHeight: T.touchMin, lineHeight: '28px',
+                      boxSizing: 'border-box',
                     }}
                   >
-                    Call {resource.apply_phone}
+                    Visit website &rarr;
                   </motion.a>
+                )}
+                {hasNoContact && (
+                  <div style={{
+                    fontFamily: T.font, fontSize: T.sizeSmall, color: subColor,
+                    fontStyle: 'italic', padding: '10px 0',
+                  }}>
+                    Contact the organisation directly for more information
+                  </div>
                 )}
               </div>
               {resource.turnaround_days && (

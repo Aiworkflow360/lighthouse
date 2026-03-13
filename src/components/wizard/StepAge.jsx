@@ -12,6 +12,15 @@ const AGE_ICONS = {
   '18-25': '\u{1F9D1}\u200D\u{1F393}', // young adult
 };
 
+const AGE_DESCRIPTIONS = {
+  prenatal: 'Before birth',
+  under1: 'Baby & infant',
+  '1-4': 'Toddler & preschool',
+  '5-11': 'Primary school',
+  '12-17': 'Secondary school',
+  '18-25': 'Young adult',
+};
+
 const staggerContainer = {
   initial: {},
   animate: { transition: { staggerChildren: 0.07 } },
@@ -25,6 +34,7 @@ const staggerItem = {
 export function StepAge({ wizard, dark }) {
   const textColor = dark ? T.textDark : T.text;
   const subColor = dark ? T.textSecondaryDark : T.textSecondary;
+  const descColor = dark ? T.textSecondaryDark : T.textSecondary;
 
   const handleSelect = (range) => {
     wizard.setAge(range.id);
@@ -81,11 +91,20 @@ export function StepAge({ wizard, dark }) {
                 </span>
                 <span style={{
                   fontFamily: T.font,
-                  fontSize: range.id === 'prenatal' ? '16px' : '20px',
+                  fontSize: '20px',
                   fontWeight: 600,
                   color: textColor,
                 }}>
                   {range.label}
+                </span>
+                <span style={{
+                  fontFamily: T.font,
+                  fontSize: T.sizeSmall,
+                  fontWeight: 400,
+                  color: descColor,
+                  lineHeight: '1.2',
+                }}>
+                  {AGE_DESCRIPTIONS[range.id]}
                 </span>
               </Card>
             </motion.div>

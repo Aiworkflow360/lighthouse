@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';
@@ -52,6 +53,8 @@ function App() {
       lineHeight: T.lineHeight,
       transition: T.transitionSlow,
     }}>
+      <a href="#main-content" className="skip-link">Skip to content</a>
+
       {/* ── Glassmorphism header ─────────────────────────── */}
       <header style={{
         position: 'sticky',
@@ -131,7 +134,7 @@ function App() {
       </header>
 
       {/* ── Main with page transitions ───────────────────── */}
-      <main style={{ paddingTop: '8px', paddingBottom: '40px' }}>
+      <main id="main-content" style={{ paddingTop: '8px', paddingBottom: '40px' }}>
         <AnimatePresence mode="wait">
           {wizard.currentStep === 'landing' ? (
             <motion.div
@@ -273,6 +276,80 @@ function CheckCircleIcon({ color }) {
   );
 }
 
+/* ── CountUp — animated number that counts on scroll ────── */
+function CountUp({ end, suffix = '', duration = 2000 }) {
+  const [count, setCount] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting && !hasStarted) setHasStarted(true); },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasStarted]);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+    const startTime = performance.now();
+    const numEnd = parseInt(end, 10);
+    function tick(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * numEnd));
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }, [hasStarted, end, duration]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
+/* ── Inline SVG Icons for Scenario Cards ─────────────────── */
+function CompassIcon({ color }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill={color} opacity="0.2" stroke={color} />
+    </svg>
+  );
+}
+
+function BookIcon({ color }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+    </svg>
+  );
+}
+
+function CoinIcon({ color }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <text x="12" y="16" textAnchor="middle" fill={color} fontSize="12" fontWeight="700" stroke="none" fontFamily="Inter, sans-serif">{'\u00A3'}</text>
+    </svg>
+  );
+}
+
+function PeopleIcon({ color }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 00-3-3.87" />
+      <path d="M16 3.13a4 4 0 010 7.75" />
+    </svg>
+  );
+}
+
 /* ── Landing ─────────────────────────────────────────────── */
 function Landing({ dark, wizard }) {
   const textColor = dark ? T.textDark : T.text;
@@ -341,7 +418,18 @@ function Landing({ dark, wizard }) {
         margin: '0 -20px',
         background: dark ? T.gradientDark : T.gradient,
         borderRadius: T.radiusLg,
+        position: 'relative',
+        overflow: 'hidden',
       }}>
+        {/* Subtle dot grid texture */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `radial-gradient(circle, ${dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.15)'} 1px, transparent 1px)`,
+          backgroundSize: '24px 24px',
+          opacity: 0.04,
+          pointerEvents: 'none',
+        }} />
         {/* Hero illustration */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -496,6 +584,52 @@ function Landing({ dark, wizard }) {
         </span>
       </motion.div>
 
+      {/* ── Animated stat counters ────────────────────────────── */}
+      <div style={{
+        marginTop: '36px',
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '32px',
+        flexWrap: 'wrap',
+      }}>
+        {[
+          { end: 72, suffix: '+', label: 'Conditions covered' },
+          { end: 40, suffix: '+', label: 'Organisations listed' },
+          { end: 100, suffix: '%', label: 'Free, always' },
+        ].map((stat, i) => (
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.35 + i * 0.12 }}
+            style={{
+              textAlign: 'center',
+              minWidth: '120px',
+            }}
+          >
+            <div style={{
+              fontFamily: T.font,
+              fontSize: 'clamp(32px, 6vw, 42px)',
+              fontWeight: 700,
+              color: T.primary,
+              lineHeight: 1.1,
+              letterSpacing: '-0.02em',
+            }}>
+              <CountUp end={stat.end} suffix={stat.suffix} />
+            </div>
+            <div style={{
+              fontFamily: T.font,
+              fontSize: T.sizeSmall,
+              fontWeight: 500,
+              color: dark ? T.textMutedDark : T.textMuted,
+              marginTop: '6px',
+            }}>
+              {stat.label}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
       {/* ── How It Works section ─────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -591,6 +725,223 @@ function Landing({ dark, wizard }) {
                   {step.label}
                 </span>
               </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* ── Who is this for? ─────────────────────────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+        style={{
+          marginTop: '48px',
+          paddingTop: '40px',
+          borderTop: `1px solid ${dark ? T.borderDark : T.border}`,
+        }}
+      >
+        <h2 style={{
+          fontFamily: T.font,
+          fontSize: T.sizeH2,
+          fontWeight: 700,
+          color: textColor,
+          margin: '0 0 32px',
+          letterSpacing: '-0.01em',
+        }}>
+          Who is this for?
+        </h2>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '16px',
+          maxWidth: '560px',
+          margin: '0 auto',
+        }}>
+          {[
+            {
+              Icon: CompassIcon,
+              title: 'Just received a diagnosis',
+              desc: "Overwhelmed? We'll show you exactly where to start.",
+              color: T.primary,
+            },
+            {
+              Icon: BookIcon,
+              title: 'Struggling at school',
+              desc: 'Find EHCP support, educational psychologists & SEN advocacy.',
+              color: T.education,
+            },
+            {
+              Icon: CoinIcon,
+              title: 'Need financial help',
+              desc: 'Discover grants, benefits & emergency funds you may not know about.',
+              color: T.financial,
+            },
+            {
+              Icon: PeopleIcon,
+              title: 'Looking for other parents',
+              desc: 'Connect with support groups who truly understand.',
+              color: T.emotional,
+            },
+          ].map((card, i) => (
+            <motion.div
+              key={card.title}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.55 + i * 0.1 }}
+              whileHover={{ y: -4, boxShadow: T.shadowCardHover }}
+              style={{
+                padding: '20px',
+                borderRadius: T.radius,
+                background: dark ? T.bgCardDark : T.bgCard,
+                border: `1px solid ${dark ? T.borderDark : T.border}`,
+                textAlign: 'left',
+                boxShadow: T.shadow,
+                cursor: 'default',
+                transition: T.transition,
+              }}
+            >
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                background: dark
+                  ? `rgba(${card.color === T.primary ? '37,99,235' : card.color === T.education ? '139,92,246' : card.color === T.financial ? '217,119,6' : '124,58,237'},0.15)`
+                  : `rgba(${card.color === T.primary ? '37,99,235' : card.color === T.education ? '139,92,246' : card.color === T.financial ? '217,119,6' : '124,58,237'},0.08)`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '12px',
+              }}>
+                <card.Icon color={card.color} />
+              </div>
+              <div style={{
+                fontFamily: T.font,
+                fontSize: '15px',
+                fontWeight: 700,
+                color: textColor,
+                marginBottom: '6px',
+                lineHeight: '1.3',
+              }}>
+                {card.title}
+              </div>
+              <div style={{
+                fontFamily: T.font,
+                fontSize: T.sizeSmall,
+                color: dark ? T.textSecondaryDark : T.textSecondary,
+                lineHeight: '1.5',
+              }}>
+                {card.desc}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* ── What parents say (testimonials) ──────────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+        style={{
+          marginTop: '48px',
+          paddingTop: '40px',
+          borderTop: `1px solid ${dark ? T.borderDark : T.border}`,
+        }}
+      >
+        <h2 style={{
+          fontFamily: T.font,
+          fontSize: T.sizeH2,
+          fontWeight: 700,
+          color: textColor,
+          margin: '0 0 32px',
+          letterSpacing: '-0.01em',
+        }}>
+          What parents say
+        </h2>
+
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+          maxWidth: '480px',
+          margin: '0 auto',
+        }}>
+          {[
+            {
+              quote: 'I had no idea we were entitled to DLA. Lighthouse found it in 60 seconds.',
+              author: 'Sarah',
+              detail: 'mum to a child with autism',
+            },
+            {
+              quote: 'After our diagnosis, I felt completely lost. This gave me a clear first step.',
+              author: 'James',
+              detail: 'dad to a child with epilepsy',
+            },
+            {
+              quote: 'We found a local support group through Lighthouse that changed everything for us.',
+              author: 'Priya',
+              detail: 'mum to a child with Down\'s syndrome',
+            },
+          ].map((t, i) => (
+            <motion.div
+              key={t.author}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.65 + i * 0.12 }}
+              style={{
+                padding: '24px',
+                borderRadius: T.radius,
+                background: dark
+                  ? 'rgba(37,99,235,0.06)'
+                  : 'rgba(37,99,235,0.03)',
+                border: `1px solid ${dark ? T.borderDark : T.border}`,
+                textAlign: 'left',
+                position: 'relative',
+              }}
+            >
+              {/* Large decorative quote mark */}
+              <span style={{
+                position: 'absolute',
+                top: '12px',
+                left: '16px',
+                fontFamily: 'Georgia, serif',
+                fontSize: '48px',
+                lineHeight: 1,
+                color: T.primary,
+                opacity: 0.15,
+                pointerEvents: 'none',
+                userSelect: 'none',
+              }} aria-hidden="true">
+                {'\u201C'}
+              </span>
+
+              <p style={{
+                fontFamily: T.font,
+                fontSize: '15px',
+                fontWeight: 500,
+                color: textColor,
+                lineHeight: '1.6',
+                margin: '0 0 12px',
+                paddingLeft: '4px',
+                fontStyle: 'italic',
+              }}>
+                {'\u201C'}{t.quote}{'\u201D'}
+              </p>
+
+              <p style={{
+                fontFamily: T.font,
+                fontSize: T.sizeSmall,
+                color: dark ? T.textMutedDark : T.textMuted,
+                margin: 0,
+                paddingLeft: '4px',
+              }}>
+                <span style={{ fontWeight: 600, color: dark ? T.textSecondaryDark : T.textSecondary }}>
+                  {t.author}
+                </span>
+                {', '}{t.detail}
+              </p>
             </motion.div>
           ))}
         </div>

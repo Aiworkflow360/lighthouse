@@ -1,9 +1,12 @@
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { T } from '../../constants/theme';
 
 const STEP_LABELS = ['Condition', 'Age', 'Location', 'Needs'];
+const STEP_LABELS_SHORT = ['Cond.', 'Age', 'Loc.', 'Needs'];
+const STEP_FULL_NAMES = ['Condition', 'Age selection', 'Location', 'Needs selection'];
 
-const springTransition = { type: 'spring', stiffness: 300, damping: 25 };
+const SMALL_SCREEN_BREAKPOINT = 380;
 
 function Checkmark({ color }) {
   return (
@@ -25,16 +28,46 @@ function Checkmark({ color }) {
   );
 }
 
-export function ProgressBar({ step, total = 4, dark }) {
+function useIsSmallScreen() {
+  const [isSmall, setIsSmall] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth < SMALL_SCREEN_BREAKPOINT
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsSmall(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return isSmall;
+}
+
+export function ProgressBar({ step, total = 4, dark, wizard }) {
   const stepCount = Math.min(total, STEP_LABELS.length);
-  const labels = STEP_LABELS.slice(0, stepCount);
+  const isSmall = useIsSmallScreen();
+  const labels = (isSmall ? STEP_LABELS_SHORT : STEP_LABELS).slice(0, stepCount);
 
   const mutedColor = dark ? T.textMutedDark : T.textMuted;
   const textColor = dark ? T.textDark : T.text;
   const trackBg = dark ? T.borderDark : T.border;
 
+  const handleStepClick = (i) => {
+    // Only allow clicking completed steps
+    if (i < step && wizard?.goToStep) {
+      // ProgressBar index i maps to wizard step i + 1
+      wizard.goToStep(i + 1);
+    }
+  };
+
   return (
-    <div style={{ padding: '0 4px' }}>
+    <div
+      style={{ padding: '0 4px' }}
+      role="progressbar"
+      aria-label={`Step ${Math.min(step + 1, stepCount)} of ${stepCount}: ${STEP_FULL_NAMES[Math.min(step, stepCount - 1)]}`}
+      aria-valuenow={step + 1}
+      aria-valuemin={1}
+      aria-valuemax={stepCount}
+    >
       {/* Step counter */}
       <div
         style={{
@@ -55,7 +88,14 @@ export function ProgressBar({ step, total = 4, dark }) {
           const isActive = i === step;
 
           return (
-            <div key={i} style={{ flex: 1 }}>
+            <div
+              key={i}
+              style={{
+                flex: 1,
+                cursor: isCompleted ? 'pointer' : 'default',
+              }}
+              onClick={() => handleStepClick(i)}
+            >
               {/* Segment track */}
               <div
                 style={{
@@ -106,7 +146,11 @@ export function ProgressBar({ step, total = 4, dark }) {
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '2px',
+                cursor: isCompleted ? 'pointer' : 'default',
               }}
+              onClick={() => handleStepClick(i)}
+              title={STEP_FULL_NAMES[i]}
+              aria-label={`Step ${i + 1} of ${stepCount}: ${STEP_FULL_NAMES[i]}${isCompleted ? ' (completed)' : isActive ? ' (current)' : ''}`}
             >
               {/* Indicator dot or checkmark */}
               <motion.div
@@ -118,6 +162,7 @@ export function ProgressBar({ step, total = 4, dark }) {
                   repeat: Infinity,
                   ease: 'easeInOut',
                 } : { duration: 0.2 }}
+                whileHover={isCompleted ? { scale: 1.2 } : {}}
                 style={{
                   width: '20px',
                   height: '20px',
@@ -180,6 +225,7 @@ export function ProgressBar({ step, total = 4, dark }) {
                   textAlign: 'center',
                   lineHeight: '1.2',
                   transition: T.transition,
+                  textDecoration: isCompleted ? 'none' : 'none',
                 }}
               >
                 {label}
