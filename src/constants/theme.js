@@ -64,10 +64,21 @@ export const T = {
   radiusFull: '9999px',
   touchMin: '48px',
 
+  // Gradients
+  gradient: 'linear-gradient(135deg, #EFF6FF 0%, #EDE9FE 100%)',
+  gradientDark: 'linear-gradient(135deg, #1E1B4B 0%, #1E293B 100%)',
+
+  // Glassmorphism
+  glassBg: 'rgba(255,255,255,0.7)',
+  glassBgDark: 'rgba(28,25,23,0.7)',
+  glassBlur: 'blur(20px)',
+
   // Shadows
   shadow: '0 1px 3px rgba(0,0,0,0.08)',
   shadowMd: '0 4px 12px rgba(0,0,0,0.08)',
   shadowLg: '0 8px 24px rgba(0,0,0,0.12)',
+  shadowGlow: '0 0 40px rgba(37,99,235,0.15)',
+  shadowCardHover: '0 8px 32px rgba(0,0,0,0.12)',
 
   // Transitions
   transition: 'all 0.2s ease',

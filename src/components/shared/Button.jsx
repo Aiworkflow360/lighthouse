@@ -1,14 +1,53 @@
+import { motion } from 'motion/react';
 import { T } from '../../constants/theme';
 
-export function Button({ children, onClick, variant = 'primary', size = 'md', disabled, style, ...props }) {
+const spinKeyframes = {
+  rotate: [0, 360],
+};
+
+const spinTransition = {
+  duration: 0.8,
+  repeat: Infinity,
+  ease: 'linear',
+};
+
+function Spinner({ color = '#FFFFFF' }) {
+  return (
+    <motion.div
+      animate={spinKeyframes}
+      transition={spinTransition}
+      style={{
+        width: '18px',
+        height: '18px',
+        border: `2px solid ${color}`,
+        borderTopColor: 'transparent',
+        borderRadius: '50%',
+        flexShrink: 0,
+      }}
+    />
+  );
+}
+
+export function Button({
+  children,
+  onClick,
+  variant = 'primary',
+  size = 'md',
+  disabled,
+  loading,
+  style,
+  ...props
+}) {
+  const isInteractive = !disabled && !loading;
+  const useMotion = variant === 'primary' || variant === 'secondary';
+
   const base = {
     fontFamily: T.font,
     fontSize: size === 'lg' ? '18px' : '16px',
     fontWeight: 600,
     border: 'none',
     borderRadius: T.radius,
-    cursor: disabled ? 'not-allowed' : 'pointer',
-    transition: T.transition,
+    cursor: isInteractive ? 'pointer' : 'not-allowed',
     minHeight: T.touchMin,
     padding: size === 'lg' ? '16px 32px' : '12px 24px',
     display: 'inline-flex',
@@ -17,23 +56,57 @@ export function Button({ children, onClick, variant = 'primary', size = 'md', di
     gap: '8px',
     opacity: disabled ? 0.5 : 1,
     width: size === 'full' ? '100%' : undefined,
+    position: 'relative',
   };
 
   const variants = {
-    primary: { background: T.primary, color: T.primaryText },
-    secondary: { background: T.secondary, color: '#FFFFFF' },
-    outline: { background: 'transparent', color: T.primary, border: `2px solid ${T.primary}` },
-    ghost: { background: 'transparent', color: T.textSecondary },
+    primary: {
+      background: T.primary,
+      color: T.primaryText,
+    },
+    secondary: {
+      background: T.secondary,
+      color: '#FFFFFF',
+    },
+    outline: {
+      background: 'transparent',
+      color: T.primary,
+      border: `2px solid ${T.primary}`,
+    },
+    ghost: {
+      background: 'transparent',
+      color: T.textSecondary,
+    },
   };
 
+  const hoverShadow = variant === 'primary'
+    ? T.shadowGlow
+    : variant === 'secondary'
+      ? '0 0 40px rgba(5,150,105,0.15)'
+      : undefined;
+
+  const spinnerColor = variant === 'outline' || variant === 'ghost'
+    ? T.primary
+    : '#FFFFFF';
+
   return (
-    <button
-      onClick={disabled ? undefined : onClick}
+    <motion.button
+      onClick={isInteractive ? onClick : undefined}
+      disabled={disabled || loading}
+      whileHover={isInteractive && useMotion ? { scale: 1.02, boxShadow: hoverShadow } : undefined}
+      whileTap={isInteractive && useMotion ? { scale: 0.97 } : undefined}
+      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
       style={{ ...base, ...variants[variant], ...style }}
-      disabled={disabled}
       {...props}
     >
-      {children}
-    </button>
+      {loading ? (
+        <>
+          <Spinner color={spinnerColor} />
+          <span style={{ opacity: 0.8 }}>{children}</span>
+        </>
+      ) : (
+        children
+      )}
+    </motion.button>
   );
 }

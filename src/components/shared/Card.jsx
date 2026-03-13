@@ -1,25 +1,63 @@
+import { motion } from 'motion/react';
 import { T } from '../../constants/theme';
 
+const springTransition = { type: 'spring', stiffness: 300, damping: 25 };
+
 export function Card({ children, dark, selected, onClick, style, ...props }) {
+  const isClickable = !!onClick;
+
+  const borderColor = selected
+    ? T.primary
+    : dark
+      ? T.borderDark
+      : T.border;
+
+  const shadowValue = selected
+    ? `0 0 0 3px ${T.primaryLight}`
+    : T.shadow;
+
   return (
-    <div
+    <motion.div
+      layout
       onClick={onClick}
-      role={onClick ? 'button' : undefined}
-      tabIndex={onClick ? 0 : undefined}
-      onKeyDown={onClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } } : undefined}
+      role={isClickable ? 'button' : undefined}
+      tabIndex={isClickable ? 0 : undefined}
+      onKeyDown={
+        isClickable
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onClick();
+              }
+            }
+          : undefined
+      }
+      animate={{
+        borderColor,
+        boxShadow: shadowValue,
+      }}
+      whileHover={
+        isClickable
+          ? { y: -2, boxShadow: T.shadowCardHover }
+          : undefined
+      }
+      whileTap={
+        isClickable
+          ? { scale: 0.98 }
+          : undefined
+      }
+      transition={springTransition}
       style={{
         background: dark ? T.bgCardDark : T.bgCard,
-        border: `2px solid ${selected ? T.primary : (dark ? T.borderDark : T.border)}`,
+        border: `2px solid ${borderColor}`,
         borderRadius: T.radiusLg,
         padding: '20px',
-        cursor: onClick ? 'pointer' : 'default',
-        transition: T.transition,
-        boxShadow: selected ? `0 0 0 3px ${T.primaryLight}` : T.shadow,
+        cursor: isClickable ? 'pointer' : 'default',
         ...style,
       }}
       {...props}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
