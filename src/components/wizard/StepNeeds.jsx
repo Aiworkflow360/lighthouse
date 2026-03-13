@@ -117,8 +117,13 @@ export function StepNeeds({ wizard, dark }) {
               >
                 <motion.span
                   animate={isSelected ? { scale: [1, 1.2, 1] } : { scale: 1 }}
+                  whileHover={{
+                    rotate: [0, -8, 8, -4, 0],
+                    scale: 1.15,
+                    transition: { duration: 0.4, ease: 'easeInOut' },
+                  }}
                   transition={{ duration: 0.3 }}
-                  style={{ fontSize: '28px', lineHeight: 1 }}
+                  style={{ fontSize: '28px', lineHeight: 1, cursor: 'pointer' }}
                 >
                   {opt.icon}
                 </motion.span>
@@ -141,7 +146,7 @@ export function StepNeeds({ wizard, dark }) {
                         width: '24px',
                         height: '24px',
                         borderRadius: T.radiusFull,
-                        background: T.primary,
+                        background: `linear-gradient(135deg, ${T.primary} 0%, ${T.emotional} 100%)`,
                         color: T.primaryText,
                         display: 'flex',
                         alignItems: 'center',

@@ -35,8 +35,9 @@ body {
 
 /* Focus-visible outline — accessible, modern */
 :focus-visible {
-  outline: 2px solid #2563EB;
+  outline: 3px solid rgba(37, 99, 235, 0.4);
   outline-offset: 2px;
+  border-radius: 4px;
 }
 
 :focus:not(:focus-visible) {
@@ -108,4 +109,18 @@ body {
   50% {
     transform: translateY(-4px);
   }
+}
+
+/* Reduced motion: respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Smooth text rendering on all elements */
+input, button, textarea, select {
+  font-family: inherit;
 }

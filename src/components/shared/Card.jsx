@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { T } from '../../constants/theme';
 
-const springTransition = { type: 'spring', stiffness: 300, damping: 25 };
+const springTransition = { type: 'spring', stiffness: 350, damping: 22 };
 
 export function Card({ children, dark, selected, onClick, style, ...props }) {
   const isClickable = !!onClick;
@@ -48,7 +48,9 @@ export function Card({ children, dark, selected, onClick, style, ...props }) {
       }
       transition={springTransition}
       style={{
-        background: dark ? T.bgCardDark : T.bgCard,
+        background: selected
+          ? (dark ? T.gradientCardDark : T.gradientCard)
+          : (dark ? T.bgCardDark : T.bgCard),
         border: `2px solid ${borderColor}`,
         borderRadius: T.radiusLg,
         padding: '20px',

@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { T } from '../../constants/theme';
 
 const STEP_LABELS = ['Condition', 'Age', 'Location', 'Needs'];
@@ -66,7 +66,6 @@ export function ProgressBar({ step, total = 4, dark }) {
                 }}
               >
                 <motion.div
-                  layoutId={`progress-fill-${i}`}
                   animate={{
                     width: isCompleted || isActive ? '100%' : '0%',
                     background: isCompleted
@@ -76,7 +75,11 @@ export function ProgressBar({ step, total = 4, dark }) {
                         : trackBg,
                     opacity: isActive ? 0.7 : 1,
                   }}
-                  transition={springTransition}
+                  transition={{
+                    width: { type: 'spring', stiffness: 200, damping: 25 },
+                    background: { duration: 0.3 },
+                    opacity: { duration: 0.3 },
+                  }}
                   style={{
                     height: '100%',
                     borderRadius: '3px',
@@ -106,7 +109,15 @@ export function ProgressBar({ step, total = 4, dark }) {
               }}
             >
               {/* Indicator dot or checkmark */}
-              <div
+              <motion.div
+                animate={isActive ? {
+                  scale: [1, 1.1, 1],
+                } : { scale: 1 }}
+                transition={isActive ? {
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                } : { duration: 0.2 }}
                 style={{
                   width: '20px',
                   height: '20px',
@@ -124,21 +135,36 @@ export function ProgressBar({ step, total = 4, dark }) {
                     : isCompleted
                       ? 'none'
                       : `2px solid ${trackBg}`,
-                  transition: T.transition,
+                  transition: 'background 0.2s ease, border 0.2s ease',
                 }}
               >
-                {isCompleted && <Checkmark color="#FFFFFF" />}
-                {isActive && (
-                  <div
-                    style={{
-                      width: '6px',
-                      height: '6px',
-                      borderRadius: '50%',
-                      background: T.primary,
-                    }}
-                  />
-                )}
-              </div>
+                <AnimatePresence mode="wait">
+                  {isCompleted && (
+                    <motion.div
+                      key="check"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                    >
+                      <Checkmark color="#FFFFFF" />
+                    </motion.div>
+                  )}
+                  {isActive && (
+                    <motion.div
+                      key="dot"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                      style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: T.primary,
+                      }}
+                    />
+                  )}
+                </AnimatePresence>
+              </motion.div>
 
               {/* Label text */}
               <span

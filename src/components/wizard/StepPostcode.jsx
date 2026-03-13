@@ -25,6 +25,37 @@ function LoadingDots() {
   );
 }
 
+const CONFETTI_PARTICLES = [
+  { angle: -40, color: T.primary, delay: 0 },
+  { angle: -110, color: T.secondary, delay: 0.05 },
+  { angle: -160, color: T.financial, delay: 0.1 },
+  { angle: -70, color: T.emotional, delay: 0.08 },
+];
+
+function ConfettiParticle({ angle, color, delay }) {
+  const rad = (angle * Math.PI) / 180;
+  const dist = 40;
+  return (
+    <motion.div
+      initial={{ scale: 0, opacity: 1, x: 0, y: 0 }}
+      animate={{
+        scale: [0, 1.2, 0],
+        opacity: [1, 1, 0],
+        x: Math.cos(rad) * dist,
+        y: Math.sin(rad) * dist,
+      }}
+      transition={{ duration: 0.6, delay, ease: 'easeOut' }}
+      style={{
+        position: 'absolute',
+        width: '8px',
+        height: '8px',
+        borderRadius: '50%',
+        background: color,
+      }}
+    />
+  );
+}
+
 function SuccessCheck() {
   return (
     <motion.div
@@ -35,27 +66,35 @@ function SuccessCheck() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '10px',
-        padding: '20px',
+        gap: '12px',
+        padding: '24px',
         marginTop: '16px',
+        position: 'relative',
       }}
     >
+      {/* Confetti burst */}
+      <div style={{ position: 'absolute', left: '50%', top: '50%' }}>
+        {CONFETTI_PARTICLES.map((p, i) => (
+          <ConfettiParticle key={i} angle={p.angle} color={p.color} delay={p.delay} />
+        ))}
+      </div>
       <motion.span
         initial={{ scale: 0 }}
-        animate={{ scale: [0, 1.2, 1] }}
-        transition={{ duration: 0.4 }}
+        animate={{ scale: [0, 1.3, 1] }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         style={{
-          fontSize: '32px',
+          fontSize: '44px',
           color: T.secondary,
+          lineHeight: 1,
         }}
       >
         {'\u2713'}
       </motion.span>
       <span style={{
         fontFamily: T.font,
-        fontSize: T.sizeBody,
+        fontSize: T.sizeH2,
         color: T.secondary,
-        fontWeight: 600,
+        fontWeight: 700,
       }}>
         Found it!
       </span>

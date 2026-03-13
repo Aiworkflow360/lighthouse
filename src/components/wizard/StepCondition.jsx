@@ -1,8 +1,55 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { T } from '../../constants/theme';
+import { T, CATEGORIES } from '../../constants/theme';
 import { COMMON_CONDITIONS, CONDITION_CATEGORIES } from '../../constants/conditions';
 import { Card } from '../shared/Card';
+
+/* Map condition categories to theme CATEGORIES for badge colours */
+const CATEGORY_COLOR_MAP = {
+  developmental: { color: T.medical, bg: T.medicalLight },
+  mental_health: { color: T.emotional, bg: T.emotionalLight },
+  learning: { color: T.education, bg: T.educationLight },
+  sensory: { color: T.info, bg: T.infoLight },
+  behavioural: { color: T.emotional, bg: T.emotionalLight },
+  chronic: { color: T.practical, bg: T.practicalLight },
+  physical: { color: T.practical, bg: T.practicalLight },
+  cancer: { color: T.urgent, bg: T.urgentLight },
+  heart: { color: T.urgent, bg: T.urgentLight },
+  neurological: { color: T.medical, bg: T.medicalLight },
+  genetic: { color: T.education, bg: T.educationLight },
+  rare: { color: T.financial, bg: T.financialLight },
+  respiratory: { color: T.info, bg: T.infoLight },
+  metabolic: { color: T.financial, bg: T.financialLight },
+  other: { color: T.textMuted, bg: T.border },
+};
+
+function QuestionIcon({ color }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0 }}>
+      <circle cx="9" cy="9" r="8" stroke={color} strokeWidth="1.5" fill="none" />
+      <text x="9" y="13" textAnchor="middle" fontSize="11" fontWeight="700" fill={color}>?</text>
+    </svg>
+  );
+}
+
+function ClockIcon({ color }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0 }}>
+      <circle cx="9" cy="9" r="7.5" stroke={color} strokeWidth="1.5" />
+      <path d="M9 5v4.5l3 1.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function InfoIcon({ color }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0 }}>
+      <circle cx="9" cy="9" r="8" stroke={color} strokeWidth="1.5" fill="none" />
+      <line x1="9" y1="8" x2="9" y2="13" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="9" cy="5.5" r="0.75" fill={color} />
+    </svg>
+  );
+}
 
 const staggerContainer = {
   animate: { transition: { staggerChildren: 0.06 } },
@@ -178,8 +225,26 @@ export function StepCondition({ wizard, dark }) {
                   <div style={{ fontFamily: T.font, fontSize: T.sizeBody, color: textColor, fontWeight: 500 }}>
                     {c.name}
                   </div>
-                  <div style={{ fontFamily: T.font, fontSize: T.sizeSmall, color: subColor, marginTop: '2px', textTransform: 'capitalize' }}>
-                    {c.category}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                    {(() => {
+                      const catColors = CATEGORY_COLOR_MAP[c.category] || { color: T.textMuted, bg: T.border };
+                      return (
+                        <span style={{
+                          display: 'inline-block',
+                          padding: '2px 8px',
+                          borderRadius: T.radiusFull,
+                          background: catColors.bg,
+                          color: catColors.color,
+                          fontFamily: T.font,
+                          fontSize: '12px',
+                          fontWeight: 600,
+                          lineHeight: '1.4',
+                          textTransform: 'capitalize',
+                        }}>
+                          {c.category.replace('_', ' ')}
+                        </span>
+                      );
+                    })()}
                   </div>
                 </Card>
               </motion.div>
@@ -203,8 +268,10 @@ export function StepCondition({ wizard, dark }) {
             borderRadius: T.radius, padding: '14px 20px', cursor: 'pointer',
             fontFamily: T.font, fontSize: T.sizeBody, color: subColor,
             minHeight: T.touchMin, textAlign: 'left',
+            display: 'flex', alignItems: 'center', gap: '10px',
           }}
         >
+          <QuestionIcon color={subColor} />
           I don't know the exact name &rarr;
         </motion.button>
         <motion.button
@@ -216,8 +283,10 @@ export function StepCondition({ wizard, dark }) {
             borderRadius: T.radius, padding: '14px 20px', cursor: 'pointer',
             fontFamily: T.font, fontSize: T.sizeBody, color: subColor,
             minHeight: T.touchMin, textAlign: 'left',
+            display: 'flex', alignItems: 'center', gap: '10px',
           }}
         >
+          <ClockIcon color={subColor} />
           Still waiting for an assessment &rarr;
         </motion.button>
         <motion.button
@@ -229,8 +298,10 @@ export function StepCondition({ wizard, dark }) {
             borderRadius: T.radius, padding: '14px 20px', cursor: 'pointer',
             fontFamily: T.font, fontSize: T.sizeBody, color: subColor,
             minHeight: T.touchMin, textAlign: 'left',
+            display: 'flex', alignItems: 'center', gap: '10px',
           }}
         >
+          <InfoIcon color={subColor} />
           My child hasn't been formally diagnosed &rarr;
         </motion.button>
       </motion.div>

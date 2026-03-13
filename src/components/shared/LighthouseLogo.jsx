@@ -1,0 +1,75 @@
+import { motion } from 'motion/react';
+
+export function LighthouseLogo({ size = 32, animate = false }) {
+  const GlowCircle = animate ? motion.circle : 'circle';
+  const glowProps = animate
+    ? {
+        animate: { opacity: [0.4, 1, 0.4] },
+        transition: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
+      }
+    : {};
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 32 32"
+      width={size}
+      height={size}
+      role="img"
+      aria-hidden="true"
+      style={{ display: 'block', flexShrink: 0 }}
+    >
+      {/* Base/rocks */}
+      <path d="M6 28h20l-2-3H8L6 28z" fill="#78716C" />
+      <rect x="7" y="28" width="18" height="2" rx="1" fill="#57534E" />
+
+      {/* Tower body with stripes */}
+      <path
+        d="M11 25h10l1-17H10l1 17z"
+        fill="#FFFFFF"
+        stroke="#2563EB"
+        strokeWidth="0.5"
+      />
+      <rect x="10.5" y="10" width="11" height="2.5" fill="#2563EB" rx="0.3" />
+      <rect x="10.8" y="15" width="10.4" height="2.5" fill="#2563EB" rx="0.3" />
+      <rect x="11.1" y="20" width="9.8" height="2.5" fill="#2563EB" rx="0.3" />
+
+      {/* Door */}
+      <rect x="14" y="23" width="4" height="4" rx="2" fill="#2563EB" />
+
+      {/* Gallery/walkway */}
+      <rect x="9" y="7" width="14" height="1.5" rx="0.5" fill="#1E40AF" />
+      <rect x="10" y="6" width="12" height="1" fill="#1E40AF" />
+
+      {/* Lantern room */}
+      <rect x="12" y="3" width="8" height="3.5" rx="1" fill="#1E3A5F" />
+      <rect
+        x="13"
+        y="3.5"
+        width="6"
+        height="2.5"
+        rx="0.5"
+        fill="#F59E0B"
+        opacity="0.9"
+      />
+
+      {/* Dome/cap */}
+      <path d="M14 3 Q16 0.5 18 3z" fill="#1E40AF" />
+
+      {/* Light glow - animated when animate prop is true */}
+      <GlowCircle
+        cx="16"
+        cy="4.8"
+        r="2"
+        fill="#FBBF24"
+        opacity={animate ? undefined : 0.5}
+        {...glowProps}
+      />
+      <circle cx="16" cy="4.8" r="1" fill="#FDE68A" opacity="0.8" />
+
+      {/* Light beams */}
+      <path d="M18 4 L26 1 L27 3 L18 5.5z" fill="#F59E0B" opacity="0.2" />
+      <path d="M14 4 L6 1 L5 3 L14 5.5z" fill="#F59E0B" opacity="0.15" />
+    </svg>
+  );
+}

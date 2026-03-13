@@ -69,9 +69,14 @@ export function StepAge({ wizard, dark }) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '6px',
+                  ...(isSelected ? {
+                    background: dark
+                      ? `linear-gradient(135deg, ${T.bgCardDark} 0%, rgba(37,99,235,0.15) 100%)`
+                      : `linear-gradient(135deg, ${T.primaryLight} 0%, ${T.bgCard} 100%)`,
+                  } : {}),
                 }}
               >
-                <span style={{ fontSize: '24px', lineHeight: 1 }}>
+                <span style={{ fontSize: '36px', lineHeight: 1 }}>
                   {AGE_ICONS[range.id] || ''}
                 </span>
                 <span style={{

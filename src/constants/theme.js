@@ -27,7 +27,7 @@ export const T = {
   textMuted: '#A8A29E',
   textDark: '#FAFAF9',
   textSecondaryDark: '#D6D3D1',
-  textMutedDark: '#78716C',
+  textMutedDark: '#A8A29E',
 
   // Borders
   border: '#E7E5E4',
@@ -69,11 +69,16 @@ export const T = {
   // Gradients
   gradient: 'linear-gradient(135deg, #EFF6FF 0%, #EDE9FE 100%)',
   gradientDark: 'linear-gradient(135deg, #1E1B4B 0%, #1E293B 100%)',
+  gradientCard: 'linear-gradient(135deg, rgba(37,99,235,0.03) 0%, rgba(124,58,237,0.03) 100%)',
+  gradientCardDark: 'linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(124,58,237,0.08) 100%)',
 
   // Glassmorphism
   glassBg: 'rgba(255,255,255,0.7)',
   glassBgDark: 'rgba(28,25,23,0.7)',
   glassBlur: 'blur(20px)',
+
+  // Focus ring
+  focusRing: '0 0 0 3px rgba(37,99,235,0.4)',
 
   // Shadows
   shadow: '0 1px 3px rgba(0,0,0,0.08)',

@@ -8,6 +8,7 @@ import { useDarkMode } from './hooks/useDarkMode';
 import { useWizardState } from './hooks/useWizardState';
 import { WizardContainer } from './components/wizard/WizardContainer';
 import { ResultsContainer } from './components/results/ResultsContainer';
+import { LighthouseLogo } from './components/shared/LighthouseLogo';
 
 /* ── Keyframes injected once ─────────────────────────────── */
 const styleId = 'lighthouse-keyframes';
@@ -16,8 +17,12 @@ if (typeof document !== 'undefined' && !document.getElementById(styleId)) {
   sheet.id = styleId;
   sheet.textContent = `
     @keyframes lh-pulse {
-      0%, 100% { box-shadow: 0 4px 12px rgba(37,99,235,0.25); }
-      50%      { box-shadow: 0 4px 24px rgba(37,99,235,0.45); }
+      0%, 100% { box-shadow: 0 4px 14px rgba(37,99,235,0.18); }
+      50%      { box-shadow: 0 4px 28px rgba(37,99,235,0.32); }
+    }
+    @keyframes lh-beam {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
     }
   `;
   document.head.appendChild(sheet);
@@ -83,9 +88,7 @@ function App() {
             }}
             aria-label="Lighthouse - go to start"
           >
-            <span style={{ fontSize: '22px', lineHeight: 1 }} role="img" aria-hidden="true">
-              🏠
-            </span>
+            <LighthouseLogo size={28} animate />
             Lighthouse
           </button>
 
@@ -190,14 +193,105 @@ function App() {
   );
 }
 
+/* ── Hero SVG Illustration ────────────────────────────────── */
+function HeroIllustration({ dark }) {
+  return (
+    <svg
+      width="180"
+      height="120"
+      viewBox="0 0 180 120"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ display: 'block', margin: '0 auto 24px', opacity: dark ? 0.85 : 1 }}
+      aria-hidden="true"
+    >
+      {/* Radiating support lines from centre */}
+      <line x1="90" y1="52" x2="38" y2="28" stroke="#2563EB" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" opacity="0.35" />
+      <line x1="90" y1="52" x2="142" y2="28" stroke="#F59E0B" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" opacity="0.35" />
+      <line x1="90" y1="52" x2="28" y2="68" stroke="#059669" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" opacity="0.35" />
+      <line x1="90" y1="52" x2="152" y2="68" stroke="#2563EB" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" opacity="0.35" />
+      <line x1="90" y1="52" x2="50" y2="98" stroke="#F59E0B" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" opacity="0.35" />
+      <line x1="90" y1="52" x2="130" y2="98" stroke="#059669" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" opacity="0.35" />
+
+      {/* Outer support network nodes */}
+      <circle cx="38" cy="28" r="8" fill="#2563EB" opacity="0.15" />
+      <circle cx="38" cy="28" r="4" fill="#2563EB" opacity="0.5" />
+      <circle cx="142" cy="28" r="8" fill="#F59E0B" opacity="0.15" />
+      <circle cx="142" cy="28" r="4" fill="#F59E0B" opacity="0.5" />
+      <circle cx="28" cy="68" r="8" fill="#059669" opacity="0.15" />
+      <circle cx="28" cy="68" r="4" fill="#059669" opacity="0.5" />
+      <circle cx="152" cy="68" r="8" fill="#2563EB" opacity="0.15" />
+      <circle cx="152" cy="68" r="4" fill="#2563EB" opacity="0.5" />
+      <circle cx="50" cy="98" r="8" fill="#F59E0B" opacity="0.15" />
+      <circle cx="50" cy="98" r="4" fill="#F59E0B" opacity="0.5" />
+      <circle cx="130" cy="98" r="8" fill="#059669" opacity="0.15" />
+      <circle cx="130" cy="98" r="4" fill="#059669" opacity="0.5" />
+
+      {/* Central parent figure — head + body arc */}
+      <circle cx="80" cy="38" r="10" fill="#2563EB" opacity="0.9" />
+      <path d="M68 62 Q72 50 80 48 Q88 50 92 62" stroke="#2563EB" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.9" />
+
+      {/* Child figure — smaller, nestled beside parent */}
+      <circle cx="100" cy="46" r="7" fill="#F59E0B" opacity="0.9" />
+      <path d="M92 64 Q95 56 100 54 Q105 56 108 64" stroke="#F59E0B" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.9" />
+
+      {/* Protective arc around both figures */}
+      <path d="M58 70 Q62 30 90 22 Q118 30 122 70" stroke="#059669" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.3" strokeDasharray="6 4" />
+
+      {/* Warm glow behind centre */}
+      <circle cx="90" cy="52" r="28" fill="#2563EB" opacity="0.06" />
+      <circle cx="90" cy="52" r="18" fill="#F59E0B" opacity="0.06" />
+    </svg>
+  );
+}
+
+/* ── Inline SVG Icons for How It Works ───────────────────── */
+function ClipboardIcon({ color }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2" />
+      <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+    </svg>
+  );
+}
+
+function SearchIcon({ color }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  );
+}
+
+function CheckCircleIcon({ color }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
+    </svg>
+  );
+}
+
 /* ── Landing ─────────────────────────────────────────────── */
 function Landing({ dark, wizard }) {
   const textColor = dark ? T.textDark : T.text;
   const subColor = dark ? T.textSecondaryDark : T.textSecondary;
   const mutedColor = dark ? T.textMutedDark : T.textMuted;
 
-  const pillStyle = {
-    display: 'inline-block',
+  const pillDotColors = {
+    'Autism & ADHD': '#2563EB',
+    'Mental Health': '#7C3AED',
+    'Learning Disabilities': '#8B5CF6',
+    'Cancer': '#DC2626',
+    'Chronic Conditions': '#059669',
+    'Rare Diseases': '#F59E0B',
+  };
+
+  const makePillStyle = () => ({
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '7px',
     padding: '6px 14px',
     borderRadius: T.radiusFull,
     fontSize: '13px',
@@ -207,7 +301,7 @@ function Landing({ dark, wizard }) {
     background: dark ? T.bgCardDark : T.bgCard,
     border: `1px solid ${dark ? T.borderDark : T.border}`,
     lineHeight: '1.3',
-  };
+  });
 
   const trustBadgeStyle = {
     display: 'inline-flex',
@@ -222,6 +316,12 @@ function Landing({ dark, wizard }) {
     background: dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
     lineHeight: '1.3',
   };
+
+  const howItWorksSteps = [
+    { num: 1, label: 'Tell us about your child', Icon: ClipboardIcon },
+    { num: 2, label: 'We find matching resources', Icon: SearchIcon },
+    { num: 3, label: 'Get your personalised action plan', Icon: CheckCircleIcon },
+  ];
 
   return (
     <motion.div
@@ -242,11 +342,20 @@ function Landing({ dark, wizard }) {
         background: dark ? T.gradientDark : T.gradient,
         borderRadius: T.radiusLg,
       }}>
+        {/* Hero illustration */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0 }}
+        >
+          <HeroIllustration dark={dark} />
+        </motion.div>
+
         {/* H1 */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          transition={{ duration: 0.6, delay: 0.05 }}
           style={{
             fontFamily: T.font,
             fontSize: 'clamp(36px, 8vw, 48px)',
@@ -265,7 +374,7 @@ function Landing({ dark, wizard }) {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
           style={{
             fontFamily: T.font,
             fontSize: T.sizeBody,
@@ -283,14 +392,14 @@ function Landing({ dark, wizard }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
         >
           <motion.button
             onClick={wizard.next}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             style={{
-              background: T.primary,
+              background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
               color: '#FFFFFF',
               border: 'none',
               borderRadius: T.radius,
@@ -300,19 +409,26 @@ function Landing({ dark, wizard }) {
               fontWeight: 700,
               cursor: 'pointer',
               minHeight: T.touchMin,
-              boxShadow: '0 4px 12px rgba(37,99,235,0.25)',
+              boxShadow: '0 4px 14px rgba(37,99,235,0.18)',
               transition: T.transition,
-              animation: 'lh-pulse 2.5s ease-in-out infinite',
+              animation: 'lh-pulse 4s ease-in-out infinite',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
             }}
           >
             Find resources for my family
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ marginLeft: '2px' }}>
+              <line x1="3" y1="9" x2="15" y2="9" />
+              <polyline points="10 4 15 9 10 14" />
+            </svg>
           </motion.button>
         </motion.div>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           style={{
             fontFamily: T.font,
             fontSize: T.sizeSmall,
@@ -329,7 +445,7 @@ function Landing({ dark, wizard }) {
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.5 }}
+        transition={{ duration: 0.5, delay: 0.25 }}
         style={{
           marginTop: '28px',
           display: 'flex',
@@ -338,19 +454,26 @@ function Landing({ dark, wizard }) {
           gap: '8px',
         }}
       >
-        <span style={pillStyle}>Autism & ADHD</span>
-        <span style={pillStyle}>Mental Health</span>
-        <span style={pillStyle}>Learning Disabilities</span>
-        <span style={pillStyle}>Cancer</span>
-        <span style={pillStyle}>Chronic Conditions</span>
-        <span style={pillStyle}>Rare Diseases</span>
+        {Object.entries(pillDotColors).map(([label, dotColor]) => (
+          <span key={label} style={makePillStyle()}>
+            <span style={{
+              width: '7px',
+              height: '7px',
+              borderRadius: '50%',
+              background: dotColor,
+              flexShrink: 0,
+              opacity: 0.85,
+            }} aria-hidden="true" />
+            {label}
+          </span>
+        ))}
       </motion.div>
 
       {/* Trust indicators row */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
         style={{
           marginTop: '20px',
           display: 'flex',
@@ -371,6 +494,106 @@ function Landing({ dark, wizard }) {
           <span style={{ color: T.secondary }} aria-hidden="true">{'\u2713'}</span>
           Open source
         </span>
+      </motion.div>
+
+      {/* ── How It Works section ─────────────────────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.35 }}
+        style={{
+          marginTop: '48px',
+          paddingTop: '40px',
+          borderTop: `1px solid ${dark ? T.borderDark : T.border}`,
+        }}
+      >
+        <h2 style={{
+          fontFamily: T.font,
+          fontSize: T.sizeH2,
+          fontWeight: 700,
+          color: textColor,
+          margin: '0 0 36px',
+          letterSpacing: '-0.01em',
+        }}>
+          How it works
+        </h2>
+
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0',
+          alignItems: 'stretch',
+          maxWidth: '400px',
+          margin: '0 auto',
+        }}>
+          {howItWorksSteps.map((step, i) => (
+            <motion.div
+              key={step.num}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.4 + i * 0.08 }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+            >
+              {/* Dashed connector line (skip before first step) */}
+              {i > 0 && (
+                <div style={{
+                  width: '2px',
+                  height: '28px',
+                  backgroundImage: `repeating-linear-gradient(to bottom, ${dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)'} 0px, ${dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)'} 4px, transparent 4px, transparent 8px)`,
+                  flexShrink: 0,
+                }} />
+              )}
+
+              {/* Step card */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '16px',
+                padding: '16px 20px',
+                borderRadius: T.radius,
+                background: dark ? T.bgCardDark : T.bgCard,
+                border: `1px solid ${dark ? T.borderDark : T.border}`,
+                width: '100%',
+                textAlign: 'left',
+                boxShadow: T.shadow,
+              }}>
+                {/* Numbered circle */}
+                <div style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '50%',
+                  background: T.primary,
+                  color: '#FFFFFF',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontFamily: T.font,
+                  fontSize: '15px',
+                  fontWeight: 700,
+                  flexShrink: 0,
+                }}>
+                  {step.num}
+                </div>
+
+                {/* Icon */}
+                <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+                  <step.Icon color={dark ? T.textSecondaryDark : T.textSecondary} />
+                </div>
+
+                {/* Label */}
+                <span style={{
+                  fontFamily: T.font,
+                  fontSize: '15px',
+                  fontWeight: 500,
+                  color: textColor,
+                  lineHeight: '1.4',
+                }}>
+                  {step.label}
+                </span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </motion.div>
     </motion.div>
   );

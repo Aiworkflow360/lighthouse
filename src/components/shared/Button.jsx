@@ -57,6 +57,7 @@ export function Button({
     opacity: disabled ? 0.5 : 1,
     width: size === 'full' ? '100%' : undefined,
     position: 'relative',
+    outline: 'none',
   };
 
   const variants = {
@@ -79,11 +80,23 @@ export function Button({
     },
   };
 
-  const hoverShadow = variant === 'primary'
-    ? T.shadowGlow
-    : variant === 'secondary'
-      ? '0 0 40px rgba(5,150,105,0.15)'
-      : undefined;
+  const hoverProps = (() => {
+    if (!isInteractive) return undefined;
+    if (variant === 'primary') {
+      return { scale: 1.02, y: -1, boxShadow: T.shadowGlow };
+    }
+    if (variant === 'secondary') {
+      return { scale: 1.02, boxShadow: '0 0 40px rgba(5,150,105,0.15)' };
+    }
+    if (variant === 'ghost') {
+      return { backgroundColor: T.bgHover };
+    }
+    return undefined;
+  })();
+
+  const tapProps = isInteractive && (variant === 'primary' || variant === 'secondary')
+    ? { scale: 0.97 }
+    : undefined;
 
   const spinnerColor = variant === 'outline' || variant === 'ghost'
     ? T.primary
@@ -93,8 +106,8 @@ export function Button({
     <motion.button
       onClick={isInteractive ? onClick : undefined}
       disabled={disabled || loading}
-      whileHover={isInteractive && useMotion ? { scale: 1.02, boxShadow: hoverShadow } : undefined}
-      whileTap={isInteractive && useMotion ? { scale: 0.97 } : undefined}
+      whileHover={hoverProps}
+      whileTap={tapProps}
       transition={{ type: 'spring', stiffness: 400, damping: 17 }}
       style={{ ...base, ...variants[variant], ...style }}
       {...props}

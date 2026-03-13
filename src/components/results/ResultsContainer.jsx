@@ -2,8 +2,10 @@ import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { T, CATEGORIES } from '../../constants/theme';
 import { ResourceCard } from './ResourceCard';
+import { TriageCard } from './TriageCard';
 import { Button } from '../shared/Button';
 import { DEMO_RESOURCES } from '../../lib/demoData';
+import { generateTriage } from '../../lib/triage';
 
 // Counting-up hook: animates from 0 to target over duration
 function useCountUp(target, duration = 500) {
@@ -68,6 +70,8 @@ export function ResultsContainer({ wizard, dark }) {
 
     return filtered;
   }, [wizard.needs, wizard.conditionCategory]);
+
+  const triage = useMemo(() => generateTriage(wizard, resources), [wizard, resources]);
 
   const displayed = activeFilter === 'all'
     ? resources
@@ -189,6 +193,11 @@ export function ResultsContainer({ wizard, dark }) {
           0808 800 5000
         </motion.a>
       </motion.div>
+
+      {/* Triage — Your first 3 steps */}
+      {triage.steps.length > 0 && (
+        <TriageCard triage={triage} dark={dark} />
+      )}
 
       {/* Filter tabs */}
       <div style={{
