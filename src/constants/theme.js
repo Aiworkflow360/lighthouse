@@ -4,14 +4,11 @@
 export const T = {
   // Primary — accessible blue
   primary: '#2563EB',
-  primaryHover: '#1D4ED8',
   primaryLight: '#DBEAFE',
   primaryText: '#FFFFFF',
 
   // Secondary — calming green for CTAs
   secondary: '#059669',
-  secondaryHover: '#047857',
-  secondaryLight: '#D1FAE5',
 
   // Warm accent — amber/gold lighthouse beam
   warm: '#F59E0B',
@@ -80,12 +77,7 @@ export const T = {
   gradientCardDark: 'linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(124,58,237,0.08) 100%)',
 
   // Glassmorphism
-  glassBg: 'rgba(255,255,255,0.7)',
-  glassBgDark: 'rgba(28,25,23,0.7)',
   glassBlur: 'blur(20px)',
-
-  // Focus ring
-  focusRing: '0 0 0 3px rgba(37,99,235,0.4)',
 
   // Shadows
   shadow: '0 1px 3px rgba(0,0,0,0.08)',
@@ -97,19 +89,6 @@ export const T = {
   // Transitions
   transition: 'all 0.2s ease',
   transitionSlow: 'all 0.3s ease',
-
-  // Screen-reader-only (inline style string)
-  srOnly: 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0',
-
-  // Breathing / ambient animation
-  breatheDuration: 4,
-
-  // Spring presets (for framer-motion)
-  springGentle: { type: 'spring', stiffness: 120, damping: 14 },
-  springCalm: { type: 'spring', stiffness: 200, damping: 20 },
-  springSnappy: { type: 'spring', stiffness: 400, damping: 25 },
-  springBouncy: { type: 'spring', stiffness: 300, damping: 12 },
-  springStiff: { type: 'spring', stiffness: 500, damping: 30 },
 
   // Layout
   maxWidth: '640px',

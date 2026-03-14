@@ -426,6 +426,16 @@ function PrintIcon({ size = 16, color }) {
   );
 }
 
+function DownloadIcon({ size = 16, color }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+  );
+}
+
 function ChevronIcon({ size = 18, color, up }) {
   return (
     <motion.svg
@@ -581,6 +591,21 @@ function LetterForm({ template, wizard, dark, onClose }) {
     `);
     printWindow.document.close();
     printWindow.print();
+  }, [generatedLetter, template.title]);
+
+  const handleDownload = useCallback(() => {
+    if (!generatedLetter) return;
+    const blob = new Blob([generatedLetter], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    // Build a safe filename from the template title
+    const safeName = template.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    a.download = `${safeName}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }, [generatedLetter, template.title]);
 
   return (
@@ -741,6 +766,24 @@ function LetterForm({ template, wizard, dark, onClose }) {
             >
               <PrintIcon size={16} color={subColor} />
               Print
+            </motion.button>
+
+            <motion.button
+              onClick={handleDownload}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '6px',
+                padding: '10px 18px', fontFamily: T.font, fontSize: T.sizeSmall,
+                fontWeight: 600, color: subColor,
+                background: 'transparent',
+                border: `1.5px solid ${dark ? T.borderDark : T.border}`,
+                borderRadius: T.radius, cursor: 'pointer',
+                minHeight: T.touchMin, transition: T.transition,
+              }}
+            >
+              <DownloadIcon size={16} color={subColor} />
+              Download
             </motion.button>
 
             <motion.button

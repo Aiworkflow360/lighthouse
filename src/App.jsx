@@ -31,6 +31,17 @@ if (typeof document !== 'undefined' && !document.getElementById(styleId)) {
       0%, 100% { opacity: 0.4; }
       50% { opacity: 1; }
     }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+    :focus-visible {
+      outline: 2px solid #F59E0B;
+      outline-offset: 2px;
+    }
   `;
   document.head.appendChild(sheet);
 }
@@ -600,7 +611,7 @@ function Landing({ dark, wizard }) {
             padding: '0 20px',
           }}
         >
-          When your child has a condition or additional need, finding the right support shouldn't be this hard. We've gathered everything — grants, charities, therapists, support groups — so you don't have to.
+          When your child has additional needs, finding the right support shouldn't be this hard. We've gathered the grants, charities, therapists, and support groups in one place — so you don't have to.
         </motion.p>
 
         {/* Hero search — start finding help immediately */}
@@ -1021,7 +1032,7 @@ function Landing({ dark, wizard }) {
           maxWidth: '400px',
           lineHeight: T.lineHeight,
         }}>
-          {"Type your child's condition and we'll show you everything that's out there."}
+          {"Tell us your child's condition and we'll show you every resource available."}
         </p>
 
         <div style={{ marginBottom: '20px' }}>
@@ -1136,7 +1147,7 @@ function PrivacyPage({ dark }) {
           Lighthouse is designed to be as private as possible. Here is exactly what happens with your data:
         </p>
         <ul style={{ margin: '0 0 16px', paddingLeft: '24px' }}>
-          <li style={{ marginBottom: '8px' }}><strong>Postcode:</strong> If you enter a postcode, we send only the first half (the outcode, e.g. "SW1A") to postcodes.io to determine your region. The full postcode is never stored or transmitted.</li>
+          <li style={{ marginBottom: '8px' }}><strong>Postcode:</strong> If you enter a postcode, we extract the outcode (the first half, e.g. "SW1A" from "SW1A 1AA") and send it to <a href="https://postcodes.io" target="_blank" rel="noopener noreferrer" style={{ color: T.primary }}>postcodes.io</a> to look up your local authority area. This helps us show you services near you. Your full postcode is never stored or sent anywhere — only the outcode leaves your browser, and only to postcodes.io.</li>
           <li style={{ marginBottom: '8px' }}><strong>Condition search:</strong> Your search happens entirely in your browser. No search data is sent to any server.</li>
           <li style={{ marginBottom: '8px' }}><strong>Saved resources:</strong> When you save a resource, it's stored in your browser's localStorage only. We cannot see it.</li>
           <li style={{ marginBottom: '8px' }}><strong>Dark mode preference:</strong> Stored in your browser's localStorage.</li>
@@ -1156,7 +1167,7 @@ function PrivacyPage({ dark }) {
           Third-party services
         </h2>
         <p style={{ margin: '0 0 16px' }}>
-          The only external service we use is <a href="https://postcodes.io" target="_blank" rel="noopener noreferrer" style={{ color: T.primary }}>postcodes.io</a> (a free, open-source UK postcode lookup by Ideal Postcodes). We send only the outcode portion of your postcode to this service.
+          The only external service we use is <a href="https://postcodes.io" target="_blank" rel="noopener noreferrer" style={{ color: T.primary }}>postcodes.io</a>, a free, open API built on UK government postcode data. When you enter your postcode, we send only the outcode (first half) to this service to find your local authority area. Postcodes.io does not require an account, does not track users, and is open source.
         </p>
 
         <h2 style={{ fontFamily: T.font, fontSize: T.sizeH2, color: textColor, margin: '24px 0 12px', fontWeight: 700 }}>

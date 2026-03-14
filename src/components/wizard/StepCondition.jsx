@@ -4,22 +4,24 @@ import { T, CATEGORIES } from '../../constants/theme';
 import { COMMON_CONDITIONS, CONDITION_CATEGORIES } from '../../constants/conditions';
 import { Card } from '../shared/Card';
 
-/* Map condition categories to theme CATEGORIES for badge colours */
+/* Map condition categories to theme CATEGORIES for badge colours.
+   Where a condition category aligns with a resource category, we pull
+   color/lightColor from CATEGORIES to keep a single source of truth. */
 const CATEGORY_COLOR_MAP = {
-  developmental: { color: T.medical, bg: T.medicalLight },
-  mental_health: { color: T.emotional, bg: T.emotionalLight },
-  learning: { color: T.education, bg: T.educationLight },
+  developmental: { color: CATEGORIES.medical.color, bg: CATEGORIES.medical.lightColor },
+  mental_health: { color: CATEGORIES.emotional.color, bg: CATEGORIES.emotional.lightColor },
+  learning: { color: CATEGORIES.education.color, bg: CATEGORIES.education.lightColor },
   sensory: { color: T.info, bg: T.infoLight },
-  behavioural: { color: T.emotional, bg: T.emotionalLight },
-  chronic: { color: T.practical, bg: T.practicalLight },
-  physical: { color: T.practical, bg: T.practicalLight },
+  behavioural: { color: CATEGORIES.emotional.color, bg: CATEGORIES.emotional.lightColor },
+  chronic: { color: CATEGORIES.practical.color, bg: CATEGORIES.practical.lightColor },
+  physical: { color: CATEGORIES.practical.color, bg: CATEGORIES.practical.lightColor },
   cancer: { color: T.urgent, bg: T.urgentLight },
   heart: { color: T.urgent, bg: T.urgentLight },
-  neurological: { color: T.medical, bg: T.medicalLight },
-  genetic: { color: T.education, bg: T.educationLight },
-  rare: { color: T.financial, bg: T.financialLight },
+  neurological: { color: CATEGORIES.medical.color, bg: CATEGORIES.medical.lightColor },
+  genetic: { color: CATEGORIES.education.color, bg: CATEGORIES.education.lightColor },
+  rare: { color: CATEGORIES.financial.color, bg: CATEGORIES.financial.lightColor },
   respiratory: { color: T.info, bg: T.infoLight },
-  metabolic: { color: T.financial, bg: T.financialLight },
+  metabolic: { color: CATEGORIES.financial.color, bg: CATEGORIES.financial.lightColor },
   other: { color: T.textMuted, bg: T.border },
 };
 

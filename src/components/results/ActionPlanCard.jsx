@@ -49,6 +49,25 @@ function CheckIcon({ size = 16, color }) {
   );
 }
 
+function CopyIcon({ size = 16, color }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+    </svg>
+  );
+}
+
+function DownloadIcon({ size = 16, color }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+  );
+}
+
 function ExternalLinkIcon({ size = 14, color }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
@@ -297,6 +316,8 @@ export function ActionPlanCard({ plan, dark, wizard, defaultExpanded }) {
   const totalCount = plan.steps.length;
   const progressPercent = Math.round((completedCount / totalCount) * 100);
 
+  const [copied, setCopied] = useState(false);
+
   const handleToggle = useCallback((index) => {
     setChecked(prev => {
       const key = `${planKey}-${index}`;
@@ -305,6 +326,56 @@ export function ActionPlanCard({ plan, dark, wizard, defaultExpanded }) {
       return next;
     });
   }, [planKey]);
+
+  // Serialize the action plan to readable text
+  const planToText = useCallback(() => {
+    const lines = [];
+    lines.push(plan.title || 'Your action plan');
+    if (plan.subtitle) lines.push(plan.subtitle);
+    lines.push('');
+    plan.steps.forEach((step, i) => {
+      const status = checked[`${planKey}-${i}`] ? '[done]' : '[    ]';
+      lines.push(`${status} ${i + 1}. ${step.title}`);
+      if (step.description) lines.push(`   ${step.description}`);
+      if (step.action) lines.push(`   Action: ${step.action}`);
+      if (step.link) lines.push(`   Link: ${step.link.url}`);
+      if (step.phone) lines.push(`   Phone: ${step.phone}`);
+      lines.push('');
+    });
+    return lines.join('\n');
+  }, [plan, checked, planKey]);
+
+  const handleCopyPlan = useCallback(async () => {
+    const text = planToText();
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }, [planToText]);
+
+  const handleDownloadPlan = useCallback(() => {
+    const text = planToText();
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const safeName = (plan.title || 'action-plan').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    a.download = `${safeName}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [planToText, plan.title]);
 
   return (
     <motion.div
@@ -446,6 +517,52 @@ export function ActionPlanCard({ plan, dark, wizard, defaultExpanded }) {
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               style={{ overflow: 'hidden' }}
             >
+              {/* Copy & Download buttons */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+                style={{
+                  display: 'flex', gap: '8px', marginBottom: '12px', flexWrap: 'wrap',
+                }}
+              >
+                <motion.button
+                  onClick={handleCopyPlan}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '6px',
+                    padding: '8px 14px', fontFamily: T.font, fontSize: '13px',
+                    fontWeight: 600, color: copied ? T.warm : subColor,
+                    background: 'transparent',
+                    border: `1.5px solid ${copied ? T.warm : (dark ? T.borderDark : T.border)}`,
+                    borderRadius: T.radius, cursor: 'pointer',
+                    minHeight: '36px', transition: T.transition,
+                  }}
+                >
+                  <CopyIcon size={14} color={copied ? T.warm : subColor} />
+                  {copied ? 'Copied!' : 'Copy plan'}
+                </motion.button>
+
+                <motion.button
+                  onClick={handleDownloadPlan}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '6px',
+                    padding: '8px 14px', fontFamily: T.font, fontSize: '13px',
+                    fontWeight: 600, color: subColor,
+                    background: 'transparent',
+                    border: `1.5px solid ${dark ? T.borderDark : T.border}`,
+                    borderRadius: T.radius, cursor: 'pointer',
+                    minHeight: '36px', transition: T.transition,
+                  }}
+                >
+                  <DownloadIcon size={14} color={subColor} />
+                  Download
+                </motion.button>
+              </motion.div>
+
               <div>
                 {plan.steps.map((step, i) => (
                   <ActionStep

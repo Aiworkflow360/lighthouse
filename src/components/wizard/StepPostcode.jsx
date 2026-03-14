@@ -160,6 +160,13 @@ export function StepPostcode({ wizard, dark }) {
   const handleLookup = async () => {
     if (!input.trim()) return;
 
+    // Basic UK postcode format validation
+    const trimmed = input.trim();
+    if (trimmed.length < 2 || !/^[A-Za-z]/.test(trimmed) || !/\d/.test(trimmed)) {
+      setError("That doesn't look like a UK postcode. Try something like 'SW1A 1AA'.");
+      return;
+    }
+
     // Abort any in-flight request
     if (abortRef.current) abortRef.current.abort();
     if (slowTimerRef.current) clearTimeout(slowTimerRef.current);

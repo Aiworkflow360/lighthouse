@@ -9,6 +9,7 @@ import { LetterGeneratorCard } from './LetterGeneratorCard';
 import { Button } from '../shared/Button';
 import { DEMO_RESOURCES } from '../../lib/demoData';
 import { generateTriage } from '../../lib/triage';
+import { CONDITION_CATEGORIES } from '../../constants/conditions';
 
 // Optional data modules — may not exist yet.
 // If missing, ActionPlanCard hides and LocalServicesCard uses fallback search links.
@@ -313,9 +314,9 @@ export function ResultsContainer({ wizard, dark }) {
     }
   };
 
-  const conditionLabel = wizard.condition || (wizard.conditionCategory ?
-    wizard.conditionCategory.charAt(0).toUpperCase() + wizard.conditionCategory.slice(1) + ' conditions' :
-    'all conditions');
+  const conditionLabel = wizard.condition || (wizard.conditionCategory
+    ? (CONDITION_CATEGORIES.find(c => c.id === wizard.conditionCategory)?.label || wizard.conditionCategory)
+    : 'all conditions');
 
   // Build ordered filter keys for layoutId
   const filterKeys = useMemo(() => {
@@ -357,22 +358,27 @@ export function ResultsContainer({ wizard, dark }) {
         </p>
       </motion.div>
 
-      {/* Results summary bar */}
-      <motion.p
-        initial={{ opacity: 0.3 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: 0.2 }}
-        style={{
-          fontFamily: T.font,
-          fontSize: T.sizeSmall,
-          color: subColor,
-          margin: '0 0 24px',
-          lineHeight: T.lineHeight,
-        }}
-      >
-        Showing {displayed.length} of {resources.length} resources
-        {activeFilterLabel ? ` for ${activeFilterLabel}` : ''}
-      </motion.p>
+      {/* Results summary bar — only visible on resources tab */}
+      {activeTab === 'resources' && (
+        <motion.p
+          key={`summary-${activeFilter}`}
+          initial={{ opacity: 0.3 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          style={{
+            fontFamily: T.font,
+            fontSize: T.sizeSmall,
+            color: subColor,
+            margin: '0 0 24px',
+            lineHeight: T.lineHeight,
+          }}
+        >
+          <span aria-live="polite" role="status">
+            Showing {displayed.length} of {resources.length} resources
+            {activeFilterLabel ? ` in ${activeFilterLabel}` : ''}
+          </span>
+        </motion.p>
+      )}
 
       {/* Crisis banner */}
       <motion.div
@@ -431,13 +437,15 @@ export function ResultsContainer({ wizard, dark }) {
         }}
       >
         {[
-          { key: 'resources', label: 'Resources', count: resources.length },
+          { key: 'resources', label: 'Resources', count: displayed.length },
           { key: 'tools', label: 'Tools', count: toolCount },
         ].map(tab => (
           <button
             key={tab.key}
             role="tab"
+            id={`tab-${tab.key}`}
             aria-selected={activeTab === tab.key}
+            aria-controls={`tabpanel-${tab.key}`}
             onClick={() => setActiveTab(tab.key)}
             style={{
               flex: 1,
@@ -461,7 +469,7 @@ export function ResultsContainer({ wizard, dark }) {
 
       {/* ── Resources tab content ────────────────────────────── */}
       {activeTab === 'resources' && (
-        <>
+        <div role="tabpanel" id="tabpanel-resources" aria-labelledby="tab-resources">
           {/* Category sub-tabs */}
           <div
             role="tablist"
@@ -487,7 +495,9 @@ export function ResultsContainer({ wizard, dark }) {
                 <button
                   key={key}
                   role="tab"
+                  id={`filter-tab-${key}`}
                   aria-selected={isActive}
+                  aria-controls="resource-cards-panel"
                   onClick={() => setActiveFilter(key)}
                   style={{
                     padding: '10px 16px',
@@ -512,7 +522,7 @@ export function ResultsContainer({ wizard, dark }) {
           </div>
 
           {/* Resource cards — skeleton or real */}
-          <div ref={cardsRef} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div ref={cardsRef} id="resource-cards-panel" role="tabpanel" aria-labelledby={`filter-tab-${activeFilter}`} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <AnimatePresence mode="wait">
               {loading ? (
                 <motion.div
@@ -589,7 +599,7 @@ export function ResultsContainer({ wizard, dark }) {
                   color: textColor,
                   margin: '8px 0 0',
                 }}>
-                  No matches for this filter
+                  No {activeFilterLabel || ''} resources found
                 </p>
                 <p style={{
                   fontFamily: T.font,
@@ -597,25 +607,31 @@ export function ResultsContainer({ wizard, dark }) {
                   color: subColor,
                   margin: 0,
                   lineHeight: T.lineHeight,
+                  maxWidth: '320px',
                 }}>
-                  Try 'All' or a different category
+                  {activeFilterLabel
+                    ? `We don't have any ${activeFilterLabel} resources for this condition yet, but there are ${resources.length} other resources that may help.`
+                    : "Try a different category to find what you're looking for."}
                 </p>
                 <Button
                   onClick={() => setActiveFilter('all')}
                   variant="outline"
                   style={{ marginTop: '8px' }}
                 >
-                  Show all resources
+                  Show all {resources.length} resources
                 </Button>
               </motion.div>
             )}
           </AnimatePresence>
-        </>
+        </div>
       )}
 
       {/* ── Tools tab content ────────────────────────────────── */}
       {activeTab === 'tools' && (
         <motion.div
+          role="tabpanel"
+          id="tabpanel-tools"
+          aria-labelledby="tab-tools"
           initial={{ opacity: 0.3, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
