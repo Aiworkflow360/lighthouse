@@ -739,7 +739,7 @@ function LetterForm({ template, wizard, dark, onClose }) {
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '6px',
                 padding: '10px 18px', fontFamily: T.font, fontSize: T.sizeSmall,
-                fontWeight: 600, color: copied ? T.warm : T.primary,
+                fontWeight: 600, color: copied ? T.warmText : T.primary,
                 background: 'transparent',
                 border: `1.5px solid ${copied ? T.warm : T.primary}`,
                 borderRadius: T.radius, cursor: 'pointer',

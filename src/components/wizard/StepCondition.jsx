@@ -172,7 +172,7 @@ export function StepCondition({ wizard, dark }) {
           color: T.textMuted,
           pointerEvents: 'none',
           transition: 'color 0.2s ease',
-          ...(inputFocused ? { color: T.warm } : {}),
+          ...(inputFocused ? { color: T.warmText } : {}),
         }}>
           {'\u{1F50D}'}
         </span>

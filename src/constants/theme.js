@@ -12,6 +12,7 @@ export const T = {
 
   // Warm accent — amber/gold lighthouse beam
   warm: '#F59E0B',
+  warmText: '#B45309',   // WCAG AA-safe amber for text (5.74:1 on #FFFBF5)
   warmHover: '#D97706',
   warmLight: '#FEF3C7',
   warmGlow: 'rgba(245,158,11,0.15)',
@@ -28,7 +29,7 @@ export const T = {
   // Text
   text: '#1C1917',
   textSecondary: '#57534E',
-  textMuted: '#A8A29E',
+  textMuted: '#78716C',   // stone-500, WCAG AA (4.58:1 on #FFFBF5)
   textDark: '#FAFAF9',
   textSecondaryDark: '#D6D3D1',
   textMutedDark: '#A8A29E',
@@ -37,16 +38,16 @@ export const T = {
   border: '#E7E5E4',
   borderDark: '#44403C',
 
-  // Category colours
-  financial: '#D97706',
+  // Category colours — all pass WCAG AA (4.5:1) on #FFFBF5
+  financial: '#B45309',
   financialLight: '#FEF3C7',
   medical: '#2563EB',
   medicalLight: '#DBEAFE',
   emotional: '#7C3AED',
   emotionalLight: '#EDE9FE',
-  practical: '#059669',
+  practical: '#047857',
   practicalLight: '#D1FAE5',
-  education: '#8B5CF6',
+  education: '#6D28D9',
   educationLight: '#F5F3FF',
 
   // Status

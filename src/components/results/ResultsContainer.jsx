@@ -358,6 +358,33 @@ export function ResultsContainer({ wizard, dark }) {
         </p>
       </motion.div>
 
+      {/* What you'll find here — promise box */}
+      <motion.div
+        initial={{ opacity: 0.3, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+        style={{
+          background: dark ? 'rgba(245,158,11,0.06)' : 'rgba(245,158,11,0.04)',
+          border: `1px solid ${dark ? 'rgba(245,158,11,0.15)' : 'rgba(245,158,11,0.12)'}`,
+          borderRadius: T.radius,
+          padding: '14px 18px',
+          marginBottom: '16px',
+          fontFamily: T.font,
+          fontSize: T.sizeSmall,
+          color: subColor,
+          lineHeight: '1.6',
+        }}
+      >
+        <div style={{ fontWeight: 600, color: textColor, marginBottom: '6px' }}>
+          What you'll find here
+        </div>
+        <ul style={{ margin: 0, paddingLeft: '18px' }}>
+          <li>Grants and financial support you can apply for</li>
+          <li>Local services and organisations near you</li>
+          <li>Step-by-step action plans and letter templates</li>
+        </ul>
+      </motion.div>
+
       {/* Results summary bar — only visible on resources tab */}
       {activeTab === 'resources' && (
         <motion.p
@@ -426,12 +453,22 @@ export function ResultsContainer({ wizard, dark }) {
       <div
         role="tablist"
         aria-label="Results sections"
+        onKeyDown={(e) => {
+          const tabs = ['resources', 'tools'];
+          const idx = tabs.indexOf(activeTab);
+          if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            const next = e.key === 'ArrowRight' ? (idx + 1) % tabs.length : (idx - 1 + tabs.length) % tabs.length;
+            setActiveTab(tabs[next]);
+            document.getElementById(`tab-${tabs[next]}`)?.focus();
+          }
+        }}
         style={{
           display: 'flex',
           borderBottom: `1px solid ${dark ? T.borderDark : T.border}`,
           marginBottom: '0',
           position: 'sticky',
-          top: 0,
+          top: '57px',
           zIndex: 10,
           background: dark ? T.bgDark : T.bg,
         }}
@@ -443,6 +480,7 @@ export function ResultsContainer({ wizard, dark }) {
           <button
             key={tab.key}
             role="tab"
+            tabIndex={activeTab === tab.key ? 0 : -1}
             id={`tab-${tab.key}`}
             aria-selected={activeTab === tab.key}
             aria-controls={`tabpanel-${tab.key}`}
@@ -474,6 +512,15 @@ export function ResultsContainer({ wizard, dark }) {
           <div
             role="tablist"
             aria-label="Filter resources by category"
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const idx = filterKeys.indexOf(activeFilter);
+                const next = e.key === 'ArrowRight' ? (idx + 1) % filterKeys.length : (idx - 1 + filterKeys.length) % filterKeys.length;
+                setActiveFilter(filterKeys[next]);
+                document.getElementById(`filter-tab-${filterKeys[next]}`)?.focus();
+              }
+            }}
             style={{
               display: 'flex',
               gap: '4px',
@@ -495,6 +542,7 @@ export function ResultsContainer({ wizard, dark }) {
                 <button
                   key={key}
                   role="tab"
+                  tabIndex={isActive ? 0 : -1}
                   id={`filter-tab-${key}`}
                   aria-selected={isActive}
                   aria-controls="resource-cards-panel"
@@ -504,10 +552,10 @@ export function ResultsContainer({ wizard, dark }) {
                     fontFamily: T.font,
                     fontSize: T.sizeSmall,
                     fontWeight: isActive ? 700 : 500,
-                    color: isActive ? T.warm : subColor,
+                    color: isActive ? T.warmText : subColor,
                     background: 'none',
                     border: 'none',
-                    borderBottom: `2px solid ${isActive ? T.warm : 'transparent'}`,
+                    borderBottom: `2px solid ${isActive ? T.warmText : 'transparent'}`,
                     cursor: 'pointer',
                     whiteSpace: 'nowrap',
                     minHeight: T.touchMin,
@@ -515,6 +563,18 @@ export function ResultsContainer({ wizard, dark }) {
                     position: 'relative',
                   }}
                 >
+                  {!isAll && cat && (
+                    <span style={{
+                      display: 'inline-block',
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      background: cat.color,
+                      marginRight: '6px',
+                      opacity: isActive ? 1 : 0.5,
+                      transition: T.transition,
+                    }} aria-hidden="true" />
+                  )}
                   {label} ({count})
                 </button>
               );
@@ -674,7 +734,7 @@ export function ResultsContainer({ wizard, dark }) {
                 transition={{ duration: 0.2 }}
                 style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
-                <span style={{ color: T.warm, fontSize: '18px' }}>&#10003;</span> Copied!
+                <span style={{ color: T.warmText, fontSize: '18px' }}>&#10003;</span> Copied!
               </motion.span>
             ) : (
               <motion.span

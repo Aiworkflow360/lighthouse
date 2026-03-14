@@ -77,7 +77,7 @@ export function WizardContainer({ wizard, dark }) {
             style={{
               fontFamily: T.font,
               fontSize: T.sizeSmall,
-              color: T.warm,
+              color: T.warmText,
               margin: '0 0 12px',
               textAlign: 'center',
               fontWeight: 600,

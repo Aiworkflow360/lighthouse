@@ -137,7 +137,7 @@ export function TriageCard({ triage, dark }) {
               display: 'inline-flex', alignItems: 'center', gap: '4px',
               background: 'transparent', border: 'none', cursor: 'pointer',
               fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 500,
-              color: T.warm, padding: '10px 12px', borderRadius: T.radius,
+              color: T.warmText, padding: '10px 12px', borderRadius: T.radius,
               minHeight: T.touchMin, transition: T.transition,
             }}
             aria-expanded={expanded}

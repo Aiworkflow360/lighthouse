@@ -6,6 +6,7 @@ import '@fontsource/inter/700.css';
 import { motion, AnimatePresence } from 'motion/react';
 import { T } from './constants/theme';
 import { useDarkMode } from './hooks/useDarkMode';
+import { useBreakpoint } from './hooks/useBreakpoint';
 import { useWizardState } from './hooks/useWizardState';
 import { WizardContainer } from './components/wizard/WizardContainer';
 import { ResultsContainer } from './components/results/ResultsContainer';
@@ -69,6 +70,33 @@ if (typeof document !== 'undefined' && !document.getElementById(styleId)) {
         gap: 12px !important;
       }
     }
+    @media (forced-colors: active) {
+      [data-grid="resources"] > *, [data-grid="tools"] > * {
+        border: 2px solid ButtonText !important;
+      }
+      button, a {
+        border: 1px solid ButtonText !important;
+      }
+    }
+    @media print {
+      header, footer, .skip-link,
+      [data-print-hide] {
+        display: none !important;
+      }
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        color: #666;
+      }
+      a[href^="tel:"]::after,
+      a[href^="#"]::after {
+        content: "" !important;
+      }
+    }
   `;
   document.head.appendChild(sheet);
 }
@@ -97,6 +125,7 @@ function App() {
   const { dark, toggle } = useDarkMode();
   const wizard = useWizardState();
   const hash = useHash();
+  const bp = useBreakpoint();
   const isResults = wizard.currentStep === 'results';
 
   const staticPage = hash === '#/about' ? 'about'
@@ -187,6 +216,7 @@ function App() {
 
           {/* Dark mode toggle */}
           <motion.button
+            data-print-hide
             onClick={toggle}
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
@@ -194,8 +224,8 @@ function App() {
               background: dark ? T.bgCardDark : T.bgCard,
               border: `1px solid ${dark ? T.borderDark : T.border}`,
               borderRadius: T.radiusFull,
-              width: '40px',
-              height: '40px',
+              width: T.touchMin,
+              height: T.touchMin,
               cursor: 'pointer',
               fontSize: '18px',
               display: 'flex',
@@ -224,7 +254,7 @@ function App() {
       </header>
 
       {/* ── Main with page transitions ───────────────────── */}
-      <main id="main-content" style={{ paddingTop: '8px', paddingBottom: '40px' }}>
+      <main id="main-content" style={{ paddingTop: '8px', paddingBottom: (bp === 'mobile' && isResults) ? '80px' : '40px' }}>
         <AnimatePresence mode="wait">
           {staticPage ? (
             <motion.div
@@ -295,14 +325,55 @@ function App() {
           Need to talk? Samaritans: <a href="tel:116123" style={{ color: 'inherit', fontWeight: 600 }}>116 123</a> (24/7, free)
         </p>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '16px' }}>
-          <a href="#/about" style={{ color: dark ? T.textSecondaryDark : T.textSecondary, textDecoration: 'none', fontWeight: 500 }}>About</a>
-          <a href="#/privacy" style={{ color: dark ? T.textSecondaryDark : T.textSecondary, textDecoration: 'none', fontWeight: 500 }}>Privacy</a>
-          <a href="#/accessibility" style={{ color: dark ? T.textSecondaryDark : T.textSecondary, textDecoration: 'none', fontWeight: 500 }}>Accessibility</a>
+          <a href="#/about" style={{ color: dark ? T.textSecondaryDark : T.textSecondary, textDecoration: 'none', fontWeight: 500, padding: '12px 8px', display: 'inline-block' }}>About</a>
+          <a href="#/privacy" style={{ color: dark ? T.textSecondaryDark : T.textSecondary, textDecoration: 'none', fontWeight: 500, padding: '12px 8px', display: 'inline-block' }}>Privacy</a>
+          <a href="#/accessibility" style={{ color: dark ? T.textSecondaryDark : T.textSecondary, textDecoration: 'none', fontWeight: 500, padding: '12px 8px', display: 'inline-block' }}>Accessibility</a>
         </div>
         <p style={{ margin: 0, fontSize: '12px', lineHeight: '1.5', maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto' }}>
           Information was accurate as of March 2026. Always verify directly with the organisation. Lighthouse does not provide professional advice.
         </p>
       </footer>
+
+      {/* ── Persistent mobile crisis bar ─────────────────── */}
+      {bp === 'mobile' && isResults && (
+        <div data-print-hide style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 100,
+          background: dark ? 'rgba(28,25,23,0.95)' : 'rgba(255,255,255,0.95)',
+          backdropFilter: T.glassBlur,
+          WebkitBackdropFilter: T.glassBlur,
+          borderTop: `1px solid ${dark ? T.borderDark : 'rgba(245,158,11,0.15)'}`,
+          padding: '10px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          fontFamily: T.font,
+          fontSize: '13px',
+        }}>
+          <span style={{ color: dark ? T.textSecondaryDark : T.textSecondary }}>Need to talk?</span>
+          <a
+            href="tel:116123"
+            style={{
+              color: '#FFFFFF',
+              background: T.primary,
+              padding: '6px 14px',
+              borderRadius: T.radiusFull,
+              fontWeight: 700,
+              fontSize: '13px',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+            }}
+          >
+            {'\u260E'} Samaritans 116 123
+          </a>
+        </div>
+      )}
     </div>
   );
 }
@@ -695,7 +766,6 @@ function Landing({ dark, wizard }) {
               minHeight: T.touchMin,
               boxShadow: '0 4px 14px rgba(37,99,235,0.18)',
               transition: T.transition,
-              animation: 'lh-pulse 4s ease-in-out infinite',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '10px',
@@ -949,16 +1019,18 @@ function Landing({ dark, wizard }) {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.55 + i * 0.1 }}
+              onClick={wizard.next}
               whileHover={{ y: -4, boxShadow: T.shadowCardHover }}
+              whileTap={{ scale: 0.98 }}
               style={{
                 padding: '20px',
                 borderRadius: T.radius,
                 background: dark ? T.bgCardDark : T.bgCard,
                 border: `1px solid ${dark ? T.borderDark : T.border}`,
-                borderLeft: '3px solid #F59E0B',
+                borderLeft: `3px solid ${card.color}`,
                 textAlign: 'left',
                 boxShadow: T.shadow,
-                cursor: 'default',
+                cursor: 'pointer',
                 transition: T.transition,
               }}
             >
@@ -993,6 +1065,15 @@ function Landing({ dark, wizard }) {
                 lineHeight: '1.5',
               }}>
                 {card.desc}
+              </div>
+              <div style={{
+                fontFamily: T.font,
+                fontSize: '13px',
+                fontWeight: 600,
+                color: T.primary,
+                marginTop: '10px',
+              }}>
+                Find support {'\u2192'}
               </div>
             </motion.div>
           ))}

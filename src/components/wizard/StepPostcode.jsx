@@ -100,7 +100,7 @@ function SuccessCheck() {
         transition={{ duration: 0.5, ease: 'easeOut' }}
         style={{
           fontSize: '44px',
-          color: T.warm,
+          color: T.warmText,
           lineHeight: 1,
         }}
       >
@@ -109,7 +109,7 @@ function SuccessCheck() {
       <span style={{
         fontFamily: T.font,
         fontSize: T.sizeH2,
-        color: T.warm,
+        color: T.warmText,
         fontWeight: 700,
       }}>
         Found it!
@@ -251,7 +251,7 @@ export function StepPostcode({ wizard, dark }) {
             top: '50%',
             transform: 'translateY(-50%)',
             fontSize: '18px',
-            color: inputFocused ? T.warm : T.textMuted,
+            color: inputFocused ? T.warmText : T.textMuted,
             pointerEvents: 'none',
             transition: 'color 0.2s ease',
           }}>

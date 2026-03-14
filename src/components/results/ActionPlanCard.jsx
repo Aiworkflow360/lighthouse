@@ -167,7 +167,7 @@ function ActionStep({ step, index, isChecked, onToggle, dark }) {
             fontFamily: T.font,
             fontSize: '13px',
             fontWeight: 700,
-            color: isChecked ? T.warm : (dark ? T.textMutedDark : T.textMuted),
+            color: isChecked ? T.warmText : (dark ? T.textMutedDark : T.textMuted),
             background: isChecked
               ? (dark ? 'rgba(245,158,11,0.15)' : 'rgba(245,158,11,0.1)')
               : (dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'),
@@ -187,7 +187,7 @@ function ActionStep({ step, index, isChecked, onToggle, dark }) {
             fontFamily: T.font,
             fontSize: T.sizeBody,
             fontWeight: 600,
-            color: isChecked ? T.warm : textColor,
+            color: isChecked ? T.warmText : textColor,
             flex: 1,
             lineHeight: '1.4',
             textDecoration: isChecked ? 'line-through' : 'none',
@@ -429,14 +429,14 @@ export function ActionPlanCard({ plan, dark, wizard, defaultExpanded }) {
               display: 'inline-flex', alignItems: 'center', gap: '4px',
               background: 'transparent', border: 'none', cursor: 'pointer',
               fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 500,
-              color: T.warm, padding: '10px 12px', borderRadius: T.radius,
+              color: T.warmText, padding: '10px 12px', borderRadius: T.radius,
               minHeight: T.touchMin, transition: T.transition,
             }}
             aria-expanded={cardExpanded}
             aria-label={cardExpanded ? 'Collapse action plan' : 'Expand action plan'}
           >
             {cardExpanded ? 'Hide' : 'Show'}
-            <ChevronIcon size={18} color={T.warm} up={cardExpanded} />
+            <ChevronIcon size={18} color={T.warmText} up={cardExpanded} />
           </button>
         </div>
 
@@ -472,7 +472,7 @@ export function ActionPlanCard({ plan, dark, wizard, defaultExpanded }) {
             }}>
               <span style={{
                 fontFamily: T.font, fontSize: '13px', fontWeight: 600,
-                color: completedCount === totalCount ? T.warm : subColor,
+                color: completedCount === totalCount ? T.warmText : subColor,
               }}>
                 {completedCount === totalCount
                   ? 'All done!'
@@ -480,7 +480,7 @@ export function ActionPlanCard({ plan, dark, wizard, defaultExpanded }) {
               </span>
               <span style={{
                 fontFamily: T.font, fontSize: '13px', fontWeight: 700,
-                color: T.warm,
+                color: T.warmText,
                 fontVariantNumeric: 'tabular-nums',
               }}>
                 {progressPercent}%
@@ -533,7 +533,7 @@ export function ActionPlanCard({ plan, dark, wizard, defaultExpanded }) {
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: '6px',
                     padding: '8px 14px', fontFamily: T.font, fontSize: '13px',
-                    fontWeight: 600, color: copied ? T.warm : subColor,
+                    fontWeight: 600, color: copied ? T.warmText : subColor,
                     background: 'transparent',
                     border: `1.5px solid ${copied ? T.warm : (dark ? T.borderDark : T.border)}`,
                     borderRadius: T.radius, cursor: 'pointer',

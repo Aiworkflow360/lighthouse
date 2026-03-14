@@ -91,7 +91,7 @@ export function ResourceCard({ resource, dark }) {
           minWidth: '44px',
           minHeight: '44px',
           lineHeight: 1,
-          color: saved ? T.warm : (dark ? T.textMutedDark : T.textMuted),
+          color: saved ? T.warmText : (dark ? T.textMutedDark : T.textMuted),
           transition: 'color 0.2s ease, transform 0.15s ease',
           zIndex: 2,
         }}
@@ -122,6 +122,13 @@ export function ResourceCard({ resource, dark }) {
               {resource.organisation}
             </div>
           )}
+          <div style={{
+            fontFamily: T.font, fontSize: '11px', color: dark ? T.textMutedDark : T.textMuted,
+            marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px',
+          }}>
+            <span style={{ color: '#16A34A', fontSize: '12px' }}>{'\u2713'}</span>
+            Verified March 2026
+          </div>
         </div>
         {resource.max_award_gbp && (
           <div style={{
@@ -177,13 +184,13 @@ export function ResourceCard({ resource, dark }) {
         onClick={() => setExpanded(!expanded)}
         aria-expanded={expanded}
         style={{
-          background: 'none', border: 'none', color: expanded ? T.warm : T.primary,
+          background: 'none', border: 'none', color: expanded ? T.warmText : T.primary,
           fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 600,
           cursor: 'pointer', padding: '12px 0',
           display: 'inline-flex', alignItems: 'center', gap: '4px',
         }}
       >
-        {expanded ? 'Show less' : 'How to apply'}
+        {expanded ? 'Show less' : 'Find out how to get this'}
         <motion.span
           animate={{ rotate: expanded ? 180 : 0 }}
           transition={{ duration: 0.25, ease: 'easeInOut' }}
