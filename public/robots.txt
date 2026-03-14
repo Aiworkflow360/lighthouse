@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lighthouse-rust-two.vercel.app/sitemap.xml

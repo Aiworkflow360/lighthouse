@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 
-const STEPS = ['landing', 'condition', 'age', 'postcode', 'needs', 'results'];
+const STEPS = ['landing', 'condition', 'postcode', 'needs', 'results'];
 
 function encodeState(state) {
   try {
@@ -21,15 +21,14 @@ export function useWizardState() {
     const q = params.get('q');
     if (q) {
       const decoded = decodeState(q);
-      if (decoded) return { step: 5, ...decoded }; // Go straight to results
+      if (decoded) return { step: 4, ...decoded }; // Go straight to results
     }
-    return { step: 0, condition: null, conditionCategory: null, age: null, postcode: null, postcodeData: null, needs: [] };
+    return { step: 0, condition: null, conditionCategory: null, postcode: null, postcodeData: null, needs: [] };
   }, []);
 
   const [step, setStep] = useState(initialState.step);
   const [condition, setCondition] = useState(initialState.condition);
   const [conditionCategory, setConditionCategory] = useState(initialState.conditionCategory);
-  const [age, setAge] = useState(initialState.age);
   const [postcode, setPostcode] = useState(initialState.postcode);
   const [postcodeData, setPostcodeData] = useState(initialState.postcodeData);
   const [needs, setNeeds] = useState(initialState.needs);
@@ -56,7 +55,6 @@ export function useWizardState() {
     setStep(0);
     setCondition(null);
     setConditionCategory(null);
-    setAge(null);
     setPostcode(null);
     setPostcodeData(null);
     setNeeds([]);
@@ -64,24 +62,23 @@ export function useWizardState() {
   }, []);
 
   const getShareUrl = useCallback(() => {
-    const state = { condition, conditionCategory, age, postcode, postcodeData, needs };
+    const state = { condition, conditionCategory, postcode, postcodeData, needs };
     const encoded = encodeState(state);
     return `${window.location.origin}${window.location.pathname}?q=${encoded}`;
-  }, [condition, conditionCategory, age, postcode, postcodeData, needs]);
+  }, [condition, conditionCategory, postcode, postcodeData, needs]);
 
   // Update URL when reaching results
   const goToResults = useCallback(() => {
-    const state = { condition, conditionCategory, age, postcode, postcodeData, needs };
+    const state = { condition, conditionCategory, postcode, postcodeData, needs };
     const encoded = encodeState(state);
     window.history.replaceState(null, '', `?q=${encoded}`);
-    setStep(5);
-  }, [condition, conditionCategory, age, postcode, postcodeData, needs]);
+    setStep(4);
+  }, [condition, conditionCategory, postcode, postcodeData, needs]);
 
   return {
     step, currentStep, STEPS,
     condition, setCondition,
     conditionCategory, setConditionCategory,
-    age, setAge,
     postcode, setPostcode,
     postcodeData, setPostcodeData,
     needs, setNeeds,

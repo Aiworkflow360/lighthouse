@@ -16,10 +16,31 @@ const shimmerStyle = {
 export function ResourceCard({ resource, dark }) {
   const [expanded, setExpanded] = useState(false);
   const [hovered, setHovered] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState(() => {
+    try {
+      const savedIds = JSON.parse(localStorage.getItem('lighthouse-saved') || '[]');
+      return savedIds.includes(resource.id);
+    } catch { return false; }
+  });
   const textColor = dark ? T.textDark : T.text;
   const subColor = dark ? T.textSecondaryDark : T.textSecondary;
   const cat = CATEGORIES[resource.category] || CATEGORIES.practical;
+
+  const toggleSave = (e) => {
+    e.stopPropagation();
+    const next = !saved;
+    setSaved(next);
+    try {
+      const savedIds = JSON.parse(localStorage.getItem('lighthouse-saved') || '[]');
+      if (next) {
+        if (!savedIds.includes(resource.id)) savedIds.push(resource.id);
+      } else {
+        const idx = savedIds.indexOf(resource.id);
+        if (idx > -1) savedIds.splice(idx, 1);
+      }
+      localStorage.setItem('lighthouse-saved', JSON.stringify(savedIds));
+    } catch {}
+  };
 
   // Gradient for left border stripe — amber at top, category colour at bottom
   const stripeGradient = `linear-gradient(180deg, ${T.warm} 0%, ${cat.color} 100%)`;
@@ -56,7 +77,7 @@ export function ResourceCard({ resource, dark }) {
     >
       {/* Save/bookmark heart toggle */}
       <button
-        onClick={(e) => { e.stopPropagation(); setSaved(!saved); }}
+        onClick={toggleSave}
         aria-label={saved ? 'Remove from saved' : 'Save resource'}
         style={{
           position: 'absolute',

@@ -1,11 +1,53 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lighthouse — Find support for your family</title>
     <meta name="description" content="Free resource navigator for UK families of children with additional needs. Find grants, charities, therapists, and support groups. No signup needed." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Lighthouse — Find support for your family" />
+    <meta property="og:description" content="Free resource navigator for UK families of children with additional needs. Find grants, charities, therapists, and support groups in 60 seconds." />
+    <meta property="og:image" content="https://lighthouse-rust-two.vercel.app/og-image.png" />
+    <meta property="og:url" content="https://lighthouse-rust-two.vercel.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_GB" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Lighthouse — Find support for your family" />
+    <meta name="twitter:description" content="Free resource navigator for UK families. Find grants, charities, and support groups in 60 seconds." />
+    <meta name="twitter:image" content="https://lighthouse-rust-two.vercel.app/og-image.png" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://lighthouse-rust-two.vercel.app/" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Lighthouse",
+      "url": "https://lighthouse-rust-two.vercel.app/",
+      "description": "Free resource navigator for UK families of children with additional needs",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://lighthouse-rust-two.vercel.app/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Lighthouse",
+      "url": "https://lighthouse-rust-two.vercel.app/",
+      "description": "Free resource navigator helping UK families find support for children with additional needs"
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

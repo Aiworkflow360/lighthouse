@@ -2,8 +2,9 @@
 
 export async function lookupPostcode(postcode, { signal } = {}) {
   const clean = postcode.replace(/\s+/g, '').toUpperCase();
+  const outcode = clean.slice(0, -3);
   try {
-    const resp = await fetch(`https://api.postcodes.io/postcodes/${clean}`, { signal });
+    const resp = await fetch(`https://api.postcodes.io/outcodes/${outcode}`, { signal });
     if (resp.status === 404) {
       return { error: true, message: 'Invalid postcode' };
     }
@@ -15,12 +16,12 @@ export async function lookupPostcode(postcode, { signal } = {}) {
       return { error: true, message: 'Invalid postcode' };
     }
     return {
-      postcode: data.result.postcode,
+      postcode: outcode,
       outcode: data.result.outcode,
-      region: data.result.region,
-      nhsRegion: data.result.nhs_ha,
-      localAuthority: data.result.admin_district,
-      country: data.result.country,
+      region: data.result.region || null,
+      nhsRegion: null,
+      localAuthority: Array.isArray(data.result.admin_district) ? data.result.admin_district[0] : data.result.admin_district,
+      country: Array.isArray(data.result.country) ? data.result.country[0] : data.result.country,
       latitude: data.result.latitude,
       longitude: data.result.longitude,
     };

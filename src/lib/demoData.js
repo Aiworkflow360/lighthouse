@@ -17,6 +17,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://www.gov.uk/disability-living-allowance-children',
     apply_phone: '0800 121 4600',
     turnaround_days: 40,
+    last_verified: '2026-03',
   },
   {
     id: 'carers-allowance',
@@ -32,6 +33,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://www.gov.uk/carers-allowance',
     apply_phone: '0800 731 0297',
     turnaround_days: 28,
+    last_verified: '2026-03',
   },
   {
     id: 'family-fund',
@@ -47,6 +49,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://www.familyfund.org.uk/apply',
     apply_phone: '01904 550055',
     turnaround_days: 42,
+    last_verified: '2026-03',
   },
   {
     id: 'react-charity',
@@ -62,6 +65,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://reactcharity.org/apply',
     apply_phone: '020 8940 2575',
     turnaround_days: 2,
+    last_verified: '2026-03',
   },
   {
     id: 'ylvc-grant',
@@ -77,6 +81,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://www.younglivesvscancer.org.uk/what-we-do/the-six-ways-we-help/',
     apply_phone: '0800 012 1020',
     turnaround_days: 7,
+    last_verified: '2026-03',
   },
   {
     id: 'htcs',
@@ -91,6 +96,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://www.nhs.uk/nhs-services/help-with-health-costs/healthcare-travel-costs-scheme-htcs/',
     apply_phone: '0300 330 1343', // NHS Business Services Authority helpline
     turnaround_days: 1,
+    last_verified: '2026-03',
   },
 
   // === MEDICAL ===
@@ -106,6 +112,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Your GP or local hospital will refer you. If you need to check which PTC covers your area, call CCLG.',
     apply_url: 'https://www.cclg.org.uk/young-people-and-cancer/i-have-cancer/hospitals/principal-treatment-centres',
     apply_phone: '0116 252 5858',
+    last_verified: '2026-03',
   },
   {
     id: 'chf-specialist',
@@ -119,6 +126,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Contact their helpline or browse their condition-specific information pages.',
     apply_url: 'https://www.chfed.org.uk/',
     apply_phone: '0808 808 5000',
+    last_verified: '2026-03',
   },
 
   // === EMOTIONAL ===
@@ -134,6 +142,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline. Open Monday to Friday, 9am-5pm.',
     apply_phone: '0808 8088 100',
     apply_url: 'https://www.togetherforshortlives.org.uk/get-support/',
+    last_verified: '2026-03',
   },
   {
     id: 'rainbow-trust',
@@ -148,6 +157,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://www.rainbowtrust.org.uk/support',
     apply_phone: '01372 220000',
     turnaround_days: 14,
+    last_verified: '2026-03',
   },
   {
     id: 'macmillan-line',
@@ -161,6 +171,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call or use the online chat. No referral needed.',
     apply_phone: '0808 808 0000',
     apply_url: 'https://www.macmillan.org.uk/cancer-information-and-support/get-help',
+    last_verified: '2026-03',
   },
   {
     id: 'sibs-support',
@@ -174,6 +185,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Visit the website to access online support groups, workshops, and information resources. No referral needed.',
     apply_url: 'https://www.sibs.org.uk/',
     apply_phone: '01535 645453',
+    last_verified: '2026-03',
   },
 
   // === PRACTICAL ===
@@ -189,6 +201,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: "Ask your child's ward nurse or hospital social worker to refer you. Some Houses accept self-referral.",
     apply_url: 'https://rmhc.org.uk/our-houses/',
     apply_phone: '020 7462 4800',
+    last_verified: '2026-03',
   },
   {
     id: 'make-a-wish',
@@ -203,6 +216,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://www.make-a-wish.org.uk/refer-a-child/',
     apply_phone: '01276 405060',
     turnaround_days: 90,
+    last_verified: '2026-03',
   },
   {
     id: 'starlight',
@@ -216,6 +230,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://www.starlight.org.uk/',
     apply_phone: '020 7262 2881',
     turnaround_days: 60,
+    last_verified: '2026-03',
   },
   {
     id: 'wellchild',
@@ -229,6 +244,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Contact WellChild via phone or website to discuss your needs and find out about services in your area.',
     apply_url: 'https://www.wellchild.org.uk/',
     apply_phone: '01242 530007',
+    last_verified: '2026-03',
   },
 
   // === MENTAL HEALTH ===
@@ -244,6 +260,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline or use the online chat. No referral needed. Open Mon, Thu, Fri 9.30am-4pm and Tue, Wed 9.30am-6pm.',
     apply_url: 'https://www.youngminds.org.uk/parent/parents-helpline/',
     apply_phone: '0808 802 5544',
+    last_verified: '2026-03',
   },
   {
     id: 'camhs-referral',
@@ -257,6 +274,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Ask your GP for a referral, or check your local CAMHS website to see if they accept self-referrals. Your child\'s school can also refer.',
     apply_url: 'https://www.nhs.uk/mental-health/nhs-voluntary-charity-services/nhs-services/children-young-people-mental-health-services-cypmhs/',
     apply_phone: '111', // NHS 111 can direct to local CAMHS
+    last_verified: '2026-03',
   },
   {
     id: 'kooth-counselling',
@@ -269,6 +287,7 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'Young people aged 10-25. Free and anonymous, no GP referral needed.',
     how_to_apply: 'Your child can sign up at kooth.com using just a nickname. No personal details needed. Available every day of the year.',
     apply_url: 'https://www.kooth.com/',
+    last_verified: '2026-03',
   },
   {
     id: 'place2be',
@@ -282,6 +301,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Ask your child\'s school if they work with Place2Be, or visit the website to find out which schools are partnered.',
     apply_url: 'https://www.place2be.org.uk/our-services/',
     apply_phone: '020 7923 5500',
+    last_verified: '2026-03',
   },
   {
     id: 'childline',
@@ -295,6 +315,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call 0800 1111 any time, day or night. Or start an online chat at childline.org.uk. No referral needed.',
     apply_url: 'https://www.childline.org.uk/',
     apply_phone: '0800 1111',
+    last_verified: '2026-03',
   },
   {
     id: 'anna-freud',
@@ -308,6 +329,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Browse free resources and toolkits on the website. For clinical services, referrals come through local NHS services.',
     apply_url: 'https://www.annafreud.org/parents-and-carers/',
     apply_phone: '020 7794 2313',
+    last_verified: '2026-03',
   },
   {
     id: 'minded-elearning',
@@ -320,6 +342,7 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'Free for anyone \u2014 parents, carers, teachers, and professionals. No registration required for many modules.',
     how_to_apply: 'Visit the website and start learning immediately. Self-paced modules you can complete at any time.',
     apply_url: 'https://www.minded.org.uk/',
+    last_verified: '2026-03',
   },
 
   // === DEVELOPMENTAL / AUTISM ===
@@ -336,6 +359,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline Mon-Thu 10am-4pm, Fri 9am-3pm. No referral needed.',
     apply_url: 'https://www.autism.org.uk/advice-and-guidance/help-and-support',
     apply_phone: '0808 800 4104',
+    last_verified: '2026-03',
   },
   {
     id: 'ambitious-autism',
@@ -350,6 +374,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Visit their website for resources, or call to find out about schools and programmes.',
     apply_url: 'https://www.ambitiousaboutautism.org.uk/',
     apply_phone: '020 8815 5444',
+    last_verified: '2026-03',
   },
   {
     id: 'adhd-foundation',
@@ -364,6 +389,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call or visit the website for information about services in your area. Open Mon-Fri 9am-5pm.',
     apply_url: 'https://www.adhdfoundation.org.uk/',
     apply_phone: '0151 541 9020',
+    last_verified: '2026-03',
   },
   {
     id: 'cerebra-grants',
@@ -379,6 +405,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://cerebra.org.uk/what-we-do/',
     apply_phone: '01267 244200',
     turnaround_days: 28,
+    last_verified: '2026-03',
   },
   {
     id: 'portage-home',
@@ -392,6 +419,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Ask your health visitor, paediatrician, or local authority about the Portage service in your area.',
     apply_url: 'https://www.portage.org.uk/',
     apply_phone: '0121 244 1807',
+    last_verified: '2026-03',
   },
 
   // === SENSORY / COMMUNICATION ===
@@ -408,6 +436,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Visit the website for resources and information, or call the helpline.',
     apply_url: 'https://www.selectivemutism.org.uk/',
     apply_phone: '0800 228 9765',
+    last_verified: '2026-03',
   },
   {
     id: 'speech-language-uk',
@@ -422,6 +451,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the enquiry line or email to book a free call with a speech and language therapist.',
     apply_url: 'https://www.icancharity.org.uk/i-can-help/',
     apply_phone: '020 7843 2544',
+    last_verified: '2026-03',
   },
   {
     id: 'ndcs-support',
@@ -436,6 +466,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the freephone helpline Mon-Thu 9am-5pm, Fri 9am-12.30pm. No referral needed.',
     apply_url: 'https://www.ndcs.org.uk/',
     apply_phone: '0808 800 8880',
+    last_verified: '2026-03',
   },
   {
     id: 'rnib-children',
@@ -450,6 +481,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline or visit the website. No referral needed.',
     apply_url: 'https://www.rnib.org.uk/',
     apply_phone: '0303 123 9999',
+    last_verified: '2026-03',
   },
   {
     id: 'sense-deafblind',
@@ -464,6 +496,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline or complete the online enquiry form. A family adviser can visit you at home.',
     apply_url: 'https://www.sense.org.uk/',
     apply_phone: '0300 330 9256',
+    last_verified: '2026-03',
   },
   {
     id: 'batod-network',
@@ -477,6 +510,7 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'Parents of deaf children and professionals working with them across the UK.',
     how_to_apply: 'Visit the website to find local Teachers of the Deaf and access resources for families.',
     apply_url: 'https://www.batod.org.uk/',
+    last_verified: '2026-03',
   },
 
   // === LEARNING ===
@@ -493,6 +527,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline (Tue 10am-1pm, Wed-Thu 1pm-3pm) or email. Free and confidential.',
     apply_url: 'https://www.bdadyslexia.org.uk/services/helpline',
     apply_phone: '0333 405 4567',
+    last_verified: '2026-03',
   },
   {
     id: 'mencap-helpline',
@@ -507,6 +542,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the freephone helpline Mon-Fri 9am-3pm, or email for a response within 5 working days.',
     apply_url: 'https://www.mencap.org.uk/advice-and-support/learning-disability-helpline',
     apply_phone: '0808 808 1111',
+    last_verified: '2026-03',
   },
   {
     id: 'dyslexia-action',
@@ -520,7 +556,8 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'Children and adults who need a formal dyslexia assessment or specialist tuition. Fees apply for assessments.',
     how_to_apply: 'Book an assessment online or call to discuss your needs. Assessments can be carried out in person or online.',
     apply_url: 'https://dyslexiaaction.org.uk/',
-    apply_phone: '0330 159 8022', // verify - Dyslexia Action (now part of Real Group)
+    apply_phone: '0330 159 8022',
+    last_verified: '2026-03',
   },
   {
     id: 'downs-syndrome-learning',
@@ -534,6 +571,7 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'Parents, carers, and educators supporting children with Down syndrome worldwide.',
     how_to_apply: 'Browse free resources online. Online courses and specialist publications also available.',
     apply_url: 'https://www.dseinternational.org/',
+    last_verified: '2026-03',
   },
   {
     id: 'nasen-sen',
@@ -546,6 +584,7 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'Parents, teachers, and SENCOs across the UK. Many resources are free; some require membership.',
     how_to_apply: 'Browse the free resources on their website. Schools can join as members for full access.',
     apply_url: 'https://nasen.org.uk/',
+    last_verified: '2026-03',
   },
 
   // === PHYSICAL ===
@@ -562,6 +601,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://www.whizz-kidz.org.uk/apply/',
     apply_phone: '020 7233 6600',
     turnaround_days: 56,
+    last_verified: '2026-03',
   },
   {
     id: 'scope-helpline',
@@ -575,6 +615,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the freephone helpline Mon-Sat 8am-8pm, Sun 10am-6pm. No referral needed.',
     apply_url: 'https://www.scope.org.uk/helpline',
     apply_phone: '0808 800 3333',
+    last_verified: '2026-03',
   },
   {
     id: 'newlife-equipment',
@@ -588,8 +629,9 @@ export const DEMO_RESOURCES = [
     max_award_gbp: 500,
     how_to_apply: 'A health professional (physiotherapist, OT, or similar) must apply on your child\'s behalf. Ask your child\'s therapist to contact Newlife.',
     apply_url: 'https://www.newlifecharity.co.uk/equipment-grants/',
-    apply_phone: '0800 902 0095', // verify - Newlife Foundation helpline
+    apply_phone: '0800 902 0095',
     turnaround_days: 21,
+    last_verified: '2026-03',
   },
   {
     id: 'mobility-trust',
@@ -602,8 +644,9 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'Families with a disabled child who needs a wheelchair accessible vehicle and cannot afford the full cost.',
     how_to_apply: 'Contact Mobility Trust to discuss your situation. You will need to provide details of your child\'s mobility needs and financial circumstances.',
     apply_url: 'https://www.mobilitytrust.org.uk/',
-    apply_phone: '0300 456 4567', // verify - Mobility Trust phone
+    apply_phone: '0300 456 4567',
     turnaround_days: 42,
+    last_verified: '2026-03',
   },
   {
     id: 'steps-charity',
@@ -617,7 +660,8 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'Families of children with lower limb conditions including clubfoot, DDH, and other orthopaedic conditions.',
     how_to_apply: 'Call the helpline or visit the website for resources and to connect with other families.',
     apply_url: 'https://www.steps-charity.org.uk/',
-    apply_phone: '01925 750271', // verify - Steps Charity Worldwide
+    apply_phone: '01925 750271',
+    last_verified: '2026-03',
   },
 
   // === CHRONIC ===
@@ -634,6 +678,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline Mon-Fri 9am-6pm or email. No referral needed.',
     apply_url: 'https://www.diabetes.org.uk/support-for-you',
     apply_phone: '0345 123 2399',
+    last_verified: '2026-03',
   },
   {
     id: 'asthma-lung-uk',
@@ -648,6 +693,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call Mon-Fri 9am-5pm, or WhatsApp on 07378 606 728. You can also email for a response within 2 working days.',
     apply_url: 'https://www.asthmaandlung.org.uk/helpline',
     apply_phone: '0300 222 5800',
+    last_verified: '2026-03',
   },
   {
     id: 'crohns-colitis-uk',
@@ -662,6 +708,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call Mon-Fri 10am-3pm, use live chat on the website, or email.',
     apply_url: 'https://www.crohnsandcolitis.org.uk/info-support/support-for-you/helpline-service',
     apply_phone: '0300 222 5700',
+    last_verified: '2026-03',
   },
   {
     id: 'cystic-fibrosis-trust',
@@ -676,6 +723,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline Mon-Fri 9am-5pm or email. No referral needed.',
     apply_url: 'https://www.cysticfibrosis.org.uk/support',
     apply_phone: '0300 373 1000',
+    last_verified: '2026-03',
   },
   {
     id: 'jdrf-type1',
@@ -690,6 +738,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Visit the website to find local support groups or request a peer support match.',
     apply_url: 'https://jdrf.org.uk/',
     apply_phone: '020 7713 2030',
+    last_verified: '2026-03',
   },
 
   // === EDUCATION / SEN ===
@@ -705,6 +754,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Book a callback on the website, or call the helpline on Tue, Wed, or Fri 9.30am-2.30pm.',
     apply_url: 'https://www.ipsea.org.uk/advice-line',
     apply_phone: '0300 018 4016',
+    last_verified: '2026-03',
   },
   {
     id: 'contact-ehcp',
@@ -718,6 +768,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the freephone helpline Mon-Fri 9.30am-5pm, or email.',
     apply_url: 'https://contact.org.uk/help-for-families/information-advice-services/our-helpline/',
     apply_phone: '0808 808 3555',
+    last_verified: '2026-03',
   },
   {
     id: 'cdc-resources',
@@ -731,6 +782,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Browse their free resources online, or contact for more information.',
     apply_url: 'https://councilfordisabledchildren.org.uk/resources',
     apply_phone: '020 7843 6000',
+    last_verified: '2026-03',
   },
   {
     id: 'sossen-advice',
@@ -744,6 +796,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call during term time, or book a 1:1 session for more complex cases. Check their website for current opening hours.',
     apply_url: 'https://sossen.org.uk/services/helpline/',
     apply_phone: '020 8538 3731',
+    last_verified: '2026-03',
   },
   {
     id: 'sendiass',
@@ -756,6 +809,7 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'Any parent or young person (0-25) with SEN or a disability in England. Each local authority has its own service.',
     how_to_apply: 'Search for your local SENDIASS on the Council for Disabled Children website, or ask your child\'s school for contact details.',
     apply_url: 'https://councilfordisabledchildren.org.uk/information-advice-and-support-services-network/find-your-local-iass',
+    last_verified: '2026-03',
   },
 
   // === CROSS-CUTTING FINANCIAL ===
@@ -772,6 +826,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://contact.org.uk/',
     apply_phone: '0808 808 3555',
     turnaround_days: 14,
+    last_verified: '2026-03',
   },
   {
     id: 'turn2us-calculator',
@@ -785,6 +840,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Use the free calculator online. No personal details stored. You can also search for charitable grants.',
     apply_url: 'https://benefits-calculator.turn2us.org.uk/',
     apply_phone: '0808 802 2000',
+    last_verified: '2026-03',
   },
 
   // === NEUROLOGICAL ===
@@ -801,6 +857,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline Mon-Fri 8.30am-5pm, use live chat, or email.',
     apply_url: 'https://www.epilepsy.org.uk/info/support',
     apply_phone: '0808 800 5050',
+    last_verified: '2026-03',
   },
   {
     id: 'epilepsy-action-grants',
@@ -817,6 +874,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://www.epilepsy.org.uk/info/support/grants',
     apply_phone: '0808 800 5050',
     turnaround_days: 21,
+    last_verified: '2026-03',
   },
   {
     id: 'mduk-grants',
@@ -833,6 +891,7 @@ export const DEMO_RESOURCES = [
     apply_url: 'https://www.musculardystrophyuk.org/support/grants/',
     apply_phone: '0800 652 6352',
     turnaround_days: 28,
+    last_verified: '2026-03',
   },
   {
     id: 'cerebral-palsy-cymru',
@@ -847,6 +906,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Self-refer via the website or ask your child\'s paediatrician, GP, or health visitor to refer.',
     apply_url: 'https://www.cerebralpalsycymru.org/',
     apply_phone: '029 2052 2600',
+    last_verified: '2026-03',
   },
   {
     id: 'epilepsy-society',
@@ -861,6 +921,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Browse their comprehensive resources online or call the helpline for personalised information.',
     apply_url: 'https://epilepsysociety.org.uk/',
     apply_phone: '01494 601 400',
+    last_verified: '2026-03',
   },
   {
     id: 'brain-tumour-charity',
@@ -875,6 +936,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the support line Mon-Fri 9am-5pm, email, or use the live chat.',
     apply_url: 'https://www.thebraintumourcharity.org/get-support/',
     apply_phone: '0808 800 0004',
+    last_verified: '2026-03',
   },
 
   // === GENETIC ===
@@ -890,6 +952,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline Mon-Fri 9.30am-5pm or email. They can also help you find a specialist support group for your child\'s specific condition.',
     apply_url: 'https://geneticalliance.org.uk/',
     apply_phone: '020 7831 0883',
+    last_verified: '2026-03',
   },
   {
     id: 'unique-rare-chromosome',
@@ -904,6 +967,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Register on the website to access guides and connect with other families. Free to join.',
     apply_url: 'https://www.rarechromo.org/',
     apply_phone: '01883 723356',
+    last_verified: '2026-03',
   },
   {
     id: 'downs-syndrome-association',
@@ -918,6 +982,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline Mon-Fri 10am-4pm, or email. No referral needed.',
     apply_url: 'https://www.downs-syndrome.org.uk/',
     apply_phone: '0333 1212 300',
+    last_verified: '2026-03',
   },
   {
     id: 'syndromes-without-name',
@@ -932,6 +997,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Join online for free. Access forums, local meet-ups, and one-to-one support from SWAN UK volunteers.',
     apply_url: 'https://www.undiagnosed.org.uk/',
     apply_phone: '020 7704 3141',
+    last_verified: '2026-03',
   },
   {
     id: 'together-genetic',
@@ -945,22 +1011,10 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline or search their directory for services near you.',
     apply_url: 'https://www.togetherforshortlives.org.uk/get-support/',
     apply_phone: '0808 8088 100',
+    last_verified: '2026-03',
   },
 
   // === RARE DISEASE ===
-  {
-    id: 'nord-info',
-    category: 'practical',
-    type: 'information',
-    conditionCategory: 'rare',
-    title: 'NORD \u2014 Rare Disease Information & Patient Assistance',
-    organisation: 'National Organization for Rare Disorders (NORD)',
-    description: 'Comprehensive rare disease database with information on over 1,200 conditions, including symptoms, causes, and treatment options. NORD also offers patient assistance programmes and can help families navigate accessing medications and treatments for rare diseases.',
-    eligibility_summary: 'Anyone affected by a rare disease worldwide. Some patient assistance programmes are US-focused, but the disease database is global.',
-    how_to_apply: 'Search their rare disease database online for information. Contact the helpline for patient assistance enquiries.',
-    apply_url: 'https://rarediseases.org/',
-    apply_phone: '+1 203 744 0100', // US-based organisation
-  },
   {
     id: 'findacure',
     category: 'practical',
@@ -972,7 +1026,8 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'UK families affected by rare diseases, and patient advocacy groups wanting to accelerate research.',
     how_to_apply: 'Browse rare disease resources online or contact for help connecting with research and support networks.',
     apply_url: 'https://www.findacure.org.uk/',
-    apply_phone: '020 3862 7893', // verify - Findacure phone
+    apply_phone: '020 3862 7893',
+    last_verified: '2026-03',
   },
   {
     id: 'rare-disease-uk',
@@ -986,6 +1041,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Visit the website for resources and to find condition-specific patient groups.',
     apply_url: 'https://www.raredisease.org.uk/',
     apply_phone: '020 7831 0883',
+    last_verified: '2026-03',
   },
   {
     id: 'nihr-rare-diseases',
@@ -998,18 +1054,7 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'Patients with rare diseases in England who are interested in participating in research.',
     how_to_apply: 'Ask your child\'s consultant about the NIHR BioResource, or visit the website to learn more about ongoing studies.',
     apply_url: 'https://bioresource.nihr.ac.uk/',
-  },
-  {
-    id: 'eurordis',
-    category: 'practical',
-    type: 'information',
-    conditionCategory: 'rare',
-    title: 'EURORDIS \u2014 Rare Disease Europe',
-    organisation: 'EURORDIS (European Organisation for Rare Diseases)',
-    description: 'European network connecting rare disease patient organisations across 44 countries. Their RareConnect platform allows families to find others with the same condition worldwide, which is invaluable when a condition is too rare to have a UK-specific support group.',
-    eligibility_summary: 'Anyone affected by a rare disease across Europe.',
-    how_to_apply: 'Join the RareConnect platform online to find others with your child\'s condition.',
-    apply_url: 'https://www.eurordis.org/',
+    last_verified: '2026-03',
   },
 
   // === BEHAVIOURAL ===
@@ -1025,6 +1070,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the family support line Mon-Fri 10am-2pm, or email.',
     apply_url: 'https://www.challengingbehaviour.org.uk/',
     apply_phone: '0300 666 0126',
+    last_verified: '2026-03',
   },
   {
     id: 'ocd-action',
@@ -1039,6 +1085,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline Mon-Fri 9.30am-5pm, email, or use the webchat.',
     apply_url: 'https://www.ocdaction.org.uk/',
     apply_phone: '0300 636 5478',
+    last_verified: '2026-03',
   },
   {
     id: 'young-minds-crisis',
@@ -1052,6 +1099,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Text YM to 85258 for free, 24/7 support. Your child can also text if they are worried about their behaviour.',
     apply_url: 'https://www.youngminds.org.uk/young-person/find-help/',
     apply_phone: '85258', // text service
+    last_verified: '2026-03',
   },
   {
     id: 'pda-society',
@@ -1066,6 +1114,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Browse their resources online, or join their forum and local groups for peer support.',
     apply_url: 'https://www.pdasociety.org.uk/',
     // apply_phone omitted - PDA Society primarily uses email/web contact; verify if phone line exists
+    last_verified: '2026-03',
   },
   {
     id: 'papyrus-prevention',
@@ -1079,6 +1128,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call HOPELINEUK every day 9am-midnight, text 07860 039967, or email.',
     apply_url: 'https://www.papyrus-uk.org/',
     apply_phone: '0800 068 4141',
+    last_verified: '2026-03',
   },
 
   // === CANCER (additional) ===
@@ -1094,6 +1144,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Ask your child\'s treatment team about the Young Lives vs Cancer social worker at your hospital.',
     apply_url: 'https://www.younglivesvscancer.org.uk/',
     apply_phone: '0800 012 1020',
+    last_verified: '2026-03',
   },
   {
     id: 'ccrn-info',
@@ -1107,6 +1158,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Browse free information online or order printed booklets.',
     apply_url: 'https://www.cclg.org.uk/',
     apply_phone: '0116 252 5858',
+    last_verified: '2026-03',
   },
 
   // === HEART (additional) ===
@@ -1122,6 +1174,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the support line or request a support pack through the website.',
     apply_url: 'https://www.tinytickers.org/',
     apply_phone: '0808 196 1504',
+    last_verified: '2026-03',
   },
   {
     id: 'bhf-helpline',
@@ -1135,6 +1188,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the Heart Helpline Mon-Fri 9am-5pm. No referral needed.',
     apply_url: 'https://www.bhf.org.uk/',
     apply_phone: '0300 330 3311',
+    last_verified: '2026-03',
   },
   {
     id: 'lhm-charity',
@@ -1149,6 +1203,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call or email to speak with their family support team. They can connect you with other families.',
     apply_url: 'https://www.lhm.org.uk/',
     apply_phone: '0121 455 8982',
+    last_verified: '2026-03',
   },
   {
     id: 'heartline-families',
@@ -1162,6 +1217,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Contact via the website or phone to be matched with a parent supporter.',
     apply_url: 'https://heartline.org.uk/',
     apply_phone: '0300 030 8603',
+    last_verified: '2026-03',
   },
 
   // === RESPIRATORY ===
@@ -1178,6 +1234,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Browse free resources online or call the nurse helpline for personalised advice.',
     apply_url: 'https://www.asthmaandlung.org.uk/conditions/asthma/child/',
     apply_phone: '0300 222 5800',
+    last_verified: '2026-03',
   },
   {
     id: 'cf-trust-children',
@@ -1192,6 +1249,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline or browse condition-specific resources online.',
     apply_url: 'https://www.cysticfibrosis.org.uk/support',
     apply_phone: '0300 373 1000',
+    last_verified: '2026-03',
   },
   {
     id: 'primary-ciliary',
@@ -1205,6 +1263,7 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'Families of children and adults with PCD in the UK.',
     how_to_apply: 'Visit the website to join the support network and access resources.',
     apply_url: 'https://www.pcdsupport.org.uk/',
+    last_verified: '2026-03',
   },
   {
     id: 'breathe-easy-blf',
@@ -1218,6 +1277,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Find your local Breathe Easy group on the website. Meetings are free to attend.',
     apply_url: 'https://www.asthmaandlung.org.uk/support/breathe-easy',
     apply_phone: '0300 222 5800',
+    last_verified: '2026-03',
   },
   {
     id: 'ssa-uk',
@@ -1232,6 +1292,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Browse resources online or contact for advice.',
     apply_url: 'https://www.sleep-apnoea-trust.org/',
     apply_phone: '0800 025 3500',
+    last_verified: '2026-03',
   },
 
   // === METABOLIC ===
@@ -1247,6 +1308,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline or browse condition-specific information on the website.',
     apply_url: 'https://www.metabolicsupportuk.org/',
     apply_phone: '0800 652 3181',
+    last_verified: '2026-03',
   },
   {
     id: 'mps-society',
@@ -1261,6 +1323,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the advocacy team or register online for family support.',
     apply_url: 'https://www.mpssociety.org.uk/',
     apply_phone: '0345 389 9901',
+    last_verified: '2026-03',
   },
   {
     id: 'galactosaemia-support',
@@ -1274,6 +1337,7 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'Families of children with galactosaemia in the UK.',
     how_to_apply: 'Visit the website to join the support network and access dietary guidance.',
     apply_url: 'https://www.galactosaemia.org/',
+    last_verified: '2026-03',
   },
   {
     id: 'pku-nspku',
@@ -1288,6 +1352,7 @@ export const DEMO_RESOURCES = [
     how_to_apply: 'Call the helpline or join online for access to resources and local groups.',
     apply_url: 'https://www.nspku.org/',
     apply_phone: '020 8364 3010',
+    last_verified: '2026-03',
   },
   {
     id: 'metabolic-dietary',
@@ -1300,5 +1365,6 @@ export const DEMO_RESOURCES = [
     eligibility_summary: 'Healthcare professionals and families managing inherited metabolic conditions.',
     how_to_apply: 'Download emergency protocols free from the website. Share with every hospital that may treat your child.',
     apply_url: 'https://bimdg.org.uk/',
+    last_verified: '2026-03',
   },
 ];

@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { T } from '../../constants/theme';
 
-const STEP_LABELS = ['Condition', 'Age', 'Location', 'Needs'];
-const STEP_LABELS_SHORT = ['Cond.', 'Age', 'Loc.', 'Needs'];
-const STEP_FULL_NAMES = ["Your child's condition", "Your child's age", 'Your location', 'Your needs'];
+const STEP_LABELS = ['Condition', 'Location', 'Needs'];
+const STEP_LABELS_SHORT = ['Cond.', 'Loc.', 'Needs'];
+const STEP_FULL_NAMES = ["Your child's condition", 'Your location', 'Your needs'];
 
 const SMALL_SCREEN_BREAKPOINT = 380;
 
@@ -42,7 +42,7 @@ function useIsSmallScreen() {
   return isSmall;
 }
 
-export function ProgressBar({ step, total = 4, dark, wizard }) {
+export function ProgressBar({ step, total = 3, dark, wizard }) {
   const stepCount = Math.min(total, STEP_LABELS.length);
   const isSmall = useIsSmallScreen();
   const labels = (isSmall ? STEP_LABELS_SHORT : STEP_LABELS).slice(0, stepCount);
