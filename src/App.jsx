@@ -42,6 +42,33 @@ if (typeof document !== 'undefined' && !document.getElementById(styleId)) {
       outline: 2px solid #F59E0B;
       outline-offset: 2px;
     }
+    @media (min-width: 768px) {
+      [data-grid="resources"] {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px !important;
+      }
+      [data-grid="tools"] {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px !important;
+      }
+      [data-grid="tools"] > [data-span="full"] {
+        grid-column: 1 / -1 !important;
+      }
+      [data-grid="promise"] {
+        grid-template-columns: repeat(3, 1fr) !important;
+      }
+      [data-grid="scenarios"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+    @media (max-width: 767px) {
+      [data-grid="promise"] {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+    }
   `;
   document.head.appendChild(sheet);
 }
@@ -111,7 +138,7 @@ function App() {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          maxWidth: '800px',
+          maxWidth: T.maxWidthFull,
           margin: '0 auto',
         }}>
           <button
@@ -257,7 +284,7 @@ function App() {
         fontSize: T.sizeSmall,
         color: dark ? T.textMutedDark : T.textMuted,
         borderTop: `1px solid ${dark ? T.borderDark : T.border}`,
-        maxWidth: '800px',
+        maxWidth: T.maxWidthWide,
         margin: '0 auto',
       }}>
         <p style={{ margin: '0 0 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
@@ -530,7 +557,7 @@ function Landing({ dark, wizard }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
       style={{
-        maxWidth: T.maxWidth,
+        maxWidth: T.maxWidthFull,
         margin: '0 auto',
         padding: `0 ${T.containerPad}`,
         textAlign: 'center',
@@ -824,11 +851,11 @@ function Landing({ dark, wizard }) {
           borderTop: `1px solid ${dark ? T.borderDark : T.border}`,
         }}
       >
-        <div style={{
+        <div data-grid="promise" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '12px',
-          maxWidth: '480px',
+          maxWidth: '600px',
           margin: '0 auto',
         }}>
           {[
@@ -884,11 +911,11 @@ function Landing({ dark, wizard }) {
           Who is this for?
         </h2>
 
-        <div style={{
+        <div data-grid="scenarios" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
           gap: '16px',
-          maxWidth: '560px',
+          maxWidth: T.maxWidthWide,
           margin: '0 auto',
         }}>
           {[
@@ -1069,7 +1096,7 @@ function Landing({ dark, wizard }) {
 function StaticPageLayout({ dark, children }) {
   return (
     <div style={{
-      maxWidth: T.maxWidth,
+      maxWidth: T.maxWidthWide,
       margin: '0 auto',
       padding: `32px ${T.containerPad}`,
     }}>

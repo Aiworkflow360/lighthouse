@@ -330,7 +330,7 @@ export function ResultsContainer({ wizard, dark }) {
 
   return (
     <div style={{
-      maxWidth: T.maxWidth,
+      maxWidth: T.maxWidthWide,
       margin: '0 auto',
       padding: `0 ${T.containerPad}`,
     }}>
@@ -530,6 +530,7 @@ export function ResultsContainer({ wizard, dark }) {
                   initial={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.25 }}
+                  data-grid="resources"
                   style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
                 >
                   {[0, 1, 2].map(i => (
@@ -549,6 +550,7 @@ export function ResultsContainer({ wizard, dark }) {
                   initial={{ opacity: 0.3 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}
+                  data-grid="resources"
                   style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
                 >
                   <AnimatePresence mode="popLayout">
@@ -635,10 +637,13 @@ export function ResultsContainer({ wizard, dark }) {
           initial={{ opacity: 0.3, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
+          data-grid="tools"
           style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingTop: '16px' }}
         >
           {actionPlan && actionPlan.steps && actionPlan.steps.length > 0 && (
-            <ActionPlanCard plan={actionPlan} dark={dark} wizard={wizard} defaultExpanded />
+            <div data-span="full">
+              <ActionPlanCard plan={actionPlan} dark={dark} wizard={wizard} defaultExpanded />
+            </div>
           )}
           <LocalServicesCard wizard={wizard} dark={dark} localServices={localServices} />
           <LetterGeneratorCard wizard={wizard} dark={dark} defaultExpanded />

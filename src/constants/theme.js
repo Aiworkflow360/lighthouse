@@ -92,6 +92,9 @@ export const T = {
 
   // Layout
   maxWidth: '640px',
+  maxWidthNarrow: '640px',
+  maxWidthWide: '960px',
+  maxWidthFull: '1200px',
   containerPad: '20px',
 };
 

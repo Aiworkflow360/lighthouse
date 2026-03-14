@@ -51,7 +51,7 @@ export function WizardContainer({ wizard, dark }) {
 
   return (
     <div style={{
-      maxWidth: T.maxWidth,
+      maxWidth: T.maxWidthNarrow,
       margin: '0 auto',
       padding: `0 ${T.containerPad}`,
       minHeight: '60vh',
