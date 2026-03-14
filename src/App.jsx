@@ -392,9 +392,9 @@ function Landing({ dark, wizard }) {
   };
 
   const howItWorksSteps = [
-    { num: 1, label: 'Tell us what you\'re dealing with', Icon: ClipboardIcon },
-    { num: 2, label: 'We search everything for you', Icon: SearchIcon },
-    { num: 3, label: 'Get a clear plan of action', Icon: CheckCircleIcon },
+    { num: 1, label: 'Take a breath \u2014 you\'re in the right place', Icon: ClipboardIcon },
+    { num: 2, label: 'We connect you with people who understand', Icon: SearchIcon },
+    { num: 3, label: 'We show you what to apply for first', Icon: CheckCircleIcon },
   ];
 
   return (
