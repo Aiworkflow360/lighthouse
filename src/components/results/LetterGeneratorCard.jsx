@@ -153,17 +153,227 @@ Yours sincerely,
 
 ${f.parentName || '[Your name]'}`,
   },
+
+  /* ── ADHD-specific letter templates ─────────────────────── */
+
+  adhd_reasonable_adjustments: {
+    id: 'adhd_reasonable_adjustments',
+    title: 'Request reasonable adjustments for ADHD',
+    category: 'education',
+    description: 'Ask the school to put specific, evidence-based ADHD adjustments in place. References the Equality Act 2010.',
+    fields: [
+      { key: 'parentName', label: 'Your name', placeholder: 'e.g. Sarah Jones' },
+      { key: 'childName', label: "Child's name", placeholder: "e.g. Oliver Jones" },
+      { key: 'childAge', label: "Child's age", placeholder: 'e.g. 8' },
+      { key: 'schoolName', label: 'School name', placeholder: 'e.g. Oakfield Primary School' },
+      { key: 'sencoName', label: 'SENCO name (if known)', placeholder: 'e.g. Mrs Williams' },
+      { key: 'yearGroup', label: 'Year group', placeholder: 'e.g. Year 3' },
+    ],
+    generate: (f) => `${f.parentName || '[Your name]'}
+${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+
+${f.sencoName || '[SENCO name]'}
+${f.schoolName || '[School name]'}
+
+Dear ${f.sencoName || '[SENCO]'},
+
+RE: Request for reasonable adjustments for ${f.childName || '[child name]'}, ${f.yearGroup || '[Year group]'}
+
+I am writing to formally request that the school puts reasonable adjustments in place for my child, ${f.childName || '[child name]'}, who has a diagnosis of ADHD.
+
+ADHD is recognised as a disability under the Equality Act 2010. Under Section 20 of the Act, the school has a duty to make reasonable adjustments so that ${f.childName || '[child name]'} is not placed at a substantial disadvantage compared to pupils who do not have a disability. This is an anticipatory duty, meaning the school should not wait until a problem arises before acting.
+
+I am requesting the following specific adjustments, which are evidence-based and widely recognised as effective for children with ADHD:
+
+1. Movement breaks every 20-30 minutes during lessons
+2. Access to fidget tools (such as a fidget cube, resistance band on chair legs, or stress ball)
+3. Preferential seating near the teacher and away from windows and high-traffic areas
+4. A visual timetable displayed at ${f.childName || '[child name]'}'s desk
+5. Pre-warning before transitions between activities (e.g. "In 5 minutes we will be...")
+6. A calm-down space that ${f.childName || '[child name]'} can go to when overwhelmed, without being treated as a punishment
+7. A reduced homework load, with consideration of the effort ${f.childName || '[child name]'} already puts in during the school day
+8. A positive behaviour support plan that focuses on understanding triggers, preventive strategies, and positive reinforcement rather than sanctions and punishment-based approaches
+
+I would welcome a meeting to discuss how these adjustments can be implemented. I would also like to request that an Assess, Plan, Do, Review cycle is put in place for ${f.childName || '[child name]'}, in line with the graduated approach set out in the SEND Code of Practice 2015.
+
+I am keeping a copy of this letter for my records.
+
+Yours sincerely,
+
+${f.parentName || '[Your name]'}`,
+  },
+
+  adhd_exclusion_challenge: {
+    id: 'adhd_exclusion_challenge',
+    title: 'Challenge a school exclusion (ADHD)',
+    category: 'education',
+    description: 'Challenge a fixed-term exclusion where ADHD-related behaviour was punished without adjustments in place.',
+    fields: [
+      { key: 'parentName', label: 'Your name', placeholder: 'e.g. Sarah Jones' },
+      { key: 'childName', label: "Child's name", placeholder: "e.g. Oliver Jones" },
+      { key: 'schoolName', label: 'School name', placeholder: 'e.g. Oakfield Primary School' },
+      { key: 'headTeacher', label: 'Head teacher name', placeholder: 'e.g. Mr Brown' },
+      { key: 'exclusionDate', label: 'Date of exclusion', placeholder: 'e.g. 10 March 2026' },
+      { key: 'exclusionReason', label: 'Reason given for exclusion', placeholder: 'e.g. disruptive behaviour, not following instructions' },
+      { key: 'exclusionLength', label: 'Length of exclusion', placeholder: 'e.g. 2 days' },
+    ],
+    generate: (f) => `${f.parentName || '[Your name]'}
+${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+
+${f.headTeacher || '[Head Teacher]'}
+${f.schoolName || '[School name]'}
+
+Dear ${f.headTeacher || '[Head Teacher]'},
+
+RE: Challenge to fixed-term exclusion of ${f.childName || '[child name]'} on ${f.exclusionDate || '[date]'}
+
+I am writing regarding the ${f.exclusionLength || '[length]'} fixed-term exclusion of my child, ${f.childName || '[child name]'}, on ${f.exclusionDate || '[date]'}, for "${f.exclusionReason || '[reason given]'}".
+
+${f.childName || '[Child name]'} has a diagnosis of ADHD. ADHD is a disability under the Equality Act 2010. I am concerned that this exclusion may be discriminatory because:
+
+1. The behaviour that led to the exclusion is directly related to ${f.childName || '[child name]'}'s ADHD. Difficulties with impulse control, sitting still, following multi-step instructions, and regulating emotions are core features of the condition, not choices.
+
+2. Under Section 20 of the Equality Act 2010, the school has a duty to make reasonable adjustments for disabled pupils. I would like to understand what reasonable adjustments were in place at the time of the incident, and what evidence the school has that these adjustments were being consistently applied.
+
+3. The Department for Education's statutory guidance on exclusions (Suspension and Permanent Exclusion from maintained schools, academies and pupil referral units in England, 2023) states that head teachers should consider whether the behaviour was a result of an unmet need and whether reasonable adjustments had been made.
+
+I am requesting:
+
+- A copy of the written record of the incident that led to the exclusion
+- Details of what reasonable adjustments were in place for ${f.childName || '[child name]'} at the time
+- A copy of ${f.childName || '[child name]'}'s current SEN Support plan or provision map
+- A meeting to discuss what adjustments and support will be put in place to prevent further exclusions
+
+I want to work with the school to find solutions. Exclusion is not a solution for ADHD. I would welcome a meeting at the earliest opportunity to discuss a positive behaviour support plan and appropriate reasonable adjustments.
+
+I am copying this letter to the Chair of Governors.
+
+Yours sincerely,
+
+${f.parentName || '[Your name]'}`,
+  },
+
+  adhd_behaviour_plan: {
+    id: 'adhd_behaviour_plan',
+    title: 'Request a positive behaviour plan (ADHD)',
+    category: 'education',
+    description: 'Ask the school to create a positive behaviour support plan instead of using punishment-based approaches.',
+    fields: [
+      { key: 'parentName', label: 'Your name', placeholder: 'e.g. Sarah Jones' },
+      { key: 'childName', label: "Child's name", placeholder: "e.g. Oliver Jones" },
+      { key: 'schoolName', label: 'School name', placeholder: 'e.g. Oakfield Primary School' },
+      { key: 'sencoName', label: 'SENCO or head teacher name', placeholder: 'e.g. Mrs Williams' },
+      { key: 'currentIssues', label: 'Current difficulties at school', placeholder: 'e.g. losing break times for not completing work, detentions for calling out' },
+    ],
+    generate: (f) => `${f.parentName || '[Your name]'}
+${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+
+${f.sencoName || '[SENCO / Head Teacher]'}
+${f.schoolName || '[School name]'}
+
+Dear ${f.sencoName || '[SENCO / Head Teacher]'},
+
+RE: Request for a positive behaviour support plan for ${f.childName || '[child name]'}
+
+I am writing to request that the school creates a positive behaviour support plan for my child, ${f.childName || '[child name]'}, who has a diagnosis of ADHD.
+
+I am concerned that the current approach to managing ${f.childName || '[child name]'}'s behaviour is not working. Specifically: ${f.currentIssues || '[describe current difficulties, e.g. losing break times, detentions, being told off for fidgeting]'}.
+
+Research consistently shows that punitive approaches are not effective for children with ADHD. Removing break times — when children with ADHD need movement more than any other child — is counterproductive. Similarly, detentions for behaviour that is a symptom of a neurological condition (calling out, fidgeting, not completing work on time) do not change the behaviour. They simply make the child feel bad about something they struggle to control.
+
+ADHD is a disability under the Equality Act 2010, and the school has a duty to make reasonable adjustments. I believe a positive behaviour support plan is a reasonable adjustment that would benefit ${f.childName || '[child name]'} and the whole class.
+
+I would like the plan to include:
+
+1. An understanding of ${f.childName || '[child name]'}'s ADHD-related triggers (e.g. unstructured time, long periods of sitting, transitions, sensory overload, boredom)
+2. Preventive strategies to reduce the chance of difficult moments (e.g. movement breaks, seating changes, fidget tools, pre-warning of transitions)
+3. Clear, consistent, and achievable expectations — agreed with ${f.childName || '[child name]'} so they understand what is expected
+4. Positive reinforcement for effort and progress, not just outcomes
+5. A calm-down strategy that ${f.childName || '[child name]'} can use without it being treated as a punishment
+6. A plan for what happens when things go wrong that is de-escalating rather than punitive
+7. Regular review with me as parent so we can see what is working
+
+I would like to be involved in creating this plan, and I would welcome a meeting to discuss it. I am also happy for ${f.childName || '[child name]'}'s paediatrician or other professionals to contribute.
+
+Yours sincerely,
+
+${f.parentName || '[Your name]'}`,
+  },
+
+  adhd_school_complaint: {
+    id: 'adhd_school_complaint',
+    title: 'Formal complaint about SEND support (ADHD)',
+    category: 'education',
+    description: 'Formal complaint to the head teacher about failure to provide adequate SEND support for your child with ADHD.',
+    fields: [
+      { key: 'parentName', label: 'Your name', placeholder: 'e.g. Sarah Jones' },
+      { key: 'childName', label: "Child's name", placeholder: "e.g. Oliver Jones" },
+      { key: 'schoolName', label: 'School name', placeholder: 'e.g. Oakfield Primary School' },
+      { key: 'headTeacher', label: 'Head teacher name', placeholder: 'e.g. Mr Brown' },
+      { key: 'concerns', label: 'What has gone wrong', placeholder: 'e.g. no SEN support plan in place, adjustments promised but not delivered, repeated exclusions' },
+      { key: 'previousActions', label: 'What you have already tried', placeholder: 'e.g. met with SENCO twice, emailed about adjustments, no changes made' },
+    ],
+    generate: (f) => `${f.parentName || '[Your name]'}
+${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+
+${f.headTeacher || '[Head Teacher]'}
+${f.schoolName || '[School name]'}
+
+Dear ${f.headTeacher || '[Head Teacher]'},
+
+RE: Formal complaint regarding SEND provision for ${f.childName || '[child name]'}
+
+I am writing to make a formal complaint under the school's complaints procedure about the failure to provide adequate special educational needs support for my child, ${f.childName || '[child name]'}, who has a diagnosis of ADHD.
+
+My concerns are as follows:
+
+${f.concerns || '[Describe what has gone wrong — e.g. no SEN support plan, adjustments not implemented, exclusions without support in place]'}
+
+I have already tried to resolve this informally:
+
+${f.previousActions || '[Describe what you have already done — e.g. meetings with SENCO, emails, phone calls]'}
+
+Despite these efforts, the situation has not improved. I believe the school is not meeting its duties under:
+
+- The Equality Act 2010 (duty to make reasonable adjustments for disabled pupils — ADHD is a disability under this Act)
+- The SEND Code of Practice 2015 (duty to follow the graduated approach of Assess, Plan, Do, Review for children with SEN)
+- The school's own SEN Information Report
+
+I am requesting:
+
+1. A written response to this complaint within 15 school days, as required by your complaints procedure
+2. A meeting to agree a clear action plan with specific adjustments, timescales, and named responsible staff
+3. An Assess, Plan, Do, Review cycle to be put in place immediately if one is not already in operation
+4. Consideration of whether an EHC needs assessment should be requested
+
+I want to work with the school to ensure ${f.childName || '[child name]'} receives the support they are entitled to. If this complaint is not resolved satisfactorily, I am aware that I can escalate to the governing body and, if necessary, seek advice from IPSEA (Independent Provider of Special Education Advice) or my local SENDIASS service.
+
+I am keeping a copy of this letter for my records. I am also sending a copy to the Chair of Governors.
+
+Yours sincerely,
+
+${f.parentName || '[Your name]'}`,
+  },
 };
 
 /* ── Which letters to show based on wizard needs ─────────── */
 function getAvailableLetters(wizard) {
   const needs = wizard?.needs || [];
+  const condition = (wizard?.condition || '').toLowerCase();
+  const isADHD = condition.includes('adhd') || condition.includes('attention deficit');
   const letters = [];
 
   // Always show EHCP and school meeting if education is selected
   if (needs.includes('education') || needs.length === 0) {
     letters.push(LETTER_TEMPLATES.ehcp_request);
     letters.push(LETTER_TEMPLATES.school_meeting);
+    // Add ADHD-specific education letters
+    if (isADHD) {
+      letters.push(LETTER_TEMPLATES.adhd_reasonable_adjustments);
+      letters.push(LETTER_TEMPLATES.adhd_behaviour_plan);
+      letters.push(LETTER_TEMPLATES.adhd_exclusion_challenge);
+      letters.push(LETTER_TEMPLATES.adhd_school_complaint);
+    }
   }
 
   // Financial → DLA cover

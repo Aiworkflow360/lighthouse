@@ -235,6 +235,247 @@ export const ACTION_PLANS = {
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
+  // ADHD-SPECIFIC × 5 need categories
+  // These override the generic "developmental" plans when the child has ADHD
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  adhd_education: {
+    title: 'Getting your child the right support at school',
+    steps: [
+      {
+        title: 'Know your rights — ADHD is a disability under the Equality Act 2010',
+        description:
+          "This is the single most important thing to understand. ADHD is recognised as a disability under the Equality Act 2010. That means your child's school has a legal duty to make reasonable adjustments so your child is not put at a substantial disadvantage. This is not the school doing you a favour — it is the law. If someone at the school says \"we treat all children the same,\" that is the opposite of what the law requires.",
+        action: 'Write this down and keep it visible: "Under s.20 of the Equality Act 2010, schools must make reasonable adjustments for disabled pupils. ADHD is a disability. This is not optional."',
+        link: 'https://www.legislation.gov.uk/ukpga/2010/15/section/20',
+      },
+      {
+        title: "Request the school's SEN Information Report",
+        description:
+          "Every school must publish an SEN Information Report — it's a legal requirement under the SEND Code of Practice 2015 (paragraph 6.79). This document tells you what the school says it does for children with SEN, including how they identify needs, what support they provide, and how they measure progress. Read it carefully. If the school isn't doing what it says in its own report, you have something concrete to challenge them on.",
+        action: "Ask the school office for a copy of their SEN Information Report, or find it on the school's website. Compare what it says with what your child is actually receiving.",
+      },
+      {
+        title: 'Write to the SENCO requesting specific reasonable adjustments',
+        description:
+          "Don't just ask for \"more support\" — ask for specific adjustments that are known to help children with ADHD. Put it in writing (email is fine) so there's a record. Reasonable adjustments for ADHD include: movement breaks every 20-30 minutes, access to fidget tools, preferential seating near the teacher and away from distractions, a visual timetable, pre-warning before transitions between activities, a calm-down space the child can go to without being punished, reduced homework load, and a positive behaviour plan that focuses on rewards not punishments.",
+        action: 'Send an email to the school SENCO listing the specific adjustments you are requesting. Keep a copy. Use the Lighthouse letter generator to create this letter.',
+      },
+      {
+        title: 'Ask for an Assess, Plan, Do, Review cycle',
+        description:
+          "The SEND Code of Practice 2015 (Chapter 6) sets out a \"graduated approach\" that all schools must follow for children with SEN: Assess the child's needs, Plan the support, Do the interventions, and Review whether they're working. The school must follow this cycle before it can claim it has tried everything. If the school hasn't done this properly, it hasn't met its legal obligations. Ask the SENCO to show you the evidence of each stage.",
+        action: 'Ask the SENCO: "Can you show me the Assess, Plan, Do, Review cycle for my child? What was assessed, what was planned, what was done, and what did the review show?"',
+        link: 'https://www.gov.uk/government/publications/send-code-of-practice-0-to-25',
+      },
+      {
+        title: 'Request an EHC needs assessment if SEN Support is not enough',
+        description:
+          "If the school's SEN Support (the graduated approach) is not meeting your child's needs, you have the right to request an Education, Health and Care needs assessment under Section 36 of the Children and Families Act 2014. You do not need the school's permission — you can write directly to the local authority. The legal test is low: the authority must agree to assess if there is evidence your child \"may\" have SEN and \"may\" need an EHC plan. IPSEA has free template letters you can use.",
+        action: "Write to your local authority's SEN team requesting an EHC needs assessment. IPSEA has template letters at ipsea.org.uk.",
+        link: 'https://www.ipsea.org.uk/advice-line',
+      },
+      {
+        title: 'Contact your local SENDIASS — free, impartial help',
+        description:
+          "Every local authority in England must provide a free, impartial SENDIASS (Special Educational Needs and Disabilities Information, Advice and Support Service). They can explain your rights, help you understand the EHCP process, attend school meetings with you, and support you through disagreements with the school. This is one of the most underused services in the country — and it's completely free. You don't need a referral.",
+        action: 'Search for your local SENDIASS on the Council for Disabled Children website. Call them this week.',
+        link: 'https://councilfordisabledchildren.org.uk/information-advice-and-support-services-network/find-your-local-iass',
+      },
+      {
+        title: 'Get free legal advice from IPSEA if the school still will not act',
+        description:
+          "IPSEA (Independent Provider of Special Education Advice) provides free legal advice on special education law. If the school is not making reasonable adjustments, if the local authority refuses to assess, or if you need to prepare for a SEND Tribunal, IPSEA can help. They are legal experts and their advice is completely free.",
+        action: 'Book a callback on the IPSEA website, or call on Tue, Wed, or Fri 9.30am-2.30pm.',
+        link: 'https://www.ipsea.org.uk/advice-line',
+      },
+      {
+        title: 'If exclusion happens — know the rules',
+        description:
+          "Schools cannot lawfully exclude a child for behaviour that is a direct result of their disability without first putting reasonable adjustments in place. If your child with ADHD is excluded for calling out, not sitting still, or being disruptive — and the school had not made reasonable adjustments — the exclusion may be discriminatory under the Equality Act 2010. You can challenge fixed-term and permanent exclusions through an Independent Review Panel. IPSEA and your local SENDIASS can help you do this.",
+        action: 'If your child is excluded, request the written reasons immediately. Contact IPSEA or SENDIASS for advice on challenging the exclusion. Keep every letter and email.',
+        link: 'https://www.ipsea.org.uk/advice-line',
+      },
+    ],
+  },
+
+  adhd_financial: {
+    title: 'Getting financial support for your child with ADHD',
+    steps: [
+      {
+        title: 'Apply for Disability Living Allowance (DLA)',
+        description:
+          "DLA is the most important benefit to apply for. ADHD qualifies. It's based on what your child needs help with, not their diagnosis alone. When filling in the form, describe your child's worst days: the constant supervision needed, the impulsive behaviour that puts them in danger, the inability to get dressed or eat without constant prompting, the sleep difficulties, the meltdowns. Most families of children with ADHD receive middle rate care (around £73.90/week or £3,843/year). DLA is paid from the date you first call — so phone today even if you are not ready to fill in the form.",
+        action: 'Call 0800 121 4600 to request a DLA1 form, or download it from gov.uk. Call today — DLA is backdated to this call.',
+        link: 'https://www.gov.uk/disability-living-allowance-children',
+      },
+      {
+        title: "Check if you can claim Carer's Allowance",
+        description:
+          "If you spend 35 or more hours a week looking after your child, you could get £83.30 a week. With ADHD, when you add up all the extra supervision, the morning routine battles, the homework support, managing medication, attending appointments, liaising with school, and the constant vigilance needed to keep them safe — many parents easily meet the 35-hour threshold. You can apply once your child gets the middle or highest rate DLA care component.",
+        action: "Apply online at gov.uk. You'll need your National Insurance number and your child's DLA reference number.",
+        link: 'https://www.gov.uk/carers-allowance',
+      },
+      {
+        title: 'Apply to Family Fund for essential items',
+        description:
+          "Family Fund gives grants for things like computers (helpful for children who struggle with handwriting), washing machines (relevant if your child has toileting issues or messy eating), sensory equipment, and family breaks. If your child has ADHD and you're on a low income, you'll likely qualify.",
+        action: "Apply online at familyfund.org.uk. Have your child's diagnosis letter ready.",
+        link: 'https://www.familyfund.org.uk/apply',
+      },
+      {
+        title: 'Run a free benefits check',
+        description:
+          "Many families don't realise how much they're entitled to. DLA unlocks other benefits including the disabled child element of Universal Credit, the carer element of Universal Credit, and potentially Council Tax reductions. The Turn2us calculator takes about 20 minutes and checks everything you could be claiming.",
+        action: 'Use the free calculator at Turn2us. Have your income details handy.',
+        link: 'https://benefits-calculator.turn2us.org.uk/',
+      },
+      {
+        title: 'Check for prescription prepayment certificates',
+        description:
+          "If your child takes ADHD medication (methylphenidate, lisdexamfetamine, atomoxetine, or guanfacine), prescriptions can add up. A prescription prepayment certificate (PPC) costs £31.25 for 3 months or £111.60 for 12 months and covers unlimited prescriptions. Children under 16 get free prescriptions, but if you have prescription costs for your own medication as a carer, a PPC can save money.",
+        action: 'Buy a PPC online at nhsbsa.nhs.uk or call 0300 330 1341. Compare the cost to what you currently pay per prescription.',
+        link: 'https://www.nhsbsa.nhs.uk/help-nhs-prescription-costs/prescription-prepayment-certificates-ppcs',
+      },
+      {
+        title: 'Access free Cerebra services',
+        description:
+          "Cerebra offers free services for families of children with brain conditions including ADHD: a specialist sleep advice service (sleep difficulties are extremely common with ADHD), a lending library of sensory toys and equipment, legal rights guidance, and custom equipment design.",
+        action: 'Call Cerebra on 01267 244200 to discuss which free services could help your family.',
+        link: 'https://cerebra.org.uk/what-we-do/',
+      },
+    ],
+  },
+
+  adhd_emotional: {
+    title: 'Emotional support for you and your family',
+    steps: [
+      {
+        title: 'Contact ADHD UK for peer support and practical guidance',
+        description:
+          "ADHD UK runs peer support groups for parents, provides practical resources about living with ADHD, and campaigns for better ADHD services. Their parent community connects you with other families who truly understand what daily life is like. You don't have to explain yourself — they already get it.",
+        action: 'Visit adhduk.co.uk for peer support groups, resources, and the ADHD UK helpline.',
+        link: 'https://adhduk.co.uk/',
+      },
+      {
+        title: "Find a local parent support group — you're not alone",
+        description:
+          "Talking to other parents who live with ADHD in their family can be one of the most helpful things you do. Your local Parent Carer Forum can connect you with families near you. ADHD UK also has online peer support groups if getting out of the house is difficult. You don't have to share anything — just listening can help.",
+        action: 'Search for your local Parent Carer Forum at nnpcf.org.uk, or find ADHD peer support groups at adhduk.co.uk.',
+        link: 'https://www.nnpcf.org.uk/',
+      },
+      {
+        title: 'Look after siblings too',
+        description:
+          "Brothers and sisters of children with ADHD often feel frustrated, overlooked, or confused by the chaos at home. They may feel angry at their sibling or guilty for feeling angry. Sibs is a charity specifically for siblings of children with disabilities. They run online groups and workshops that give siblings a safe space to talk.",
+        action: 'Visit sibs.org.uk for resources and online support groups for siblings.',
+        link: 'https://www.sibs.org.uk/',
+      },
+      {
+        title: 'Ask your GP about support for yourself',
+        description:
+          "Parenting a child with ADHD is exhausting — the constant vigilance, the battles with school, the judgement from other parents, the guilt. Many parents of children with ADHD experience burnout, anxiety, and depression themselves. Your GP can refer you for counselling, connect you with local support services, and check how you're doing. This is not self-indulgent — you need to be well to advocate for your child.",
+        action: "Book a GP appointment. Tell them you're a carer for a child with ADHD and would like to discuss support options for yourself.",
+      },
+      {
+        title: 'Consider whether you or your partner might have ADHD too',
+        description:
+          "ADHD is highly heritable. Research suggests that around 50-75% of ADHD has a genetic component. Many parents discover they have ADHD themselves after their child is diagnosed. If you recognise ADHD traits in yourself, getting assessed could help you understand your own struggles and access support. ADHD UK has a self-assessment tool.",
+        action: 'Take the ADHD UK adult self-assessment at adhduk.co.uk. If it suggests ADHD, ask your GP for a referral.',
+        link: 'https://adhduk.co.uk/',
+      },
+    ],
+  },
+
+  adhd_medical: {
+    title: 'Getting the right medical support for ADHD',
+    steps: [
+      {
+        title: 'Make sure your child is under a specialist',
+        description:
+          "Children with ADHD should be assessed and managed by a specialist — either a paediatrician or a child psychiatrist. If your child has only been seen by a GP, or if you are still waiting for a diagnosis, ask for a referral to developmental paediatrics or CAMHS. Waiting lists can be long, so get the referral in as early as possible.",
+        action: 'If your child does not yet have a specialist, book a GP appointment and request a referral to developmental paediatrics or CAMHS for ADHD assessment.',
+      },
+      {
+        title: 'Understand the medication options',
+        description:
+          "ADHD medication is evidence-based and can make a significant difference. The most common medications are stimulants (methylphenidate such as Ritalin, Concerta, or Medikinet; and lisdexamfetamine/Elvanse) and non-stimulants (atomoxetine and guanfacine). NICE guidelines recommend medication alongside behavioural support for children aged 5 and over with moderate-to-severe ADHD. Your specialist should discuss the options, benefits, and possible side effects with you.",
+        action: 'If medication has been suggested, ask your specialist to explain all the options and what to expect. If it has not been discussed and your child is struggling, ask whether medication might help.',
+        link: 'https://www.nice.org.uk/guidance/ng87',
+      },
+      {
+        title: 'Request regular medication reviews',
+        description:
+          "NICE guidelines say children on ADHD medication should have their height, weight, heart rate, and blood pressure monitored at least every 6 months. Medication doses often need adjusting as your child grows. If your child is experiencing side effects — appetite loss, sleep difficulties, mood changes, headaches — tell the prescriber. Side effects can often be managed by changing the dose, timing, or type of medication.",
+        action: 'Check when your child last had a medication review. If it has been more than 6 months, contact your prescriber and request one.',
+      },
+      {
+        title: 'Tackle sleep problems — they affect everything',
+        description:
+          "Sleep difficulties are extremely common in children with ADHD. Stimulant medication can make it harder to fall asleep. Poor sleep makes ADHD symptoms worse — it becomes a vicious cycle. Cerebra offers a free specialist sleep advice service for children with brain conditions including ADHD. Melatonin can be prescribed if behavioural approaches haven't worked.",
+        action: 'Call Cerebra on 01267 244200 to access their free sleep advice service. If sleep is severely affected, ask your specialist about melatonin.',
+        link: 'https://cerebra.org.uk/what-we-do/',
+      },
+      {
+        title: 'Keep a behaviour and symptom diary',
+        description:
+          "Before appointments, write down specific examples of what's happening — when your child struggles most, what triggers difficult moments, what helps, and how medication is working (or not). Include school feedback. This evidence is invaluable for clinicians and can speed up getting the right support.",
+        action: 'Start a simple diary: date, what happened, when, how long it lasted, and what helped. Bring it to every medical appointment.',
+      },
+      {
+        title: 'Ask about co-occurring conditions',
+        description:
+          "ADHD rarely comes alone. Many children with ADHD also have anxiety, autism, dyslexia, developmental coordination disorder (DCD), or oppositional defiant disorder (ODD). If your child seems to have difficulties beyond what ADHD explains, ask the specialist to screen for other conditions. Getting the full picture means getting the right support.",
+        action: 'Ask your specialist: "Could any other conditions be contributing to my child\'s difficulties? Should we screen for anything else?"',
+      },
+    ],
+  },
+
+  adhd_practical: {
+    title: 'Practical help to make daily life easier',
+    steps: [
+      {
+        title: 'Ask your local authority about a social care assessment',
+        description:
+          "Your local council can assess what support your family needs. For families dealing with ADHD, this could include short breaks (respite), direct payments to pay for activities, or a family support worker. You have a legal right to request an assessment — you don't need to wait to be offered one.",
+        action: "Contact your local authority's children's disability team and request a child in need assessment.",
+      },
+      {
+        title: 'Look into short breaks and after-school activities',
+        description:
+          "Short breaks give you time to recharge and give your child new experiences — structured activities like swimming, martial arts, and outdoor pursuits can be brilliant for children with ADHD. Your local authority should have a short breaks offer. Some areas have specific activities designed for children with additional needs.",
+        action: "Search your local authority's website for their \"short breaks statement\" or call their children's disability team.",
+      },
+      {
+        title: 'Create visual routines at home',
+        description:
+          "Children with ADHD struggle with working memory and executive function. A visual timetable or checklist for morning routines, after-school routines, and bedtime can reduce the number of verbal prompts you need to give (and the battles that come with them). Keep it simple — pictures or short words, not paragraphs.",
+        action: 'Create a simple visual checklist for your most stressful routine (usually mornings). Laminate it and stick it where your child can see it.',
+      },
+      {
+        title: "Explore Cerebra's equipment and toy library",
+        description:
+          "Cerebra has a free discovery toy library — you can borrow specialist sensory toys and fidget equipment. They also design bespoke equipment if your child needs something specific. Sensory and fidget tools can help children with ADHD regulate during homework, mealtimes, and quiet activities.",
+        action: 'Call Cerebra on 01267 244200 to discuss borrowing equipment.',
+        link: 'https://cerebra.org.uk/what-we-do/',
+      },
+      {
+        title: 'Get support with school holiday childcare',
+        description:
+          "School holidays can be especially challenging for families with ADHD. If you receive DLA, your local authority may offer holiday activity schemes through the Holiday Activities and Food (HAF) programme. These are free for children who receive benefits-related free school meals. Some local areas also have inclusive play schemes that accept children with additional needs.",
+        action: 'Ask your local authority about HAF holiday activities, or search for inclusive play schemes in your area.',
+      },
+      {
+        title: 'Contact ADHD UK for practical daily living resources',
+        description:
+          "ADHD UK has practical guides and resources specifically for families managing ADHD at home — covering everything from morning routines to managing screen time, homework battles, and mealtimes. Their resources are written by people who live with ADHD.",
+        action: 'Visit adhduk.co.uk for practical guides and parenting resources.',
+        link: 'https://adhduk.co.uk/',
+      },
+    ],
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
   // PHYSICAL (Cerebral Palsy) × 3 need categories
   // ═══════════════════════════════════════════════════════════════════════════
 
@@ -1353,12 +1594,19 @@ export function getActionPlansForUser(conditionCategory, needs) {
 export function generateActionPlan(wizard) {
   if (!wizard?.conditionCategory || !wizard?.needs?.length) return null;
 
-  // Use the first selected need as the primary plan
-  const plan = getActionPlan(wizard.conditionCategory, wizard.needs[0]);
+  // Try condition-specific plan first (e.g. "adhd_education"),
+  // then fall back to category plan (e.g. "developmental_education")
+  const conditionKey = wizard.condition?.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+  const plan = (conditionKey && getActionPlan(conditionKey, wizard.needs[0]))
+    || getActionPlan(wizard.conditionCategory, wizard.needs[0]);
   if (!plan) return null;
 
+  const planKey = (conditionKey && ACTION_PLANS[`${conditionKey}_${wizard.needs[0]}`])
+    ? `${conditionKey}_${wizard.needs[0]}`
+    : `${wizard.conditionCategory}_${wizard.needs[0]}`;
+
   return {
-    id: `${wizard.conditionCategory}_${wizard.needs[0]}`,
+    id: planKey,
     title: plan.title,
     subtitle: `Based on your situation — ${wizard.condition || wizard.conditionCategory}`,
     steps: plan.steps.map(step => ({
