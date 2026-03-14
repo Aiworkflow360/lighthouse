@@ -205,11 +205,6 @@ export function ResultsContainer({ wizard, dark }) {
   const resources = useMemo(() => {
     let filtered = DEMO_RESOURCES;
 
-    // Filter by selected needs
-    if (wizard.needs.length > 0 && wizard.needs.length < 4) {
-      filtered = filtered.filter(r => wizard.needs.includes(r.category));
-    }
-
     // Filter by condition category — strict matching
     if (wizard.conditionCategory) {
       const condLower = (wizard.condition || '').toLowerCase();
@@ -240,7 +235,7 @@ export function ResultsContainer({ wizard, dark }) {
     });
 
     return filtered;
-  }, [wizard.needs, wizard.conditionCategory]);
+  }, [wizard.conditionCategory, wizard.condition]);
 
   const triage = useMemo(() => generateTriage(wizard, resources), [wizard, resources]);
 

@@ -4,26 +4,22 @@ import { T } from '../../constants/theme';
 import { ProgressBar } from '../shared/ProgressBar';
 import { StepCondition } from './StepCondition';
 import { StepPostcode } from './StepPostcode';
-import { StepNeeds } from './StepNeeds';
 
 // Static per-step encouragement (always visible)
 const ENCOURAGEMENT = {
   condition: "Let's find the right support for you.",
-  postcode: "That helps a lot -- nearly there.",
-  needs: "Nearly there -- one more step!",
+  postcode: "Nearly there — one more step!",
 };
 
 // Transition micro-copy (shown briefly when arriving FROM a completed step)
 const TRANSITION_MESSAGES = {
-  postcode: "That helps a lot -- we can narrow things down",
-  needs: "Nearly there!",
+  postcode: "That helps a lot — we can narrow things down",
 };
 
 // Subtle warm amber hue shift per step (barely visible, opacity 0.02-0.03)
 const STEP_AMBER_TINT = {
   condition: 'rgba(245, 158, 11, 0.02)',
   postcode: 'rgba(245, 158, 11, 0.03)',
-  needs: 'rgba(217, 119, 6, 0.025)',
 };
 
 export function WizardContainer({ wizard, dark }) {
@@ -49,7 +45,6 @@ export function WizardContainer({ wizard, dark }) {
   const steps = {
     condition: <StepCondition wizard={wizard} dark={dark} />,
     postcode: <StepPostcode wizard={wizard} dark={dark} />,
-    needs: <StepNeeds wizard={wizard} dark={dark} />,
   };
 
   const subColor = dark ? T.textSecondaryDark : T.textSecondary;
@@ -67,7 +62,7 @@ export function WizardContainer({ wizard, dark }) {
       borderRadius: T.radiusLg,
     }}>
       <div style={{ marginBottom: '12px' }}>
-        <ProgressBar step={step - 1} total={3} dark={dark} wizard={wizard} />
+        <ProgressBar step={step - 1} total={2} dark={dark} wizard={wizard} />
       </div>
 
       {/* Transition micro-copy: fades in/out briefly */}

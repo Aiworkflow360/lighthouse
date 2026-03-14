@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 
-const STEPS = ['landing', 'condition', 'postcode', 'needs', 'results'];
+const STEPS = ['landing', 'condition', 'postcode', 'results'];
 
 function encodeState(state) {
   try {
@@ -21,7 +21,7 @@ export function useWizardState() {
     const q = params.get('q');
     if (q) {
       const decoded = decodeState(q);
-      if (decoded) return { step: 4, ...decoded }; // Go straight to results
+      if (decoded) return { step: 3, ...decoded }; // Go straight to results
     }
     return { step: 0, condition: null, conditionCategory: null, postcode: null, postcodeData: null, needs: [] };
   }, []);
@@ -67,13 +67,15 @@ export function useWizardState() {
     return `${window.location.origin}${window.location.pathname}?q=${encoded}`;
   }, [condition, conditionCategory, postcode, postcodeData, needs]);
 
-  // Update URL when reaching results
+  // Update URL when reaching results — auto-select all needs
   const goToResults = useCallback(() => {
-    const state = { condition, conditionCategory, postcode, postcodeData, needs };
+    const allNeeds = ['education', 'financial', 'emotional', 'medical', 'practical'];
+    setNeeds(allNeeds);
+    const state = { condition, conditionCategory, postcode, postcodeData, needs: allNeeds };
     const encoded = encodeState(state);
     window.history.replaceState(null, '', `?q=${encoded}`);
-    setStep(4);
-  }, [condition, conditionCategory, postcode, postcodeData, needs]);
+    setStep(3);
+  }, [condition, conditionCategory, postcode, postcodeData]);
 
   return {
     step, currentStep, STEPS,

@@ -201,7 +201,7 @@ export function StepPostcode({ wizard, dark }) {
       wizard.setPostcodeData(data);
       setSuccess(true);
       setTimeout(() => {
-        wizard.next();
+        wizard.goToResults();
       }, 600);
     } else {
       setError("Couldn't look up that postcode. Check it's correct or skip to see nationwide results.");
@@ -212,7 +212,7 @@ export function StepPostcode({ wizard, dark }) {
     cancelLookup();
     wizard.setPostcode(null);
     wizard.setPostcodeData(null);
-    wizard.next();
+    wizard.goToResults();
   };
 
   const dismissError = () => {
