@@ -15,14 +15,14 @@ export const ACTION_PLANS = {
       {
         title: 'Apply for Disability Living Allowance (DLA)',
         description:
-          "DLA is the single most important benefit to apply for. It's worth up to £187.45 a week, tax-free. It can be backdated to the date you first call — so every day you wait is money lost. You don't need a formal diagnosis to apply.",
+          "DLA is the single most important benefit to apply for. It's tax-free and based on your child's needs, not their diagnosis. Most families of children with ADHD receive middle rate care (around £73.90/week or £3,843/year). Higher rates are possible but depend on the level of care and supervision needed. DLA is paid from the date you first call — so phone today even if you're not ready to fill in the form.",
         action: 'Call 0800 121 4600 to request a DLA1 form, or download it from gov.uk.',
         link: 'https://www.gov.uk/disability-living-allowance-children',
       },
       {
         title: "Check if you can claim Carer's Allowance",
         description:
-          "If you spend 35 or more hours a week looking after your child, you could get £81.90 a week. You can claim once your child gets the middle or highest rate DLA care component. It's a separate application — don't wait for DLA to arrive before checking your eligibility.",
+          "If you spend 35 or more hours a week looking after your child, you could get £83.30 a week. You can claim once your child gets the middle or highest rate DLA care component. It's a separate application — don't wait for DLA to arrive before checking your eligibility.",
         action: 'Apply online at gov.uk. You will need your National Insurance number and your child\'s DLA reference.',
         link: 'https://www.gov.uk/carers-allowance',
       },
@@ -41,10 +41,10 @@ export const ACTION_PLANS = {
         link: 'https://benefits-calculator.turn2us.org.uk/',
       },
       {
-        title: 'Ask about Cerebra grants',
+        title: 'Access free Cerebra services',
         description:
-          "Cerebra helps families with brain-related conditions including autism and ADHD. They offer free discovery library toys, sleep advice, and can even design custom equipment for your child's specific needs.",
-        action: 'Call Cerebra on 01267 244200 to discuss what support they can offer.',
+          "Cerebra offers free services (not cash grants) for families of children with brain conditions including ADHD: a specialist sleep advice service, a lending library of sensory toys and equipment, legal rights guidance, and custom equipment design.",
+        action: 'Call Cerebra on 01267 244200 to discuss which free services could help.',
         link: 'https://cerebra.org.uk/what-we-do/',
       },
       {
@@ -95,11 +95,11 @@ export const ACTION_PLANS = {
         link: 'https://www.ipsea.org.uk/advice-line',
       },
       {
-        title: 'Connect with the National Autistic Society or ADHD Foundation',
+        title: 'Connect with the National Autistic Society or ADHD UK',
         description:
-          "These organisations have specific guidance on education rights for neurodivergent children. The NAS has a school exclusion helpline, and the ADHD Foundation runs training for schools that can transform how staff understand your child.",
-        action: 'Call the NAS on 0808 800 4104, or the ADHD Foundation on 0151 541 9020.',
-        link: 'https://www.autism.org.uk/advice-and-guidance/help-and-support',
+          "These organisations have specific guidance on education rights for neurodivergent children. The NAS has a school exclusion helpline and ADHD UK has practical guides for working with schools.",
+        action: 'Call the NAS on 0808 800 4104, or visit ADHD UK at adhduk.co.uk.',
+        link: 'https://adhduk.co.uk/',
       },
     ],
   },
@@ -108,18 +108,18 @@ export const ACTION_PLANS = {
     title: 'Emotional support for you and your family',
     steps: [
       {
-        title: 'Call the National Autistic Society or ADHD Foundation helpline',
+        title: 'Call the National Autistic Society helpline or visit ADHD UK',
         description:
-          "These helplines are staffed by people who truly understand what you're going through. They can help you make sense of a diagnosis, answer questions you might feel silly asking, and point you to local support. It's free, confidential, and you don't need a referral.",
-        action: 'Call the NAS helpline on 0808 800 4104 (Mon-Thu 10am-4pm, Fri 9am-3pm) or ADHD Foundation on 0151 541 9020.',
-        link: 'https://www.autism.org.uk/advice-and-guidance/help-and-support',
+          "The NAS helpline is staffed by people who truly understand what you're going through. They can help you make sense of a diagnosis, answer questions you might feel silly asking, and point you to local support. It's free, confidential, and you don't need a referral. ADHD UK also has peer support groups and practical resources.",
+        action: 'Call the NAS helpline on 0808 800 4104 (Mon-Thu 10am-4pm, Fri 9am-3pm) or visit adhduk.co.uk for ADHD-specific peer support.',
+        link: 'https://adhduk.co.uk/',
       },
       {
         title: 'Find a local parent support group',
         description:
-          "Talking to other parents who get it can be one of the most helpful things you do. The NAS and ADHD Foundation both run local groups, and there are active online communities too. You don't have to share anything — just listening can help.",
-        action: 'Search for local autism or ADHD parent groups on the NAS or ADHD Foundation websites.',
-        link: 'https://www.adhdfoundation.org.uk/',
+          "Talking to other parents who get it can be one of the most helpful things you do. The NAS and ADHD UK both have online communities and peer support groups. Your local Parent Carer Forum can also connect you with families near you. You don't have to share anything — just listening can help.",
+        action: 'Search for local autism or ADHD parent groups on the NAS website or at adhduk.co.uk.',
+        link: 'https://adhduk.co.uk/',
       },
       {
         title: 'Look after siblings too',
@@ -251,7 +251,7 @@ export const ACTION_PLANS = {
       {
         title: "Apply for Carer's Allowance",
         description:
-          "If you spend 35 or more hours a week looking after your child, you could get £81.90 a week. You can claim once your child gets the middle or highest rate DLA care component. It takes a few minutes to apply online.",
+          "If you spend 35 or more hours a week looking after your child, you could get £83.30 a week. You can claim once your child gets the middle or highest rate DLA care component. It takes a few minutes to apply online.",
         action: 'Apply online at gov.uk.',
         link: 'https://www.gov.uk/carers-allowance',
       },
@@ -396,7 +396,7 @@ export const ACTION_PLANS = {
       {
         title: "Check if you can claim Carer's Allowance",
         description:
-          "If you spend 35+ hours a week caring, you could receive £81.90 a week. Once your child gets middle or highest rate DLA care, you can apply. Many parents of deaf or blind children don't realise they qualify.",
+          "If you spend 35+ hours a week caring, you could receive £83.30 a week. Once your child gets middle or highest rate DLA care, you can apply. Many parents of deaf or blind children don't realise they qualify.",
         action: 'Apply online at gov.uk.',
         link: 'https://www.gov.uk/carers-allowance',
       },
@@ -637,7 +637,7 @@ export const ACTION_PLANS = {
       {
         title: "Apply for Carer's Allowance",
         description:
-          "If you're spending 35+ hours a week caring — including night-time supervision for seizures — you could get £81.90 a week. Many parents of children with epilepsy qualify because of the constant need to be alert.",
+          "If you're spending 35+ hours a week caring — including night-time supervision for seizures — you could get £83.30 a week. Many parents of children with epilepsy qualify because of the constant need to be alert.",
         action: 'Apply online at gov.uk.',
         link: 'https://www.gov.uk/carers-allowance',
       },
@@ -781,7 +781,7 @@ export const ACTION_PLANS = {
       {
         title: "Check if you can claim Carer's Allowance",
         description:
-          "If you're spending 35+ hours a week providing extra support — teaching self-care skills, managing medication, attending therapies, supporting homework — you may qualify for £81.90 a week.",
+          "If you're spending 35+ hours a week providing extra support — teaching self-care skills, managing medication, attending therapies, supporting homework — you may qualify for £83.30 a week.",
         action: 'Apply online at gov.uk.',
         link: 'https://www.gov.uk/carers-allowance',
       },
@@ -826,7 +826,7 @@ export const ACTION_PLANS = {
       {
         title: "Apply for Carer's Allowance",
         description:
-          "If you spend 35+ hours a week caring, you could get £81.90 a week. Families with children who have complex genetic conditions almost always meet this threshold when you count all the care, monitoring, and medical management involved.",
+          "If you spend 35+ hours a week caring, you could get £83.30 a week. Families with children who have complex genetic conditions almost always meet this threshold when you count all the care, monitoring, and medical management involved.",
         action: 'Apply online at gov.uk.',
         link: 'https://www.gov.uk/carers-allowance',
       },
@@ -969,7 +969,7 @@ export const ACTION_PLANS = {
       {
         title: "Apply for Carer's Allowance",
         description:
-          "If you've had to stop working or reduce hours to care for your child, you may qualify for £81.90 a week. You need to be caring 35+ hours a week and your child needs middle or highest rate DLA care component.",
+          "If you've had to stop working or reduce hours to care for your child, you may qualify for £83.30 a week. You need to be caring 35+ hours a week and your child needs middle or highest rate DLA care component.",
         action: 'Apply online at gov.uk.',
         link: 'https://www.gov.uk/carers-allowance',
       },
@@ -1104,14 +1104,14 @@ export const ACTION_PLANS = {
       {
         title: 'Apply for Disability Living Allowance (DLA)',
         description:
-          "DLA is the most important benefit to apply for. It's tax-free, worth up to £187.45 a week, and it unlocks other benefits like Carer's Allowance and the Blue Badge. You don't need a formal diagnosis — you just need to show your child needs significantly more help than other children their age. Call now to start the claim — it can be backdated to this date.",
+          "DLA is the most important benefit to apply for. It's tax-free and based on your child's needs, not their diagnosis. The amount depends on the level of care and supervision your child needs — most families receive middle rate care (around £73.90/week). DLA also unlocks other benefits like Carer's Allowance and the Blue Badge. Call now to request a form — DLA is paid from the date of this call.",
         action: 'Call 0800 121 4600 to request a DLA1 form, or download it from gov.uk.',
         link: 'https://www.gov.uk/disability-living-allowance-children',
       },
       {
         title: "Check if you can claim Carer's Allowance",
         description:
-          "If you spend 35 or more hours a week looking after your child, you could get £81.90 a week. You can claim once your child gets the middle or highest rate DLA care component. It's a separate application.",
+          "If you spend 35 or more hours a week looking after your child, you could get £83.30 a week. You can claim once your child gets the middle or highest rate DLA care component. It's a separate application.",
         action: 'Apply online at gov.uk.',
         link: 'https://www.gov.uk/carers-allowance',
       },

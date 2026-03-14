@@ -831,12 +831,12 @@ export function calculateBenefitsCascade({ hasDLA, dlaRate, onUniversalCredit, o
     if (rate === 'middle' || rate === 'higher') {
       entitlements.push({
         benefit: 'Carer\'s Allowance',
-        amount: '£81.90/week (£4,259/year)',
-        amountAnnual: 4259,
-        howToApply: 'Apply online at gov.uk/carers-allowance. You need to care for the child 35+ hours per week and earn under £151/week after deductions.',
+        amount: '£83.30/week (£4,332/year)',
+        amountAnnual: 4332,
+        howToApply: 'Apply online at gov.uk/carers-allowance. You need to care for the child 35+ hours per week and earn under £196/week after deductions.',
         notes: 'Even if your earnings are too high, still apply for "underlying entitlement" — this can unlock the carer element of Universal Credit.',
       });
-      totalEstimate += 4259;
+      totalEstimate += 4332;
 
       // --- UC Carer Element ---
       if (onUniversalCredit) {

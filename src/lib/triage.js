@@ -135,10 +135,10 @@ function actTitle(r) {
 
 function actDescription(r, wizard) {
   if (r.id === 'dla-children') {
-    return "DLA can be backdated to when you first called — every day you wait could mean money lost. It's worth up to £9,748/year and the call takes 10 minutes.";
+    return "DLA is paid from the date you first call to request a form — so phone today, even if you're not ready to fill it in yet. Most families of children with ADHD receive the middle rate (around £3,843/year). The call takes 10 minutes.";
   }
   if (r.id === 'carers-allowance') {
-    return "If you're spending 35+ hours a week caring, you could get £81.90/week. It only takes a few minutes to apply online.";
+    return "If your child gets DLA middle or highest rate care and you spend 35+ hours a week caring, you could get £83.30/week. Apply online — it takes a few minutes.";
   }
   if (r.type === 'emergency_fund') {
     return `${r.organisation} can help with emergency costs — they typically respond within ${r.turnaround_days || 'a few'} days.`;
