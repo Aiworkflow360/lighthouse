@@ -9,7 +9,7 @@ import { useDarkMode } from './hooks/useDarkMode';
 import { useWizardState } from './hooks/useWizardState';
 import { WizardContainer } from './components/wizard/WizardContainer';
 import { ResultsContainer } from './components/results/ResultsContainer';
-import { LighthouseLogo } from './components/shared/LighthouseLogo';
+
 
 /* ── Keyframes injected once ─────────────────────────────── */
 const styleId = 'lighthouse-keyframes';
@@ -88,7 +88,13 @@ function App() {
             }}
             aria-label="Lighthouse - go to start"
           >
-            <LighthouseLogo variant="header" />
+            <img
+              src="/lighthouse-header.png"
+              alt=""
+              width={44}
+              height={24}
+              style={{ display: 'block', height: '24px', width: 'auto', filter: dark ? 'brightness(1.15)' : 'none' }}
+            />
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
               <span style={{
                 fontFamily: T.font,
