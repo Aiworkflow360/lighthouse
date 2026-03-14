@@ -217,52 +217,21 @@ function App() {
 /* ── Hero SVG Illustration ────────────────────────────────── */
 function HeroIllustration({ dark }) {
   return (
-    <svg
-      width="180"
-      height="120"
-      viewBox="0 0 180 120"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={{ display: 'block', margin: '0 auto 24px', opacity: dark ? 0.85 : 1 }}
+    <img
+      src="/lighthouse-hero.png"
+      alt=""
       aria-hidden="true"
-    >
-      {/* Radiating support lines from centre */}
-      <line x1="90" y1="52" x2="38" y2="28" stroke="#2563EB" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" opacity="0.35" />
-      <line x1="90" y1="52" x2="142" y2="28" stroke="#F59E0B" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" opacity="0.35" />
-      <line x1="90" y1="52" x2="28" y2="68" stroke="#059669" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" opacity="0.35" />
-      <line x1="90" y1="52" x2="152" y2="68" stroke="#2563EB" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" opacity="0.35" />
-      <line x1="90" y1="52" x2="50" y2="98" stroke="#F59E0B" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" opacity="0.35" />
-      <line x1="90" y1="52" x2="130" y2="98" stroke="#059669" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" opacity="0.35" />
-
-      {/* Outer support network nodes */}
-      <circle cx="38" cy="28" r="8" fill="#2563EB" opacity="0.15" />
-      <circle cx="38" cy="28" r="4" fill="#2563EB" opacity="0.5" />
-      <circle cx="142" cy="28" r="8" fill="#F59E0B" opacity="0.15" />
-      <circle cx="142" cy="28" r="4" fill="#F59E0B" opacity="0.5" />
-      <circle cx="28" cy="68" r="8" fill="#059669" opacity="0.15" />
-      <circle cx="28" cy="68" r="4" fill="#059669" opacity="0.5" />
-      <circle cx="152" cy="68" r="8" fill="#2563EB" opacity="0.15" />
-      <circle cx="152" cy="68" r="4" fill="#2563EB" opacity="0.5" />
-      <circle cx="50" cy="98" r="8" fill="#F59E0B" opacity="0.15" />
-      <circle cx="50" cy="98" r="4" fill="#F59E0B" opacity="0.5" />
-      <circle cx="130" cy="98" r="8" fill="#059669" opacity="0.15" />
-      <circle cx="130" cy="98" r="4" fill="#059669" opacity="0.5" />
-
-      {/* Central parent figure — head + body arc */}
-      <circle cx="80" cy="38" r="10" fill="#2563EB" opacity="0.9" />
-      <path d="M68 62 Q72 50 80 48 Q88 50 92 62" stroke="#2563EB" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.9" />
-
-      {/* Child figure — smaller, nestled beside parent */}
-      <circle cx="100" cy="46" r="7" fill="#F59E0B" opacity="0.9" />
-      <path d="M92 64 Q95 56 100 54 Q105 56 108 64" stroke="#F59E0B" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.9" />
-
-      {/* Protective arc around both figures */}
-      <path d="M58 70 Q62 30 90 22 Q118 30 122 70" stroke="#059669" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.3" strokeDasharray="6 4" />
-
-      {/* Warm glow behind centre */}
-      <circle cx="90" cy="52" r="28" fill="#2563EB" opacity="0.06" />
-      <circle cx="90" cy="52" r="18" fill="#F59E0B" opacity="0.06" />
-    </svg>
+      width={320}
+      height={180}
+      style={{
+        display: 'block',
+        margin: '0 auto 24px',
+        maxWidth: 'min(320px, 80vw)',
+        height: 'auto',
+        opacity: dark ? 0.9 : 1,
+        filter: dark ? 'brightness(1.1)' : 'none',
+      }}
+    />
   );
 }
 
