@@ -127,7 +127,8 @@ export function WizardContainer({ wizard, dark }) {
             fontFamily: T.font,
             fontSize: T.sizeSmall,
             cursor: 'pointer',
-            padding: '8px 0',
+            padding: '12px 16px',
+            minHeight: T.touchMin,
             marginBottom: '8px',
             alignSelf: 'flex-start',
           }}

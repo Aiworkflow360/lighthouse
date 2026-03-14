@@ -408,28 +408,17 @@ export function ResultsContainer({ wizard, dark }) {
         </a>
       </motion.div>
 
-      {/* Triage — Your first 3 steps */}
+      {/* Triage — Your first 3 steps (stays high — only 3 items, most actionable) */}
       {triage.steps.length > 0 && (
         <TriageCard triage={triage} dark={dark} />
       )}
 
-      {/* Action Plan — personalised steps */}
-      {actionPlan && actionPlan.steps && actionPlan.steps.length > 0 && (
-        <ActionPlanCard plan={actionPlan} dark={dark} wizard={wizard} />
-      )}
-
-      {/* Local Services — based on postcode */}
-      <LocalServicesCard wizard={wizard} dark={dark} localServices={localServices} />
-
-      {/* Letter Generator — tools to help */}
-      <LetterGeneratorCard wizard={wizard} dark={dark} />
-
-      {/* Filter tabs */}
+      {/* Filter tabs — moved up so resources are visible sooner */}
       <div
         role="tablist"
         aria-label="Filter resources by category"
         style={{
-          display: 'flex', gap: '8px', marginBottom: '20px',
+          display: 'flex', gap: '10px', marginBottom: '20px',
           overflowX: 'auto', paddingBottom: '4px',
           position: 'relative',
         }}
@@ -556,6 +545,13 @@ export function ResultsContainer({ wizard, dark }) {
         )}
       </AnimatePresence>
 
+      {/* Tools section — below resources so parents see links first */}
+      {actionPlan && actionPlan.steps && actionPlan.steps.length > 0 && (
+        <ActionPlanCard plan={actionPlan} dark={dark} wizard={wizard} />
+      )}
+      <LocalServicesCard wizard={wizard} dark={dark} localServices={localServices} />
+      <LetterGeneratorCard wizard={wizard} dark={dark} />
+
       {/* Actions */}
       <motion.div
         initial={{ opacity: 0.3 }}
@@ -659,7 +655,7 @@ function FilterTab({ filterKey, label, active, onClick, dark, color, count }) {
       padding: '8px 16px',
       cursor: 'pointer',
       whiteSpace: 'nowrap',
-      minHeight: '36px',
+      minHeight: T.touchMin,
       transition: T.transition,
       position: 'relative',
       zIndex: 1,

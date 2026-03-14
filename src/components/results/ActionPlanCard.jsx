@@ -69,9 +69,9 @@ function AnimatedCheckbox({ checked, onChange, dark }) {
       aria-label={checked ? 'Mark as not done' : 'Mark as done'}
       aria-pressed={checked}
       style={{
-        width: '28px',
-        height: '28px',
-        minWidth: '28px',
+        width: '44px',
+        height: '44px',
+        minWidth: '44px',
         borderRadius: '8px',
         border: `2px solid ${checked ? T.warm : (dark ? T.borderDark : T.border)}`,
         background: checked
@@ -279,7 +279,7 @@ function ActionStep({ step, index, isChecked, onToggle, dark }) {
 
 /* ── Main ActionPlanCard ─────────────────────────────────── */
 export function ActionPlanCard({ plan, dark, wizard }) {
-  const [cardExpanded, setCardExpanded] = useState(true);
+  const [cardExpanded, setCardExpanded] = useState(false);
   const [checked, setChecked] = useState(loadChecked);
 
   const textColor = dark ? T.textDark : T.text;
@@ -358,8 +358,8 @@ export function ActionPlanCard({ plan, dark, wizard }) {
               display: 'inline-flex', alignItems: 'center', gap: '4px',
               background: 'transparent', border: 'none', cursor: 'pointer',
               fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 500,
-              color: T.warm, padding: '4px 8px', borderRadius: T.radius,
-              transition: T.transition,
+              color: T.warm, padding: '10px 12px', borderRadius: T.radius,
+              minHeight: T.touchMin, transition: T.transition,
             }}
             aria-expanded={cardExpanded}
             aria-label={cardExpanded ? 'Collapse action plan' : 'Expand action plan'}

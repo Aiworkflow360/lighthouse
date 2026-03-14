@@ -86,8 +86,10 @@ export function ResourceCard({ resource, dark }) {
           background: 'none',
           border: 'none',
           cursor: 'pointer',
-          padding: '6px',
+          padding: '12px',
           fontSize: '20px',
+          minWidth: '44px',
+          minHeight: '44px',
           lineHeight: 1,
           color: saved ? T.warm : (dark ? T.textMutedDark : T.textMuted),
           transition: 'color 0.2s ease, transform 0.15s ease',
@@ -177,7 +179,7 @@ export function ResourceCard({ resource, dark }) {
         style={{
           background: 'none', border: 'none', color: expanded ? T.warm : T.primary,
           fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 600,
-          cursor: 'pointer', padding: '4px 0',
+          cursor: 'pointer', padding: '12px 0',
           display: 'inline-flex', alignItems: 'center', gap: '4px',
         }}
       >

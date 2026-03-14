@@ -137,8 +137,8 @@ export function TriageCard({ triage, dark }) {
               display: 'inline-flex', alignItems: 'center', gap: '4px',
               background: 'transparent', border: 'none', cursor: 'pointer',
               fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 500,
-              color: T.warm, padding: '4px 8px', borderRadius: T.radius,
-              transition: T.transition,
+              color: T.warm, padding: '10px 12px', borderRadius: T.radius,
+              minHeight: T.touchMin, transition: T.transition,
             }}
             aria-expanded={expanded}
             aria-label={expanded ? 'Collapse steps' : 'Expand steps'}
@@ -225,7 +225,8 @@ export function TriageCard({ triage, dark }) {
                             style={{
                               fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 600,
                               color: '#FFFFFF', background: stepColor,
-                              padding: '8px 16px', borderRadius: T.radius,
+                              padding: '12px 16px', borderRadius: T.radius,
+                              minHeight: T.touchMin,
                               textDecoration: 'none', display: 'inline-flex',
                               alignItems: 'center', gap: '6px', lineHeight: '1.4',
                             }}

@@ -398,7 +398,8 @@ function LetterForm({ template, wizard, dark, onClose }) {
           aria-label="Close letter generator"
           style={{
             background: 'none', border: 'none', cursor: 'pointer',
-            padding: '6px', display: 'flex', borderRadius: T.radius,
+            padding: '12px', display: 'flex', borderRadius: T.radius,
+            minWidth: '44px', minHeight: '44px',
           }}
         >
           <CloseIcon size={20} color={dark ? T.textMutedDark : T.textMuted} />
@@ -507,7 +508,7 @@ function LetterForm({ template, wizard, dark, onClose }) {
                 background: 'transparent',
                 border: `1.5px solid ${copied ? T.warm : T.primary}`,
                 borderRadius: T.radius, cursor: 'pointer',
-                minHeight: '40px', transition: T.transition,
+                minHeight: T.touchMin, transition: T.transition,
               }}
             >
               <CopyIcon size={16} color={copied ? T.warm : T.primary} />
@@ -525,7 +526,7 @@ function LetterForm({ template, wizard, dark, onClose }) {
                 background: 'transparent',
                 border: `1.5px solid ${dark ? T.borderDark : T.border}`,
                 borderRadius: T.radius, cursor: 'pointer',
-                minHeight: '40px', transition: T.transition,
+                minHeight: T.touchMin, transition: T.transition,
               }}
             >
               <PrintIcon size={16} color={subColor} />
@@ -541,7 +542,7 @@ function LetterForm({ template, wizard, dark, onClose }) {
                 padding: '10px 18px', fontFamily: T.font, fontSize: T.sizeSmall,
                 fontWeight: 600, color: subColor,
                 background: 'transparent', border: 'none',
-                cursor: 'pointer', minHeight: '40px',
+                cursor: 'pointer', minHeight: T.touchMin,
               }}
             >
               Edit details
@@ -575,7 +576,7 @@ function LetterForm({ template, wizard, dark, onClose }) {
 
 /* ── Main LetterGeneratorCard ────────────────────────────── */
 export function LetterGeneratorCard({ wizard, dark }) {
-  const [cardExpanded, setCardExpanded] = useState(true);
+  const [cardExpanded, setCardExpanded] = useState(false);
   const [activeTemplate, setActiveTemplate] = useState(null);
 
   const textColor = dark ? T.textDark : T.text;
@@ -639,8 +640,8 @@ export function LetterGeneratorCard({ wizard, dark }) {
               display: 'inline-flex', alignItems: 'center', gap: '4px',
               background: 'transparent', border: 'none', cursor: 'pointer',
               fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 500,
-              color: T.education, padding: '4px 8px', borderRadius: T.radius,
-              transition: T.transition,
+              color: T.education, padding: '10px 12px', borderRadius: T.radius,
+              minHeight: T.touchMin, transition: T.transition,
             }}
             aria-expanded={cardExpanded}
             aria-label={cardExpanded ? 'Collapse tools' : 'Expand tools'}
