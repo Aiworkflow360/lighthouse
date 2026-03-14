@@ -56,14 +56,18 @@ function scoreResource(r, wizard) {
     score += 40;
   }
 
-  // Condition-specific match
-  if (
-    r.conditionCategory &&
-    r.conditionCategory !== 'all' &&
-    wizard.conditionCategory &&
-    r.conditionCategory === wizard.conditionCategory
-  ) {
-    score += 30;
+  // Condition-specific match — boost resources that match the exact condition
+  if (r.conditionCategory && r.conditionCategory !== 'all' && wizard.conditionCategory) {
+    if (r.conditionCategory === wizard.conditionCategory) {
+      const condLower = (wizard.condition || '').toLowerCase();
+      // Extra boost for exact condition match
+      if (r.conditions && condLower && r.conditions.some(tag => condLower.includes(tag))) {
+        score += 40;
+      } else if (!r.conditions) {
+        // General category match (no condition tags = applies to whole category)
+        score += 30;
+      }
+    }
   }
 
   // Matches top priority need

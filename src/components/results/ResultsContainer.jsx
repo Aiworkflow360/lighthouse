@@ -198,18 +198,33 @@ export function ResultsContainer({ wizard, dark }) {
       filtered = filtered.filter(r => wizard.needs.includes(r.category));
     }
 
-    // Filter by condition category if set
+    // Filter by condition category — strict matching
     if (wizard.conditionCategory) {
-      filtered = filtered.filter(r =>
-        !r.conditionCategory || r.conditionCategory === wizard.conditionCategory || r.conditionCategory === 'all'
-      );
+      const condLower = (wizard.condition || '').toLowerCase();
+      filtered = filtered.filter(r => {
+        // Universal resources always show
+        if (r.conditionCategory === 'all') return true;
+        // Wrong category = exclude
+        if (r.conditionCategory !== wizard.conditionCategory) return false;
+        // Right category — if resource has condition-specific tags, check them
+        if (r.conditions && condLower) {
+          return r.conditions.some(tag => condLower.includes(tag));
+        }
+        // Right category, no specific conditions = general category resource
+        return true;
+      });
     }
 
-    // Sort: condition-specific first, then by category priority
+    // Sort: condition-matched first, then general category, then universal
     filtered.sort((a, b) => {
-      const aSpecific = a.conditionCategory && a.conditionCategory !== 'all' ? 0 : 1;
-      const bSpecific = b.conditionCategory && b.conditionCategory !== 'all' ? 0 : 1;
-      return aSpecific - bSpecific;
+      const condLower = (wizard.condition || '').toLowerCase();
+      const aScore = a.conditions && condLower && a.conditions.some(tag => condLower.includes(tag)) ? 0
+        : a.conditionCategory && a.conditionCategory !== 'all' ? 1
+        : 2;
+      const bScore = b.conditions && condLower && b.conditions.some(tag => condLower.includes(tag)) ? 0
+        : b.conditionCategory && b.conditionCategory !== 'all' ? 1
+        : 2;
+      return aScore - bScore;
     });
 
     return filtered;

@@ -223,18 +223,22 @@ function App() {
 /* ── Hero SVG Illustration ────────────────────────────────── */
 function HeroIllustration({ dark }) {
   return (
-    <img
-      src="/lighthouse-hero.png"
-      alt=""
+    <video
+      src="/lighthouse-hero.mp4"
+      autoPlay
+      muted
+      loop
+      playsInline
       aria-hidden="true"
-      width={320}
-      height={180}
+      width={400}
+      height={225}
       style={{
         display: 'block',
         margin: '0 auto 24px',
-        maxWidth: 'min(320px, 80vw)',
+        maxWidth: 'min(400px, 85vw)',
         height: 'auto',
-        opacity: dark ? 0.9 : 1,
+        borderRadius: T.radius,
+        opacity: dark ? 0.92 : 1,
         filter: dark ? 'brightness(1.1)' : 'none',
       }}
     />
