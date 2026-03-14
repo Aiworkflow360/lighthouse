@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 2480px;
+    height: 3508px;
+    background: #FFFBF5;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: #1C1917;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Subtle warm gradient overlay */
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, rgba(245,158,11,0.04) 0%, transparent 40%, transparent 70%, rgba(245,158,11,0.03) 100%);
+    pointer-events: none;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 120px 180px 100px;
+  }
+
+  /* Top section */
+  .top-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Lighthouse icon */
+  .logo-section {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 36px;
+  }
+
+  .logo-icon {
+    width: 100px;
+    height: 100px;
+  }
+
+  .logo-text {
+    font-size: 64px;
+    font-weight: 800;
+    color: #1C1917;
+    letter-spacing: -2px;
+  }
+
+  /* Decorative amber line */
+  .divider {
+    width: 160px;
+    height: 5px;
+    background: #F59E0B;
+    border-radius: 3px;
+    margin-bottom: 80px;
+  }
+
+  /* Main headline */
+  .headline {
+    font-size: 164px;
+    font-weight: 900;
+    color: #1C1917;
+    text-align: center;
+    line-height: 1.05;
+    letter-spacing: -6px;
+    margin-bottom: 56px;
+    max-width: 1900px;
+  }
+
+  .headline em {
+    font-style: normal;
+    color: #F59E0B;
+  }
+
+  /* Subheadline */
+  .subheadline {
+    font-size: 58px;
+    font-weight: 500;
+    color: #57534E;
+    text-align: center;
+    line-height: 1.45;
+    max-width: 1700px;
+    margin-bottom: 64px;
+  }
+
+  /* Feature pills */
+  .pills {
+    display: flex;
+    gap: 36px;
+  }
+
+  .pill {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(245, 158, 11, 0.08);
+    border: 3px solid rgba(245, 158, 11, 0.2);
+    border-radius: 60px;
+    padding: 24px 48px;
+    font-size: 44px;
+    font-weight: 600;
+    color: #1C1917;
+  }
+
+  .pill-dot {
+    width: 16px;
+    height: 16px;
+    background: #F59E0B;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Middle section - QR */
+  .qr-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .qr-wrapper {
+    background: #FFFFFF;
+    border-radius: 48px;
+    padding: 56px;
+    box-shadow: 0 12px 60px rgba(0,0,0,0.06), 0 0 0 4px rgba(245,158,11,0.12);
+    margin-bottom: 52px;
+  }
+
+  .qr-wrapper img {
+    width: 600px;
+    height: 600px;
+    display: block;
+  }
+
+  .scan-text {
+    font-size: 54px;
+    font-weight: 600;
+    color: #57534E;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .scan-arrow {
+    color: #F59E0B;
+    font-size: 60px;
+    line-height: 1;
+  }
+
+  .url-text {
+    font-size: 46px;
+    font-weight: 700;
+    color: #F59E0B;
+    letter-spacing: 0.5px;
+  }
+
+  /* Bottom section */
+  .bottom-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .bottom-bar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 48px;
+    border-top: 3px solid rgba(245,158,11,0.15);
+  }
+
+  .bottom-text {
+    font-size: 34px;
+    font-weight: 500;
+    color: #A8A29E;
+    text-align: center;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+  <div class="content">
+    <!-- Top: Logo + Headline + Pills -->
+    <div class="top-section">
+      <div class="logo-section">
+        <svg class="logo-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" fill="#FBBF24" opacity="0.15"/>
+          <circle cx="16" cy="16" r="10" fill="#FBBF24" opacity="0.25"/>
+          <line x1="16" y1="16" x2="28" y2="16" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="24.49" y2="7.51" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="16" y2="4" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="7.51" y2="7.51" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="4" y2="16" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="7.51" y2="24.49" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="16" y2="28" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="24.49" y2="24.49" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <circle cx="16" cy="16" r="5" fill="#F59E0B"/>
+          <circle cx="16" cy="16" r="3" fill="#FDE68A"/>
+        </svg>
+        <span class="logo-text">Lighthouse</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <h1 class="headline">Just received<br>a <em>diagnosis</em>?</h1>
+
+      <p class="subheadline">Lighthouse shows you exactly what to do next<br>&mdash; in 60 seconds</p>
+
+      <div class="pills">
+        <div class="pill"><span class="pill-dot"></span>Free forever</div>
+        <div class="pill"><span class="pill-dot"></span>No signup</div>
+        <div class="pill"><span class="pill-dot"></span>Private</div>
+      </div>
+    </div>
+
+    <!-- Middle: QR Code -->
+    <div class="qr-section">
+      <div class="qr-wrapper">
+        <img src="../public/lighthouse-qr.png" alt="QR Code" />
+      </div>
+      <div class="scan-text">
+        <span class="scan-arrow">&uarr;</span>
+        Scan with your phone camera
+      </div>
+      <div class="url-text">lighthouse-rust-two.vercel.app</div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="bottom-section">
+      <div class="bottom-bar">
+        <p class="bottom-text">Personalised action plans for families of children<br>with disabilities &amp; additional needs</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

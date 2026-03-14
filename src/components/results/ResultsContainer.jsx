@@ -3,9 +3,20 @@ import { motion, AnimatePresence } from 'motion/react';
 import { T, CATEGORIES } from '../../constants/theme';
 import { ResourceCard } from './ResourceCard';
 import { TriageCard } from './TriageCard';
+import { ActionPlanCard } from './ActionPlanCard';
+import { LocalServicesCard } from './LocalServicesCard';
+import { LetterGeneratorCard } from './LetterGeneratorCard';
 import { Button } from '../shared/Button';
 import { DEMO_RESOURCES } from '../../lib/demoData';
 import { generateTriage } from '../../lib/triage';
+
+// Optional data modules — may not exist yet.
+// If missing, ActionPlanCard hides and LocalServicesCard uses fallback search links.
+// Vite's import.meta.glob returns {} for missing modules (no build error).
+const actionPlanModules = import.meta.glob('../../lib/actionPlans.js', { eager: true });
+const localServicesModules = import.meta.glob('../../lib/localServices.js', { eager: true });
+const generateActionPlan = Object.values(actionPlanModules)[0]?.generateActionPlan || null;
+const getLocalServices = Object.values(localServicesModules)[0]?.getLocalServices || null;
 
 // Inject shimmer keyframes once
 const SHIMMER_STYLE_ID = 'lighthouse-shimmer';
@@ -232,6 +243,22 @@ export function ResultsContainer({ wizard, dark }) {
 
   const triage = useMemo(() => generateTriage(wizard, resources), [wizard, resources]);
 
+  // Generate action plan if the module exists
+  const actionPlan = useMemo(() => {
+    if (!generateActionPlan) return null;
+    try {
+      return generateActionPlan(wizard, resources);
+    } catch { return null; }
+  }, [wizard, resources]);
+
+  // Get local services if the module exists
+  const localServices = useMemo(() => {
+    if (!getLocalServices || !wizard?.postcodeData) return null;
+    try {
+      return getLocalServices(wizard.postcodeData);
+    } catch { return null; }
+  }, [wizard?.postcodeData]);
+
   const displayed = activeFilter === 'all'
     ? resources
     : resources.filter(r => r.category === activeFilter);
@@ -385,6 +412,17 @@ export function ResultsContainer({ wizard, dark }) {
       {triage.steps.length > 0 && (
         <TriageCard triage={triage} dark={dark} />
       )}
+
+      {/* Action Plan — personalised steps */}
+      {actionPlan && actionPlan.steps && actionPlan.steps.length > 0 && (
+        <ActionPlanCard plan={actionPlan} dark={dark} wizard={wizard} />
+      )}
+
+      {/* Local Services — based on postcode */}
+      <LocalServicesCard wizard={wizard} dark={dark} localServices={localServices} />
+
+      {/* Letter Generator — tools to help */}
+      <LetterGeneratorCard wizard={wizard} dark={dark} />
 
       {/* Filter tabs */}
       <div

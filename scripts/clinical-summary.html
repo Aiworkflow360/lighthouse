@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 2480px;
+    height: 3508px;
+    background: #FFFBF5;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: #1C1917;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .page {
+    width: 100%;
+    height: 100%;
+    padding: 140px 180px 120px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 4px solid rgba(245,158,11,0.2);
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .logo-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  .header-title {
+    font-size: 56px;
+    font-weight: 800;
+    color: #1C1917;
+    letter-spacing: -1.5px;
+  }
+
+  .header-badge {
+    background: rgba(245,158,11,0.1);
+    border: 2px solid rgba(245,158,11,0.25);
+    border-radius: 40px;
+    padding: 16px 40px;
+    font-size: 30px;
+    font-weight: 600;
+    color: #D97706;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  /* Title */
+  .page-title {
+    font-size: 72px;
+    font-weight: 800;
+    color: #1C1917;
+    margin-bottom: 16px;
+    letter-spacing: -2px;
+  }
+
+  .page-subtitle {
+    font-size: 38px;
+    font-weight: 500;
+    color: #78716C;
+    margin-bottom: 60px;
+    line-height: 1.5;
+  }
+
+  /* Sections */
+  .sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    flex: 1;
+  }
+
+  .section {
+    background: #FFFFFF;
+    border-radius: 28px;
+    padding: 52px;
+    border: 2px solid #E7E5E4;
+  }
+
+  .section-full {
+    grid-column: 1 / -1;
+  }
+
+  .section-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-size: 38px;
+    font-weight: 700;
+    color: #1C1917;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .section-title .accent-bar {
+    width: 6px;
+    height: 36px;
+    background: #F59E0B;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .section p, .section li {
+    font-size: 34px;
+    line-height: 1.6;
+    color: #44403C;
+  }
+
+  .section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .section li {
+    padding: 8px 0;
+    padding-left: 36px;
+    position: relative;
+  }
+
+  .section li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 22px;
+    width: 14px;
+    height: 14px;
+    background: #F59E0B;
+    border-radius: 50%;
+  }
+
+  .section p + p {
+    margin-top: 16px;
+  }
+
+  .highlight-box {
+    background: rgba(245,158,11,0.06);
+    border: 2px solid rgba(245,158,11,0.15);
+    border-radius: 16px;
+    padding: 28px 36px;
+    margin-top: 20px;
+  }
+
+  .highlight-box p {
+    font-weight: 600;
+    color: #1C1917;
+  }
+
+  .stat-row {
+    display: flex;
+    gap: 40px;
+    margin-top: 16px;
+  }
+
+  .stat {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .stat-number {
+    font-size: 52px;
+    font-weight: 800;
+    color: #F59E0B;
+  }
+
+  .stat-label {
+    font-size: 32px;
+    font-weight: 500;
+    color: #78716C;
+  }
+
+  /* Bottom row with QR */
+  .bottom-row {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    margin-top: 48px;
+    padding-top: 48px;
+    border-top: 4px solid rgba(245,158,11,0.2);
+  }
+
+  .bottom-qr {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 28px;
+    border: 2px solid #E7E5E4;
+    flex-shrink: 0;
+  }
+
+  .bottom-qr img {
+    width: 280px;
+    height: 280px;
+    display: block;
+  }
+
+  .bottom-info {
+    flex: 1;
+  }
+
+  .bottom-info .url {
+    font-size: 40px;
+    font-weight: 700;
+    color: #F59E0B;
+    margin-bottom: 16px;
+  }
+
+  .bottom-info .contact {
+    font-size: 32px;
+    color: #78716C;
+    line-height: 1.5;
+  }
+
+  .bottom-info .contact strong {
+    color: #1C1917;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <svg class="logo-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" fill="#FBBF24" opacity="0.15"/>
+          <circle cx="16" cy="16" r="10" fill="#FBBF24" opacity="0.25"/>
+          <line x1="16" y1="16" x2="28" y2="16" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="24.49" y2="7.51" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="16" y2="4" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="7.51" y2="7.51" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="4" y2="16" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="7.51" y2="24.49" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="16" y2="28" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="16" y1="16" x2="24.49" y2="24.49" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          <circle cx="16" cy="16" r="5" fill="#F59E0B"/>
+          <circle cx="16" cy="16" r="3" fill="#FDE68A"/>
+        </svg>
+        <span class="header-title">Lighthouse</span>
+      </div>
+      <div class="header-badge">Clinical Information</div>
+    </div>
+
+    <!-- Title -->
+    <h1 class="page-title">For Healthcare Professionals</h1>
+    <p class="page-subtitle">A free resource to support families after diagnosis &mdash; recommended by clinicians across the UK</p>
+
+    <!-- Sections grid -->
+    <div class="sections">
+      <!-- What is Lighthouse -->
+      <div class="section">
+        <div class="section-title"><span class="accent-bar"></span>What is Lighthouse?</div>
+        <p>Lighthouse is a free web app that creates personalised action plans for parents and carers of children with disabilities or additional needs. Within 60 seconds of entering a diagnosis, families receive a clear, prioritised list of next steps, local services, financial support, and emotional resources.</p>
+      </div>
+
+      <!-- Who it's for -->
+      <div class="section">
+        <div class="section-title"><span class="accent-bar"></span>Who is it for?</div>
+        <p>Parents, carers, and family members of children who have received a diagnosis of a disability, developmental condition, or additional need. Particularly valuable at the point of diagnosis when families feel most overwhelmed and unsure where to turn.</p>
+      </div>
+
+      <!-- What it does -->
+      <div class="section">
+        <div class="section-title"><span class="accent-bar"></span>What it provides</div>
+        <ul>
+          <li>Personalised, prioritised action plans tailored to each condition</li>
+          <li>Local service finder with verified organisations</li>
+          <li>Letter templates for schools, GPs, and local authorities</li>
+          <li>Financial support guidance (DLA, Carer's Allowance, grants)</li>
+          <li>Emotional support signposting and peer networks</li>
+          <li>EHCP and education rights information</li>
+        </ul>
+      </div>
+
+      <!-- Privacy & Data -->
+      <div class="section">
+        <div class="section-title"><span class="accent-bar"></span>Privacy &amp; Data</div>
+        <ul>
+          <li>No personal data collected whatsoever</li>
+          <li>No cookies, no tracking, no analytics</li>
+          <li>No account creation or signup required</li>
+          <li>Fully open source &mdash; code is publicly auditable</li>
+          <li>No commercial interests or advertising</li>
+        </ul>
+        <div class="highlight-box">
+          <p>Safe to recommend with confidence &mdash; families share zero personal information.</p>
+        </div>
+      </div>
+
+      <!-- Coverage & stats -->
+      <div class="section section-full">
+        <div class="section-title"><span class="accent-bar"></span>Coverage</div>
+        <div class="stat-row">
+          <div class="stat">
+            <span class="stat-number">70+</span>
+            <span class="stat-label">conditions covered</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">90+</span>
+            <span class="stat-label">verified organisations</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">60s</span>
+            <span class="stat-label">to a personalised plan</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">free, forever</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- How to recommend -->
+      <div class="section section-full">
+        <div class="section-title"><span class="accent-bar"></span>How to recommend to families</div>
+        <p>Hand this information to families after diagnosis appointments, or mention it during consultations. Families can scan the QR code below or visit the website directly. No technical knowledge is required &mdash; the guided experience takes under 60 seconds on any smartphone.</p>
+        <div class="highlight-box">
+          <p>&ldquo;There&rsquo;s a free tool called Lighthouse that can help you with next steps. Just scan this QR code with your phone &mdash; it&rsquo;ll show you exactly what to do.&rdquo;</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom row -->
+    <div class="bottom-row">
+      <div class="bottom-qr">
+        <img src="../public/lighthouse-qr.png" alt="QR Code" />
+      </div>
+      <div class="bottom-info">
+        <div class="url">lighthouse-rust-two.vercel.app</div>
+        <div class="contact">
+          Built by a parent. Open source at <strong>github.com/Aiworkflow360/lighthouse</strong><br>
+          Questions or feedback welcome via GitHub Issues.
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
