@@ -278,8 +278,8 @@ function ActionStep({ step, index, isChecked, onToggle, dark }) {
 }
 
 /* ── Main ActionPlanCard ─────────────────────────────────── */
-export function ActionPlanCard({ plan, dark, wizard }) {
-  const [cardExpanded, setCardExpanded] = useState(false);
+export function ActionPlanCard({ plan, dark, wizard, defaultExpanded }) {
+  const [cardExpanded, setCardExpanded] = useState(defaultExpanded || false);
   const [checked, setChecked] = useState(loadChecked);
 
   const textColor = dark ? T.textDark : T.text;

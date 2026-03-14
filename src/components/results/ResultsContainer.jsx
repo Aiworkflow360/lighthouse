@@ -184,6 +184,7 @@ function EmptyStateIcon({ size = 80, dark }) {
 }
 
 export function ResultsContainer({ wizard, dark }) {
+  const [activeTab, setActiveTab] = useState('resources'); // 'resources' | 'tools'
   const [activeFilter, setActiveFilter] = useState('all');
   const [copied, setCopied] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -258,6 +259,13 @@ export function ResultsContainer({ wizard, dark }) {
       return getLocalServices(wizard.postcodeData);
     } catch { return null; }
   }, [wizard?.postcodeData]);
+
+  // Count available tools for the Tools tab badge
+  const toolCount = [
+    actionPlan?.steps?.length > 0,
+    true, // local services always available
+    true, // letter generator always available
+  ].filter(Boolean).length;
 
   const displayed = activeFilter === 'all'
     ? resources
@@ -413,144 +421,218 @@ export function ResultsContainer({ wizard, dark }) {
         <TriageCard triage={triage} dark={dark} />
       )}
 
-      {/* Filter tabs — moved up so resources are visible sooner */}
+      {/* ── Primary tabs: Resources | Tools ────────────────────── */}
       <div
         role="tablist"
-        aria-label="Filter resources by category"
+        aria-label="Results sections"
         style={{
-          display: 'flex', gap: '10px', marginBottom: '20px',
-          overflowX: 'auto', paddingBottom: '4px',
-          position: 'relative',
+          display: 'flex',
+          borderBottom: `1px solid ${dark ? T.borderDark : T.border}`,
+          marginBottom: '0',
+          position: 'sticky',
+          top: 0,
+          zIndex: 10,
+          background: dark ? T.bgDark : T.bg,
         }}
       >
-        {filterKeys.map((key) => {
-          const isAll = key === 'all';
-          const cat = isAll ? null : CATEGORIES[key];
-          const count = isAll ? resources.length : resources.filter(r => r.category === key).length;
-          const label = isAll ? 'All' : cat.label;
-          const color = isAll ? T.primary : cat.color;
-
-          return (
-            <FilterTab
-              key={key}
-              filterKey={key}
-              label={label}
-              active={activeFilter === key}
-              onClick={() => setActiveFilter(key)}
-              dark={dark}
-              color={color}
-              count={count}
-            />
-          );
-        })}
-      </div>
-
-      {/* Resource cards — skeleton or real */}
-      <div ref={cardsRef} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <AnimatePresence mode="wait">
-          {loading ? (
-            <motion.div
-              key="skeletons"
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
-            >
-              {[0, 1, 2].map(i => (
-                <motion.div
-                  key={`skel-${i}`}
-                  initial={{ opacity: 0.3, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: i * 0.08 }}
-                >
-                  <SkeletonCard dark={dark} />
-                </motion.div>
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="results"
-              initial={{ opacity: 0.3 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
-            >
-              <AnimatePresence mode="popLayout">
-                {displayed.map((r, i) => (
-                  <motion.div
-                    key={r.id || `card-${i}`}
-                    initial={{ opacity: 0.3, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.97 }}
-                    transition={{
-                      duration: 0.35,
-                      delay: i * 0.06,
-                      ease: 'easeOut',
-                    }}
-                    layout
-                  >
-                    <ResourceCard resource={r} dark={dark} />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Empty state */}
-      <AnimatePresence>
-        {!loading && displayed.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0.3, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
+        {[
+          { key: 'resources', label: 'Resources', count: resources.length },
+          { key: 'tools', label: 'Tools', count: toolCount },
+        ].map(tab => (
+          <button
+            key={tab.key}
+            role="tab"
+            aria-selected={activeTab === tab.key}
+            onClick={() => setActiveTab(tab.key)}
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
-              padding: '48px 20px',
-              gap: '12px',
-            }}
-          >
-            <EmptyStateIcon size={80} dark={dark} />
-            <p style={{
+              flex: 1,
+              padding: '14px 0',
               fontFamily: T.font,
               fontSize: T.sizeBody,
-              fontWeight: 600,
-              color: textColor,
-              margin: '8px 0 0',
-            }}>
-              No matches for this filter
-            </p>
-            <p style={{
-              fontFamily: T.font,
-              fontSize: T.sizeSmall,
-              color: subColor,
-              margin: 0,
-              lineHeight: T.lineHeight,
-            }}>
-              Try 'All' or a different category
-            </p>
-            <Button
-              onClick={() => setActiveFilter('all')}
-              variant="outline"
-              style={{ marginTop: '8px' }}
-            >
-              Show all resources
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              fontWeight: activeTab === tab.key ? 700 : 500,
+              color: activeTab === tab.key ? textColor : subColor,
+              background: 'none',
+              border: 'none',
+              borderBottom: `3px solid ${activeTab === tab.key ? T.warm : 'transparent'}`,
+              cursor: 'pointer',
+              minHeight: T.touchMin,
+              transition: T.transition,
+            }}
+          >
+            {tab.label} ({tab.count})
+          </button>
+        ))}
+      </div>
 
-      {/* Tools section — below resources so parents see links first */}
-      {actionPlan && actionPlan.steps && actionPlan.steps.length > 0 && (
-        <ActionPlanCard plan={actionPlan} dark={dark} wizard={wizard} />
+      {/* ── Resources tab content ────────────────────────────── */}
+      {activeTab === 'resources' && (
+        <>
+          {/* Category sub-tabs */}
+          <div
+            role="tablist"
+            aria-label="Filter resources by category"
+            style={{
+              display: 'flex',
+              gap: '4px',
+              overflowX: 'auto',
+              marginBottom: '20px',
+              paddingTop: '12px',
+              paddingBottom: '2px',
+              position: 'relative',
+            }}
+          >
+            {filterKeys.map((key) => {
+              const isAll = key === 'all';
+              const cat = isAll ? null : CATEGORIES[key];
+              const count = isAll ? resources.length : resources.filter(r => r.category === key).length;
+              const label = isAll ? 'All' : cat.label;
+              const isActive = activeFilter === key;
+
+              return (
+                <button
+                  key={key}
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setActiveFilter(key)}
+                  style={{
+                    padding: '10px 16px',
+                    fontFamily: T.font,
+                    fontSize: T.sizeSmall,
+                    fontWeight: isActive ? 700 : 500,
+                    color: isActive ? T.warm : subColor,
+                    background: 'none',
+                    border: 'none',
+                    borderBottom: `2px solid ${isActive ? T.warm : 'transparent'}`,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                    minHeight: T.touchMin,
+                    transition: T.transition,
+                    position: 'relative',
+                  }}
+                >
+                  {label} ({count})
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Resource cards — skeleton or real */}
+          <div ref={cardsRef} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <AnimatePresence mode="wait">
+              {loading ? (
+                <motion.div
+                  key="skeletons"
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+                >
+                  {[0, 1, 2].map(i => (
+                    <motion.div
+                      key={`skel-${i}`}
+                      initial={{ opacity: 0.3, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: i * 0.08 }}
+                    >
+                      <SkeletonCard dark={dark} />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="results"
+                  initial={{ opacity: 0.3 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+                >
+                  <AnimatePresence mode="popLayout">
+                    {displayed.map((r, i) => (
+                      <motion.div
+                        key={r.id || `card-${i}`}
+                        initial={{ opacity: 0.3, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.97 }}
+                        transition={{
+                          duration: 0.35,
+                          delay: i * 0.06,
+                          ease: 'easeOut',
+                        }}
+                        layout
+                      >
+                        <ResourceCard resource={r} dark={dark} />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Empty state */}
+          <AnimatePresence>
+            {!loading && displayed.length === 0 && (
+              <motion.div
+                initial={{ opacity: 0.3, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35 }}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  padding: '48px 20px',
+                  gap: '12px',
+                }}
+              >
+                <EmptyStateIcon size={80} dark={dark} />
+                <p style={{
+                  fontFamily: T.font,
+                  fontSize: T.sizeBody,
+                  fontWeight: 600,
+                  color: textColor,
+                  margin: '8px 0 0',
+                }}>
+                  No matches for this filter
+                </p>
+                <p style={{
+                  fontFamily: T.font,
+                  fontSize: T.sizeSmall,
+                  color: subColor,
+                  margin: 0,
+                  lineHeight: T.lineHeight,
+                }}>
+                  Try 'All' or a different category
+                </p>
+                <Button
+                  onClick={() => setActiveFilter('all')}
+                  variant="outline"
+                  style={{ marginTop: '8px' }}
+                >
+                  Show all resources
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
       )}
-      <LocalServicesCard wizard={wizard} dark={dark} localServices={localServices} />
-      <LetterGeneratorCard wizard={wizard} dark={dark} />
+
+      {/* ── Tools tab content ────────────────────────────────── */}
+      {activeTab === 'tools' && (
+        <motion.div
+          initial={{ opacity: 0.3, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingTop: '16px' }}
+        >
+          {actionPlan && actionPlan.steps && actionPlan.steps.length > 0 && (
+            <ActionPlanCard plan={actionPlan} dark={dark} wizard={wizard} defaultExpanded />
+          )}
+          <LocalServicesCard wizard={wizard} dark={dark} localServices={localServices} />
+          <LetterGeneratorCard wizard={wizard} dark={dark} defaultExpanded />
+        </motion.div>
+      )}
 
       {/* Actions */}
       <motion.div
@@ -642,41 +724,3 @@ export function ResultsContainer({ wizard, dark }) {
   );
 }
 
-function FilterTab({ filterKey, label, active, onClick, dark, color, count }) {
-  return (
-    <button onClick={onClick} style={{
-      fontFamily: T.font,
-      fontSize: T.sizeSmall,
-      fontWeight: active ? 700 : 500,
-      color: active ? '#FFFFFF' : (dark ? T.textSecondaryDark : T.textSecondary),
-      background: 'transparent',
-      border: `1.5px solid ${active ? 'transparent' : (dark ? T.borderDark : T.border)}`,
-      borderRadius: T.radiusFull,
-      padding: '8px 16px',
-      cursor: 'pointer',
-      whiteSpace: 'nowrap',
-      minHeight: T.touchMin,
-      transition: T.transition,
-      position: 'relative',
-      zIndex: 1,
-    }}>
-      {/* Animated pill background */}
-      {active && (
-        <motion.div
-          layoutId="activeFilterPill"
-          style={{
-            position: 'absolute',
-            inset: '-1.5px',
-            borderRadius: T.radiusFull,
-            background: `linear-gradient(135deg, ${T.warm} 0%, ${color || T.primary} 100%)`,
-            zIndex: -1,
-          }}
-          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-        />
-      )}
-      <span style={{ position: 'relative', zIndex: 2 }}>
-        {label} ({count})
-      </span>
-    </button>
-  );
-}

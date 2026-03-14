@@ -785,8 +785,8 @@ function LetterForm({ template, wizard, dark, onClose }) {
 }
 
 /* ── Main LetterGeneratorCard ────────────────────────────── */
-export function LetterGeneratorCard({ wizard, dark }) {
-  const [cardExpanded, setCardExpanded] = useState(false);
+export function LetterGeneratorCard({ wizard, dark, defaultExpanded }) {
+  const [cardExpanded, setCardExpanded] = useState(defaultExpanded || false);
   const [activeTemplate, setActiveTemplate] = useState(null);
 
   const textColor = dark ? T.textDark : T.text;
