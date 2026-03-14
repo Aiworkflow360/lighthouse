@@ -11,11 +11,6 @@ import { useWizardState } from './hooks/useWizardState';
 import { WizardContainer } from './components/wizard/WizardContainer';
 import { ResultsContainer } from './components/results/ResultsContainer';
 import { COMMON_CONDITIONS } from './constants/conditions';
-import { DEMO_RESOURCES } from './lib/demoData';
-
-/* ── Real data counts ─────────────────────────────────────── */
-const CONDITION_COUNT = COMMON_CONDITIONS.length;
-const ORG_COUNT = new Set(DEMO_RESOURCES.map(r => r.organisation)).size;
 
 
 /* ── Keyframes injected once ─────────────────────────────── */
@@ -24,10 +19,6 @@ if (typeof document !== 'undefined' && !document.getElementById(styleId)) {
   const sheet = document.createElement('style');
   sheet.id = styleId;
   sheet.textContent = `
-    @keyframes lh-pulse {
-      0%, 100% { box-shadow: 0 4px 14px rgba(37,99,235,0.18); }
-      50%      { box-shadow: 0 4px 28px rgba(37,99,235,0.32); }
-    }
     @keyframes lh-beam {
       0%, 100% { opacity: 0.4; }
       50% { opacity: 1; }
@@ -44,30 +35,8 @@ if (typeof document !== 'undefined' && !document.getElementById(styleId)) {
       outline-offset: 2px;
     }
     @media (min-width: 768px) {
-      [data-grid="resources"] {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 16px !important;
-      }
-      [data-grid="tools"] {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 16px !important;
-      }
-      [data-grid="tools"] > [data-span="full"] {
-        grid-column: 1 / -1 !important;
-      }
-      [data-grid="promise"] {
-        grid-template-columns: repeat(3, 1fr) !important;
-      }
       [data-grid="scenarios"] {
         grid-template-columns: repeat(2, 1fr) !important;
-      }
-    }
-    @media (max-width: 767px) {
-      [data-grid="promise"] {
-        grid-template-columns: 1fr !important;
-        gap: 12px !important;
       }
     }
     @media (forced-colors: active) {
@@ -382,8 +351,10 @@ function App() {
 function HeroIllustration({ dark }) {
   const videoRef = useRef(null);
   const [inView, setInView] = useState(false);
+  const saveData = typeof navigator !== 'undefined' && navigator.connection?.saveData;
 
   useEffect(() => {
+    if (saveData) return; // skip video loading on data-saver
     const el = videoRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
@@ -392,7 +363,21 @@ function HeroIllustration({ dark }) {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [saveData]);
+
+  const imgStyle = {
+    display: 'block',
+    margin: '0 auto 24px',
+    maxWidth: 'min(400px, 85vw)',
+    height: 'auto',
+    borderRadius: T.radius,
+    opacity: dark ? 0.92 : 1,
+    filter: dark ? 'brightness(1.1)' : 'none',
+  };
+
+  if (saveData) {
+    return <img src="/lighthouse-hero-poster.jpg" alt="" width={400} height={225} style={imgStyle} />;
+  }
 
   return (
     <video
@@ -406,52 +391,9 @@ function HeroIllustration({ dark }) {
       aria-hidden="true"
       width={400}
       height={225}
-      style={{
-        display: 'block',
-        margin: '0 auto 24px',
-        maxWidth: 'min(400px, 85vw)',
-        height: 'auto',
-        borderRadius: T.radius,
-        opacity: dark ? 0.92 : 1,
-        filter: dark ? 'brightness(1.1)' : 'none',
-      }}
+      style={imgStyle}
     />
   );
-}
-
-/* ── CountUp — animated number that counts on scroll ────── */
-function CountUp({ end, suffix = '', duration = 2000 }) {
-  const [count, setCount] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting && !hasStarted) setHasStarted(true); },
-      { threshold: 0.3 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [hasStarted]);
-
-  useEffect(() => {
-    if (!hasStarted) return;
-    const startTime = performance.now();
-    const numEnd = parseInt(end, 10);
-    function tick(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      // ease-out cubic
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(eased * numEnd));
-      if (progress < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }, [hasStarted, end, duration]);
-
-  return <span ref={ref}>{count}{suffix}</span>;
 }
 
 /* ── Inline SVG Icons for Scenario Cards ─────────────────── */
@@ -864,101 +806,6 @@ function Landing({ dark, wizard }) {
         </span>
       </motion.div>
 
-      {/* ── Animated stat counters ────────────────────────────── */}
-      <div style={{
-        marginTop: '36px',
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '32px',
-        flexWrap: 'wrap',
-      }}>
-        {[
-          { end: CONDITION_COUNT, suffix: '+', label: 'Conditions covered' },
-          { end: ORG_COUNT, suffix: '+', label: 'Organisations listed' },
-          { end: 100, suffix: '%', label: 'Free, always' },
-        ].map((stat, i) => (
-          <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.35 + i * 0.12 }}
-            style={{
-              textAlign: 'center',
-              minWidth: '120px',
-            }}
-          >
-            <div style={{
-              fontFamily: T.font,
-              fontSize: 'clamp(32px, 6vw, 42px)',
-              fontWeight: 700,
-              color: T.primary,
-              lineHeight: 1.1,
-              letterSpacing: '-0.02em',
-            }}>
-              <CountUp end={stat.end} suffix={stat.suffix} />
-            </div>
-            <div style={{
-              fontFamily: T.font,
-              fontSize: T.sizeSmall,
-              fontWeight: 500,
-              color: dark ? T.textMutedDark : T.textMuted,
-              marginTop: '6px',
-            }}>
-              {stat.label}
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* ── Promise cards ────────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.35 }}
-        style={{
-          marginTop: '48px',
-          paddingTop: '40px',
-          borderTop: `1px solid ${dark ? T.borderDark : T.border}`,
-        }}
-      >
-        <div data-grid="promise" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '12px',
-          maxWidth: '600px',
-          margin: '0 auto',
-        }}>
-          {[
-            { icon: '\u2764', label: 'Free forever', desc: 'No hidden costs, ever' },
-            { icon: '\uD83D\uDD12', label: 'No signup', desc: 'No account needed' },
-            { icon: '\u26A1', label: '60 seconds', desc: 'Fast, focused results' },
-          ].map((card, i) => (
-            <motion.div
-              key={card.label}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.38 + i * 0.08 }}
-              style={{
-                padding: '20px 12px',
-                borderRadius: T.radius,
-                background: dark ? T.bgCardDark : T.bgCard,
-                border: `1px solid ${dark ? T.borderDark : T.border}`,
-                textAlign: 'center',
-                boxShadow: T.shadow,
-              }}
-            >
-              <div style={{ fontSize: '28px', marginBottom: '8px' }}>{card.icon}</div>
-              <div style={{ fontFamily: T.font, fontSize: '15px', fontWeight: 700, color: textColor, marginBottom: '4px' }}>
-                {card.label}
-              </div>
-              <div style={{ fontFamily: T.font, fontSize: '12px', color: dark ? T.textMutedDark : T.textMuted }}>
-                {card.desc}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
       {/* ── Who is this for? ─────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -1105,70 +952,6 @@ function Landing({ dark, wizard }) {
         </p>
       </motion.div>
 
-      {/* ── Final CTA section ──────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.7 }}
-        style={{
-          marginTop: '56px',
-          padding: '48px 24px',
-          borderRadius: T.radiusLg,
-          background: dark
-            ? 'radial-gradient(ellipse at center, rgba(245,158,11,0.08) 0%, transparent 70%)'
-            : 'radial-gradient(ellipse at center, rgba(245,158,11,0.1) 0%, rgba(254,243,199,0.15) 50%, transparent 70%)',
-          textAlign: 'center',
-          position: 'relative',
-        }}
-      >
-        <h2 style={{
-          fontFamily: T.font,
-          fontSize: 'clamp(28px, 6vw, 36px)',
-          fontWeight: 700,
-          color: textColor,
-          margin: '0 0 12px',
-          letterSpacing: '-0.02em',
-        }}>
-          Ready? Start here.
-        </h2>
-
-        <p style={{
-          fontFamily: T.font,
-          fontSize: T.sizeBody,
-          color: subColor,
-          margin: '0 auto 24px',
-          maxWidth: '400px',
-          lineHeight: T.lineHeight,
-        }}>
-          {"Tell us your child's condition and we'll show you every resource available."}
-        </p>
-
-        <div style={{ marginBottom: '20px' }}>
-          <HeroSearch dark={dark} wizard={wizard} placeholder="Start typing here..." />
-        </div>
-
-        <motion.button
-          onClick={wizard.next}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          style={{
-            background: 'linear-gradient(135deg, #F59E0B 0%, #2563EB 100%)',
-            color: '#FFFFFF',
-            border: 'none',
-            borderRadius: T.radius,
-            padding: '18px 44px',
-            fontFamily: T.font,
-            fontSize: T.sizeBody,
-            fontWeight: 700,
-            cursor: 'pointer',
-            minHeight: T.touchMin,
-            boxShadow: '0 4px 20px rgba(245,158,11,0.25)',
-            transition: T.transition,
-          }}
-        >
-          {'Browse all conditions \u2192'}
-        </motion.button>
-      </motion.div>
     </motion.div>
   );
 }

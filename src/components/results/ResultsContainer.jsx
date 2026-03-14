@@ -10,6 +10,7 @@ import { Button } from '../shared/Button';
 import { DEMO_RESOURCES } from '../../lib/demoData';
 import { generateTriage } from '../../lib/triage';
 import { CONDITION_CATEGORIES } from '../../constants/conditions';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 
 // Optional data modules — may not exist yet.
 // If missing, ActionPlanCard hides and LocalServicesCard uses fallback search links.
@@ -185,6 +186,8 @@ function EmptyStateIcon({ size = 80, dark }) {
 }
 
 export function ResultsContainer({ wizard, dark }) {
+  const bp = useBreakpoint();
+  const isDesktop = bp === 'desktop';
   const [activeTab, setActiveTab] = useState('resources'); // 'resources' | 'tools'
   const [activeFilter, setActiveFilter] = useState('all');
   const [copied, setCopied] = useState(false);
@@ -197,7 +200,7 @@ export function ResultsContainer({ wizard, dark }) {
 
   // Skeleton loading delay
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 300);
+    const timer = setTimeout(() => setLoading(false), 600);
     return () => clearTimeout(timer);
   }, []);
 
@@ -330,7 +333,7 @@ export function ResultsContainer({ wizard, dark }) {
 
   return (
     <div style={{
-      maxWidth: T.maxWidthWide,
+      maxWidth: isDesktop ? T.maxWidthFull : T.maxWidthWide,
       margin: '0 auto',
       padding: `0 ${T.containerPad}`,
     }}>
@@ -444,270 +447,299 @@ export function ResultsContainer({ wizard, dark }) {
         </a>
       </motion.div>
 
-      {/* Triage — Your first 3 steps (stays high — only 3 items, most actionable) */}
-      {triage.steps.length > 0 && (
-        <TriageCard triage={triage} dark={dark} />
-      )}
+      {/* ── Desktop: two-column layout (resources left, sidebar right) ── */}
+      {/* ── Mobile/Tablet: tabbed layout ──────────────────────────────── */}
 
-      {/* ── Primary tabs: Resources | Tools ────────────────────── */}
-      <div
-        role="tablist"
-        aria-label="Results sections"
-        onKeyDown={(e) => {
-          const tabs = ['resources', 'tools'];
-          const idx = tabs.indexOf(activeTab);
-          if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-            e.preventDefault();
-            const next = e.key === 'ArrowRight' ? (idx + 1) % tabs.length : (idx - 1 + tabs.length) % tabs.length;
-            setActiveTab(tabs[next]);
-            document.getElementById(`tab-${tabs[next]}`)?.focus();
-          }
-        }}
-        style={{
-          display: 'flex',
-          borderBottom: `1px solid ${dark ? T.borderDark : T.border}`,
-          marginBottom: '0',
-          position: 'sticky',
-          top: '57px',
-          zIndex: 10,
-          background: dark ? T.bgDark : T.bg,
-        }}
-      >
-        {[
-          { key: 'resources', label: 'Resources', count: displayed.length },
-          { key: 'tools', label: 'Tools', count: toolCount },
-        ].map(tab => (
-          <button
-            key={tab.key}
-            role="tab"
-            tabIndex={activeTab === tab.key ? 0 : -1}
-            id={`tab-${tab.key}`}
-            aria-selected={activeTab === tab.key}
-            aria-controls={`tabpanel-${tab.key}`}
-            onClick={() => setActiveTab(tab.key)}
-            style={{
-              flex: 1,
-              padding: '14px 0',
-              fontFamily: T.font,
-              fontSize: T.sizeBody,
-              fontWeight: activeTab === tab.key ? 700 : 500,
-              color: activeTab === tab.key ? textColor : subColor,
-              background: 'none',
-              border: 'none',
-              borderBottom: `3px solid ${activeTab === tab.key ? T.warm : 'transparent'}`,
-              cursor: 'pointer',
-              minHeight: T.touchMin,
-              transition: T.transition,
-            }}
-          >
-            {tab.label} ({tab.count})
-          </button>
-        ))}
-      </div>
+      {isDesktop ? (
+        /* ── DESKTOP LAYOUT ─────────────────────────────────────── */
+        <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
+          {/* Main column — resources */}
+          <div style={{ flex: '1 1 0', minWidth: 0 }}>
+            {/* Category filter tabs */}
+            <div
+              role="tablist"
+              aria-label="Filter resources by category"
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                  e.preventDefault();
+                  const idx = filterKeys.indexOf(activeFilter);
+                  const next = e.key === 'ArrowRight' ? (idx + 1) % filterKeys.length : (idx - 1 + filterKeys.length) % filterKeys.length;
+                  setActiveFilter(filterKeys[next]);
+                  document.getElementById(`filter-tab-${filterKeys[next]}`)?.focus();
+                }
+              }}
+              style={{
+                display: 'flex',
+                gap: '4px',
+                overflowX: 'auto',
+                marginBottom: '20px',
+                paddingTop: '12px',
+                paddingBottom: '2px',
+              }}
+            >
+              {filterKeys.map((key) => {
+                const isAll = key === 'all';
+                const cat = isAll ? null : CATEGORIES[key];
+                const count = isAll ? resources.length : resources.filter(r => r.category === key).length;
+                const label = isAll ? 'All' : cat.label;
+                const isActive = activeFilter === key;
+                return (
+                  <button
+                    key={key}
+                    role="tab"
+                    tabIndex={isActive ? 0 : -1}
+                    id={`filter-tab-${key}`}
+                    aria-selected={isActive}
+                    aria-controls="resource-cards-panel"
+                    onClick={() => setActiveFilter(key)}
+                    style={{
+                      padding: '10px 16px', fontFamily: T.font, fontSize: T.sizeSmall,
+                      fontWeight: isActive ? 700 : 500, color: isActive ? T.warmText : subColor,
+                      background: 'none', border: 'none',
+                      borderBottom: `2px solid ${isActive ? T.warmText : 'transparent'}`,
+                      cursor: 'pointer', whiteSpace: 'nowrap', minHeight: T.touchMin,
+                      transition: T.transition, position: 'relative',
+                    }}
+                  >
+                    {!isAll && cat && (
+                      <span style={{
+                        display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%',
+                        background: cat.color, marginRight: '6px', opacity: isActive ? 1 : 0.5, transition: T.transition,
+                      }} aria-hidden="true" />
+                    )}
+                    {label} ({count})
+                  </button>
+                );
+              })}
+            </div>
 
-      {/* ── Resources tab content ────────────────────────────── */}
-      {activeTab === 'resources' && (
-        <div role="tabpanel" id="tabpanel-resources" aria-labelledby="tab-resources">
-          {/* Category sub-tabs */}
-          <div
-            role="tablist"
-            aria-label="Filter resources by category"
-            onKeyDown={(e) => {
-              if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-                e.preventDefault();
-                const idx = filterKeys.indexOf(activeFilter);
-                const next = e.key === 'ArrowRight' ? (idx + 1) % filterKeys.length : (idx - 1 + filterKeys.length) % filterKeys.length;
-                setActiveFilter(filterKeys[next]);
-                document.getElementById(`filter-tab-${filterKeys[next]}`)?.focus();
-              }
-            }}
-            style={{
-              display: 'flex',
-              gap: '4px',
-              overflowX: 'auto',
-              marginBottom: '20px',
-              paddingTop: '12px',
-              paddingBottom: '2px',
-              position: 'relative',
-            }}
-          >
-            {filterKeys.map((key) => {
-              const isAll = key === 'all';
-              const cat = isAll ? null : CATEGORIES[key];
-              const count = isAll ? resources.length : resources.filter(r => r.category === key).length;
-              const label = isAll ? 'All' : cat.label;
-              const isActive = activeFilter === key;
-
-              return (
-                <button
-                  key={key}
-                  role="tab"
-                  tabIndex={isActive ? 0 : -1}
-                  id={`filter-tab-${key}`}
-                  aria-selected={isActive}
-                  aria-controls="resource-cards-panel"
-                  onClick={() => setActiveFilter(key)}
-                  style={{
-                    padding: '10px 16px',
-                    fontFamily: T.font,
-                    fontSize: T.sizeSmall,
-                    fontWeight: isActive ? 700 : 500,
-                    color: isActive ? T.warmText : subColor,
-                    background: 'none',
-                    border: 'none',
-                    borderBottom: `2px solid ${isActive ? T.warmText : 'transparent'}`,
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    minHeight: T.touchMin,
-                    transition: T.transition,
-                    position: 'relative',
-                  }}
-                >
-                  {!isAll && cat && (
-                    <span style={{
-                      display: 'inline-block',
-                      width: '8px',
-                      height: '8px',
-                      borderRadius: '50%',
-                      background: cat.color,
-                      marginRight: '6px',
-                      opacity: isActive ? 1 : 0.5,
-                      transition: T.transition,
-                    }} aria-hidden="true" />
-                  )}
-                  {label} ({count})
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Resource cards — skeleton or real */}
-          <div ref={cardsRef} id="resource-cards-panel" role="tabpanel" aria-labelledby={`filter-tab-${activeFilter}`} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <AnimatePresence mode="wait">
-              {loading ? (
-                <motion.div
-                  key="skeletons"
-                  initial={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                  data-grid="resources"
-                  style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
-                >
-                  {[0, 1, 2].map(i => (
-                    <motion.div
-                      key={`skel-${i}`}
-                      initial={{ opacity: 0.3, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: i * 0.08 }}
-                    >
-                      <SkeletonCard dark={dark} />
-                    </motion.div>
-                  ))}
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="results"
-                  initial={{ opacity: 0.3 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  data-grid="resources"
-                  style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
-                >
-                  <AnimatePresence mode="popLayout">
-                    {displayed.map((r, i) => (
-                      <motion.div
-                        key={r.id || `card-${i}`}
-                        initial={{ opacity: 0.3, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10, scale: 0.97 }}
-                        transition={{
-                          duration: 0.35,
-                          delay: i * 0.06,
-                          ease: 'easeOut',
-                        }}
-                        layout
-                      >
-                        <ResourceCard resource={r} dark={dark} />
+            {/* Resource cards */}
+            <div ref={cardsRef} id="resource-cards-panel" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <AnimatePresence mode="wait">
+                {loading ? (
+                  <motion.div key="skeletons" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    {[0, 1, 2].map(i => (
+                      <motion.div key={`skel-${i}`} initial={{ opacity: 0.3, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.08 }}>
+                        <SkeletonCard dark={dark} />
                       </motion.div>
                     ))}
-                  </AnimatePresence>
+                  </motion.div>
+                ) : (
+                  <motion.div key="results" initial={{ opacity: 0.3 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <AnimatePresence mode="popLayout">
+                      {displayed.map((r, i) => (
+                        <motion.div key={r.id || `card-${i}`} initial={{ opacity: 0.3, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10, scale: 0.97 }} transition={{ duration: 0.35, delay: i * 0.06, ease: 'easeOut' }} layout>
+                          <ResourceCard resource={r} dark={dark} />
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Empty state */}
+            <AnimatePresence>
+              {!loading && displayed.length === 0 && (
+                <motion.div initial={{ opacity: 0.3, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '48px 20px', gap: '12px' }}>
+                  <EmptyStateIcon size={80} dark={dark} />
+                  <p style={{ fontFamily: T.font, fontSize: T.sizeBody, fontWeight: 600, color: textColor, margin: '8px 0 0' }}>No {activeFilterLabel || ''} resources found</p>
+                  <p style={{ fontFamily: T.font, fontSize: T.sizeSmall, color: subColor, margin: 0, lineHeight: T.lineHeight, maxWidth: '320px' }}>
+                    {activeFilterLabel ? `We don't have any ${activeFilterLabel} resources for this condition yet, but there are ${resources.length} other resources that may help.` : "Try a different category to find what you're looking for."}
+                  </p>
+                  <Button onClick={() => setActiveFilter('all')} variant="outline" style={{ marginTop: '8px' }}>Show all {resources.length} resources</Button>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          {/* Empty state */}
-          <AnimatePresence>
-            {!loading && displayed.length === 0 && (
-              <motion.div
-                initial={{ opacity: 0.3, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.35 }}
+          {/* Sidebar — triage + tools */}
+          <aside style={{ width: '340px', flexShrink: 0, position: 'sticky', top: '72px', maxHeight: 'calc(100vh - 88px)', overflowY: 'auto' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {triage.steps.length > 0 && <TriageCard triage={triage} dark={dark} />}
+              {actionPlan && actionPlan.steps && actionPlan.steps.length > 0 && (
+                <ActionPlanCard plan={actionPlan} dark={dark} wizard={wizard} />
+              )}
+              <LocalServicesCard wizard={wizard} dark={dark} localServices={localServices} />
+              <LetterGeneratorCard wizard={wizard} dark={dark} />
+            </div>
+          </aside>
+        </div>
+      ) : (
+        /* ── MOBILE/TABLET LAYOUT (tabbed) ──────────────────────── */
+        <>
+          {/* Triage — Your first 3 steps */}
+          {triage.steps.length > 0 && (
+            <TriageCard triage={triage} dark={dark} />
+          )}
+
+          {/* Primary tabs: Resources | Tools */}
+          <div
+            role="tablist"
+            aria-label="Results sections"
+            onKeyDown={(e) => {
+              const tabs = ['resources', 'tools'];
+              const idx = tabs.indexOf(activeTab);
+              if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const next = e.key === 'ArrowRight' ? (idx + 1) % tabs.length : (idx - 1 + tabs.length) % tabs.length;
+                setActiveTab(tabs[next]);
+                document.getElementById(`tab-${tabs[next]}`)?.focus();
+              }
+            }}
+            style={{
+              display: 'flex',
+              borderBottom: `1px solid ${dark ? T.borderDark : T.border}`,
+              marginBottom: '0',
+              position: 'sticky',
+              top: '57px',
+              zIndex: 10,
+              background: dark ? T.bgDark : T.bg,
+            }}
+          >
+            {[
+              { key: 'resources', label: 'Resources', count: displayed.length },
+              { key: 'tools', label: 'Tools', count: toolCount },
+            ].map(tab => (
+              <button
+                key={tab.key}
+                role="tab"
+                tabIndex={activeTab === tab.key ? 0 : -1}
+                id={`tab-${tab.key}`}
+                aria-selected={activeTab === tab.key}
+                aria-controls={`tabpanel-${tab.key}`}
+                onClick={() => setActiveTab(tab.key)}
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  textAlign: 'center',
-                  padding: '48px 20px',
-                  gap: '12px',
+                  flex: 1, padding: '14px 0', fontFamily: T.font, fontSize: T.sizeBody,
+                  fontWeight: activeTab === tab.key ? 700 : 500,
+                  color: activeTab === tab.key ? textColor : subColor,
+                  background: 'none', border: 'none',
+                  borderBottom: `3px solid ${activeTab === tab.key ? T.warm : 'transparent'}`,
+                  cursor: 'pointer', minHeight: T.touchMin, transition: T.transition,
                 }}
               >
-                <EmptyStateIcon size={80} dark={dark} />
-                <p style={{
-                  fontFamily: T.font,
-                  fontSize: T.sizeBody,
-                  fontWeight: 600,
-                  color: textColor,
-                  margin: '8px 0 0',
-                }}>
-                  No {activeFilterLabel || ''} resources found
-                </p>
-                <p style={{
-                  fontFamily: T.font,
-                  fontSize: T.sizeSmall,
-                  color: subColor,
-                  margin: 0,
-                  lineHeight: T.lineHeight,
-                  maxWidth: '320px',
-                }}>
-                  {activeFilterLabel
-                    ? `We don't have any ${activeFilterLabel} resources for this condition yet, but there are ${resources.length} other resources that may help.`
-                    : "Try a different category to find what you're looking for."}
-                </p>
-                <Button
-                  onClick={() => setActiveFilter('all')}
-                  variant="outline"
-                  style={{ marginTop: '8px' }}
-                >
-                  Show all {resources.length} resources
-                </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      )}
+                {tab.label} ({tab.count})
+              </button>
+            ))}
+          </div>
 
-      {/* ── Tools tab content ────────────────────────────────── */}
-      {activeTab === 'tools' && (
-        <motion.div
-          role="tabpanel"
-          id="tabpanel-tools"
-          aria-labelledby="tab-tools"
-          initial={{ opacity: 0.3, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-          data-grid="tools"
-          style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingTop: '16px' }}
-        >
-          {actionPlan && actionPlan.steps && actionPlan.steps.length > 0 && (
-            <div data-span="full">
-              <ActionPlanCard plan={actionPlan} dark={dark} wizard={wizard} defaultExpanded />
+          {/* Resources tab content */}
+          {activeTab === 'resources' && (
+            <div role="tabpanel" id="tabpanel-resources" aria-labelledby="tab-resources">
+              {/* Category sub-tabs */}
+              <div
+                role="tablist"
+                aria-label="Filter resources by category"
+                onKeyDown={(e) => {
+                  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const idx = filterKeys.indexOf(activeFilter);
+                    const next = e.key === 'ArrowRight' ? (idx + 1) % filterKeys.length : (idx - 1 + filterKeys.length) % filterKeys.length;
+                    setActiveFilter(filterKeys[next]);
+                    document.getElementById(`filter-tab-${filterKeys[next]}`)?.focus();
+                  }
+                }}
+                style={{
+                  display: 'flex', gap: '4px', overflowX: 'auto',
+                  marginBottom: '20px', paddingTop: '12px', paddingBottom: '2px', position: 'relative',
+                }}
+              >
+                {filterKeys.map((key) => {
+                  const isAll = key === 'all';
+                  const cat = isAll ? null : CATEGORIES[key];
+                  const count = isAll ? resources.length : resources.filter(r => r.category === key).length;
+                  const label = isAll ? 'All' : cat.label;
+                  const isActive = activeFilter === key;
+                  return (
+                    <button
+                      key={key}
+                      role="tab"
+                      tabIndex={isActive ? 0 : -1}
+                      id={`filter-tab-${key}`}
+                      aria-selected={isActive}
+                      aria-controls="resource-cards-panel"
+                      onClick={() => setActiveFilter(key)}
+                      style={{
+                        padding: '10px 16px', fontFamily: T.font, fontSize: T.sizeSmall,
+                        fontWeight: isActive ? 700 : 500, color: isActive ? T.warmText : subColor,
+                        background: 'none', border: 'none',
+                        borderBottom: `2px solid ${isActive ? T.warmText : 'transparent'}`,
+                        cursor: 'pointer', whiteSpace: 'nowrap', minHeight: T.touchMin,
+                        transition: T.transition, position: 'relative',
+                      }}
+                    >
+                      {!isAll && cat && (
+                        <span style={{
+                          display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%',
+                          background: cat.color, marginRight: '6px', opacity: isActive ? 1 : 0.5, transition: T.transition,
+                        }} aria-hidden="true" />
+                      )}
+                      {label} ({count})
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Resource cards */}
+              <div ref={cardsRef} id="resource-cards-panel" role="tabpanel" aria-labelledby={`filter-tab-${activeFilter}`} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <AnimatePresence mode="wait">
+                  {loading ? (
+                    <motion.div key="skeletons" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      {[0, 1, 2].map(i => (
+                        <motion.div key={`skel-${i}`} initial={{ opacity: 0.3, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.08 }}>
+                          <SkeletonCard dark={dark} />
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  ) : (
+                    <motion.div key="results" initial={{ opacity: 0.3 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      <AnimatePresence mode="popLayout">
+                        {displayed.map((r, i) => (
+                          <motion.div key={r.id || `card-${i}`} initial={{ opacity: 0.3, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10, scale: 0.97 }} transition={{ duration: 0.35, delay: i * 0.06, ease: 'easeOut' }} layout>
+                            <ResourceCard resource={r} dark={dark} />
+                          </motion.div>
+                        ))}
+                      </AnimatePresence>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Empty state */}
+              <AnimatePresence>
+                {!loading && displayed.length === 0 && (
+                  <motion.div initial={{ opacity: 0.3, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '48px 20px', gap: '12px' }}>
+                    <EmptyStateIcon size={80} dark={dark} />
+                    <p style={{ fontFamily: T.font, fontSize: T.sizeBody, fontWeight: 600, color: textColor, margin: '8px 0 0' }}>No {activeFilterLabel || ''} resources found</p>
+                    <p style={{ fontFamily: T.font, fontSize: T.sizeSmall, color: subColor, margin: 0, lineHeight: T.lineHeight, maxWidth: '320px' }}>
+                      {activeFilterLabel ? `We don't have any ${activeFilterLabel} resources for this condition yet, but there are ${resources.length} other resources that may help.` : "Try a different category to find what you're looking for."}
+                    </p>
+                    <Button onClick={() => setActiveFilter('all')} variant="outline" style={{ marginTop: '8px' }}>Show all {resources.length} resources</Button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           )}
-          <LocalServicesCard wizard={wizard} dark={dark} localServices={localServices} />
-          <LetterGeneratorCard wizard={wizard} dark={dark} defaultExpanded />
-        </motion.div>
+
+          {/* Tools tab content */}
+          {activeTab === 'tools' && (
+            <motion.div
+              role="tabpanel"
+              id="tabpanel-tools"
+              aria-labelledby="tab-tools"
+              initial={{ opacity: 0.3, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingTop: '16px' }}
+            >
+              {actionPlan && actionPlan.steps && actionPlan.steps.length > 0 && (
+                <ActionPlanCard plan={actionPlan} dark={dark} wizard={wizard} defaultExpanded />
+              )}
+              <LocalServicesCard wizard={wizard} dark={dark} localServices={localServices} />
+              <LetterGeneratorCard wizard={wizard} dark={dark} defaultExpanded />
+            </motion.div>
+          )}
+        </>
       )}
 
       {/* Actions */}
