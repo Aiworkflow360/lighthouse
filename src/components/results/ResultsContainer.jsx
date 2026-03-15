@@ -458,7 +458,7 @@ export function ResultsContainer({ wizard, dark }) {
         <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
           {/* Main column — resources */}
           <div style={{ flex: '1 1 0', minWidth: 0 }}>
-            {/* Category filter tabs */}
+            {/* Category filter tabs — sticky below header */}
             <div
               role="tablist"
               aria-label="Filter resources by category"
@@ -478,6 +478,11 @@ export function ResultsContainer({ wizard, dark }) {
                 marginBottom: '20px',
                 paddingTop: '12px',
                 paddingBottom: '2px',
+                position: 'sticky',
+                top: '57px',
+                zIndex: 10,
+                background: dark ? T.bgDark : T.bg,
+                borderBottom: `1px solid ${dark ? T.borderDark : T.border}`,
               }}
             >
               {filterKeys.map((key) => {
@@ -629,7 +634,7 @@ export function ResultsContainer({ wizard, dark }) {
           {/* Resources tab content */}
           {activeTab === 'resources' && (
             <div role="tabpanel" id="tabpanel-resources" aria-labelledby="tab-resources">
-              {/* Category sub-tabs */}
+              {/* Category sub-tabs — sticky below Resources/Tools tabs */}
               <div
                 role="tablist"
                 aria-label="Filter resources by category"
@@ -644,7 +649,10 @@ export function ResultsContainer({ wizard, dark }) {
                 }}
                 style={{
                   display: 'flex', gap: '4px', overflowX: 'auto',
-                  marginBottom: '20px', paddingTop: '12px', paddingBottom: '2px', position: 'relative',
+                  marginBottom: '20px', paddingTop: '12px', paddingBottom: '2px',
+                  position: 'sticky', top: '106px', zIndex: 9,
+                  background: dark ? T.bgDark : T.bg,
+                  borderBottom: `1px solid ${dark ? T.borderDark : T.border}`,
                 }}
               >
                 {filterKeys.map((key) => {
