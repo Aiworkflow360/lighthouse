@@ -344,9 +344,12 @@ export function ResultsContainer({ wizard, dark }) {
         transition={{ duration: 0.5, ease: 'easeOut' }}
         style={{ marginBottom: '8px' }}
       >
-        <h1 role="status" aria-live="polite" style={{ fontFamily: T.font, fontSize: T.sizeH1, color: textColor, margin: '0 0 8px', fontWeight: 700 }}>
-          We've found <span style={{ fontVariantNumeric: 'tabular-nums' }}>{animatedCount}</span> resources that could help
+        <h1 style={{ fontFamily: T.font, fontSize: T.sizeH1, color: textColor, margin: '0 0 8px', fontWeight: 700 }}>
+          We've found <span aria-hidden="true" style={{ fontVariantNumeric: 'tabular-nums' }}>{animatedCount}</span><span style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>{resources.length}</span> resources that could help
         </h1>
+        <div role="status" aria-live="polite" style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
+          {resources.length} resources found for {conditionLabel}
+        </div>
         {/* Decorative warm amber underline */}
         <div style={{
           width: '40px',
@@ -528,7 +531,7 @@ export function ResultsContainer({ wizard, dark }) {
                   <motion.div key="results" initial={{ opacity: 0.3 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     <AnimatePresence mode="popLayout">
                       {displayed.map((r, i) => (
-                        <motion.div key={r.id || `card-${i}`} initial={{ opacity: 0.3, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10, scale: 0.97 }} transition={{ duration: 0.35, delay: i * 0.06, ease: 'easeOut' }} layout>
+                        <motion.div key={r.id || `card-${i}`} initial={{ opacity: 0.3, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10, scale: 0.97 }} transition={{ duration: 0.35, delay: Math.min(i * 0.06, 0.36), ease: 'easeOut' }} layout>
                           <ResourceCard resource={r} dark={dark} />
                         </motion.div>
                       ))}
@@ -695,7 +698,7 @@ export function ResultsContainer({ wizard, dark }) {
                     <motion.div key="results" initial={{ opacity: 0.3 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                       <AnimatePresence mode="popLayout">
                         {displayed.map((r, i) => (
-                          <motion.div key={r.id || `card-${i}`} initial={{ opacity: 0.3, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10, scale: 0.97 }} transition={{ duration: 0.35, delay: i * 0.06, ease: 'easeOut' }} layout>
+                          <motion.div key={r.id || `card-${i}`} initial={{ opacity: 0.3, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10, scale: 0.97 }} transition={{ duration: 0.35, delay: Math.min(i * 0.06, 0.36), ease: 'easeOut' }} layout>
                             <ResourceCard resource={r} dark={dark} />
                           </motion.div>
                         ))}
@@ -796,6 +799,7 @@ export function ResultsContainer({ wizard, dark }) {
       <AnimatePresence>
         {showBackToTop && (
           <motion.button
+            data-print-hide
             initial={{ opacity: 0.3, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -803,7 +807,7 @@ export function ResultsContainer({ wizard, dark }) {
             onClick={scrollToTop}
             style={{
               position: 'fixed',
-              bottom: '24px',
+              bottom: bp === 'mobile' ? '72px' : '24px',
               right: '24px',
               width: '48px',
               height: '48px',

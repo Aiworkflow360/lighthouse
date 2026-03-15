@@ -365,8 +365,8 @@ export function LocalServicesCard({ wizard, dark, localServices }) {
               display: 'inline-flex', alignItems: 'center', gap: '4px',
               background: 'transparent', border: 'none', cursor: 'pointer',
               fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 500,
-              color: T.primary, padding: '4px 8px', borderRadius: T.radius,
-              transition: T.transition,
+              color: T.primary, padding: '10px 12px', borderRadius: T.radius,
+              minHeight: T.touchMin, transition: T.transition,
             }}
             aria-expanded={cardExpanded}
             aria-label={cardExpanded ? 'Collapse local services' : 'Expand local services'}

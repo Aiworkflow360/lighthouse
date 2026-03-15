@@ -30,6 +30,26 @@ if (typeof document !== 'undefined' && !document.getElementById(styleId)) {
         transition-duration: 0.01ms !important;
       }
     }
+    .skip-link {
+      position: absolute;
+      top: -60px;
+      left: 0;
+      background: #2563EB;
+      color: #FFFFFF;
+      padding: 12px 20px;
+      z-index: 200;
+      font-family: Inter, system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 0 0 8px 0;
+      transition: top 0.2s ease;
+      text-decoration: none;
+    }
+    .skip-link:focus {
+      top: 0;
+      outline: 2px solid #F59E0B;
+      outline-offset: 2px;
+    }
     :focus-visible {
       outline: 2px solid #F59E0B;
       outline-offset: 2px;
@@ -439,8 +459,10 @@ function PeopleIcon({ color }) {
 function HeroSearch({ dark, wizard, placeholder }) {
   const [query, setQuery] = useState('');
   const [focused, setFocused] = useState(false);
+  const [highlightIdx, setHighlightIdx] = useState(-1);
   const textColor = dark ? T.textDark : T.text;
   const borderColor = dark ? T.borderDark : T.border;
+  const listboxId = 'hero-search-listbox';
 
   const filtered = useMemo(() => {
     if (!query.trim()) return [];
@@ -454,10 +476,28 @@ function HeroSearch({ dark, wizard, placeholder }) {
   const handleSelect = (condition) => {
     wizard.setCondition(condition.name);
     wizard.setConditionCategory(condition.category);
-    // Skip to postcode step (condition + postcode advance)
-    wizard.next(); // landing → condition
-    wizard.next(); // condition → postcode (functional updates chain)
+    wizard.next();
+    wizard.next();
   };
+
+  const handleKeyDown = (e) => {
+    if (!filtered.length) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setHighlightIdx(i => (i + 1) % filtered.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setHighlightIdx(i => (i - 1 + filtered.length) % filtered.length);
+    } else if (e.key === 'Enter' && highlightIdx >= 0) {
+      e.preventDefault();
+      handleSelect(filtered[highlightIdx]);
+    } else if (e.key === 'Escape') {
+      setFocused(false);
+      setHighlightIdx(-1);
+    }
+  };
+
+  const showDropdown = filtered.length > 0 && focused;
 
   return (
     <div style={{ position: 'relative', maxWidth: '440px', margin: '0 auto', textAlign: 'left' }}>
@@ -470,10 +510,17 @@ function HeroSearch({ dark, wizard, placeholder }) {
         <input
           type="text"
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={e => { setQuery(e.target.value); setHighlightIdx(-1); }}
           onFocus={() => setFocused(true)}
-          onBlur={() => setTimeout(() => setFocused(false), 200)}
+          onBlur={() => setTimeout(() => { setFocused(false); setHighlightIdx(-1); }, 200)}
+          onKeyDown={handleKeyDown}
           placeholder={placeholder || "e.g. autism, ADHD, dyslexia..."}
+          role="combobox"
+          aria-expanded={showDropdown}
+          aria-controls={listboxId}
+          aria-activedescendant={highlightIdx >= 0 ? `hero-option-${highlightIdx}` : undefined}
+          aria-autocomplete="list"
+          aria-label="Search for your child's condition"
           style={{
             width: '100%', padding: '14px 20px 14px 44px',
             fontFamily: T.font, fontSize: '16px',
@@ -484,29 +531,36 @@ function HeroSearch({ dark, wizard, placeholder }) {
             boxShadow: focused ? '0 0 0 3px rgba(245,158,11,0.2)' : T.shadow,
             transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
           }}
-          aria-label="Search for your child's condition"
         />
       </div>
-      {filtered.length > 0 && focused && (
-        <div style={{
-          position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 20,
-          marginTop: '4px', borderRadius: T.radius, overflow: 'hidden',
-          background: dark ? T.bgCardDark : '#FFFFFF',
-          border: `1px solid ${dark ? T.borderDark : T.border}`,
-          boxShadow: T.shadowMd,
-        }}>
-          {filtered.map(c => (
+      {showDropdown && (
+        <div
+          id={listboxId}
+          role="listbox"
+          aria-label="Matching conditions"
+          style={{
+            position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 20,
+            marginTop: '4px', borderRadius: T.radius, overflow: 'hidden',
+            background: dark ? T.bgCardDark : '#FFFFFF',
+            border: `1px solid ${dark ? T.borderDark : T.border}`,
+            boxShadow: T.shadowMd,
+          }}
+        >
+          {filtered.map((c, i) => (
             <button
               key={c.name}
+              id={`hero-option-${i}`}
+              role="option"
+              aria-selected={i === highlightIdx}
               onMouseDown={() => handleSelect(c)}
+              onMouseEnter={() => setHighlightIdx(i)}
               style={{
                 display: 'block', width: '100%', padding: '12px 16px',
-                background: 'none', border: 'none', cursor: 'pointer',
+                background: i === highlightIdx ? (dark ? T.bgHoverDark : T.bgHover) : 'none',
+                border: 'none', cursor: 'pointer',
                 fontFamily: T.font, fontSize: '15px', color: textColor,
                 textAlign: 'left', borderBottom: `1px solid ${dark ? T.borderDark : T.border}`,
               }}
-              onMouseEnter={e => e.target.style.background = dark ? T.bgHoverDark : T.bgHover}
-              onMouseLeave={e => e.target.style.background = 'none'}
             >
               <div style={{ fontWeight: 500 }}>{c.name}</div>
               <div style={{ fontSize: '12px', color: dark ? T.textMutedDark : T.textMuted, marginTop: '2px', textTransform: 'capitalize' }}>
@@ -863,10 +917,14 @@ function Landing({ dark, wizard }) {
           ].map((card, i) => (
             <motion.div
               key={card.title}
+              role="button"
+              tabIndex={0}
+              aria-label={`${card.title}: ${card.desc}`}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.55 + i * 0.1 }}
               onClick={wizard.next}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); wizard.next(); } }}
               whileHover={{ y: -4, boxShadow: T.shadowCardHover }}
               whileTap={{ scale: 0.98 }}
               style={{

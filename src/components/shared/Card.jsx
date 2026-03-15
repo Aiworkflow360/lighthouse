@@ -20,7 +20,7 @@ export function Card({ children, dark, selected, onClick, style, ...props }) {
     <motion.div
       layout
       onClick={onClick}
-      role={isClickable ? 'button' : undefined}
+      role={props.role || (isClickable ? 'button' : undefined)}
       tabIndex={isClickable ? 0 : undefined}
       onKeyDown={
         isClickable

@@ -244,7 +244,7 @@ export function TriageCard({ triage, dark }) {
                             style={{
                               fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 600,
                               color: stepColor, background: 'transparent',
-                              padding: 0, textDecoration: 'none',
+                              padding: '12px 0', textDecoration: 'none', minHeight: T.touchMin,
                               display: 'inline-flex', alignItems: 'center', gap: '4px',
                             }}
                           >

@@ -67,6 +67,7 @@ export function StepCondition({ wizard, dark }) {
   const [query, setQuery] = useState('');
   const [showCategories, setShowCategories] = useState(false);
   const [inputFocused, setInputFocused] = useState(false);
+  const [highlightIdx, setHighlightIdx] = useState(-1);
 
   const filtered = useMemo(() => {
     if (!query.trim()) return [];
@@ -144,7 +145,7 @@ export function StepCondition({ wizard, dark }) {
           style={{
             background: 'none', border: 'none', color: T.primary,
             fontFamily: T.font, fontSize: T.sizeSmall, cursor: 'pointer',
-            padding: '16px 0', marginTop: '8px',
+            padding: '16px', marginTop: '8px', minHeight: T.touchMin,
           }}
         >
           &larr; Back to search
@@ -179,11 +180,22 @@ export function StepCondition({ wizard, dark }) {
         <motion.input
           type="text"
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={e => { setQuery(e.target.value); setHighlightIdx(-1); }}
           onFocus={() => setInputFocused(true)}
           onBlur={() => setInputFocused(false)}
+          onKeyDown={(e) => {
+            if (!filtered.length) return;
+            if (e.key === 'ArrowDown') { e.preventDefault(); setHighlightIdx(i => (i + 1) % filtered.length); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); setHighlightIdx(i => (i - 1 + filtered.length) % filtered.length); }
+            else if (e.key === 'Enter' && highlightIdx >= 0) { e.preventDefault(); handleSelect(filtered[highlightIdx]); }
+          }}
           placeholder="e.g. autism, ADHD, selective mutism, dyslexia..."
           autoFocus
+          role="combobox"
+          aria-expanded={filtered.length > 0}
+          aria-controls="condition-results"
+          aria-activedescendant={highlightIdx >= 0 ? `condition-option-${highlightIdx}` : undefined}
+          aria-autocomplete="list"
           animate={{
             borderColor: inputFocused ? T.warm : borderColor,
             boxShadow: inputFocused ? `0 0 0 3px rgba(245,158,11,0.3)` : '0 0 0 0px transparent',
@@ -206,10 +218,20 @@ export function StepCondition({ wizard, dark }) {
         />
       </div>
 
+      {/* Screen reader announcement */}
+      {filtered.length > 0 && (
+        <div aria-live="polite" style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
+          {filtered.length} condition{filtered.length !== 1 ? 's' : ''} found
+        </div>
+      )}
+
       <AnimatePresence mode="wait">
         {filtered.length > 0 && (
           <motion.div
             key="results"
+            id="condition-results"
+            role="listbox"
+            aria-label="Matching conditions"
             style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}
             variants={staggerContainer}
             initial="initial"
@@ -223,7 +245,13 @@ export function StepCondition({ wizard, dark }) {
                 transition={{ duration: 0.2, ease: 'easeOut' }}
               >
                 <Card dark={dark} onClick={() => handleSelect(c)}
-                  style={{ padding: '14px 20px' }}>
+                  id={`condition-option-${i}`}
+                  role="option"
+                  aria-selected={i === highlightIdx}
+                  style={{
+                    padding: '14px 20px',
+                    ...(i === highlightIdx ? { outline: `2px solid ${T.warm}`, outlineOffset: '-2px' } : {}),
+                  }}>
                   <div style={{ fontFamily: T.font, fontSize: T.sizeBody, color: textColor, fontWeight: 500 }}>
                     {c.name}
                   </div>

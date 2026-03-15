@@ -62,10 +62,11 @@ export function useWizardState() {
   }, []);
 
   const getShareUrl = useCallback(() => {
-    const state = { condition, conditionCategory, postcode, postcodeData, needs };
+    // Deliberately exclude postcode/postcodeData for privacy
+    const state = { condition, conditionCategory, postcode: null, postcodeData: null, needs };
     const encoded = encodeState(state);
     return `${window.location.origin}${window.location.pathname}?q=${encoded}`;
-  }, [condition, conditionCategory, postcode, postcodeData, needs]);
+  }, [condition, conditionCategory, needs]);
 
   // Update URL when reaching results — auto-select all needs
   const goToResults = useCallback(() => {
