@@ -169,35 +169,42 @@ function App() {
           maxWidth: T.maxWidthFull,
           margin: '0 auto',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {/* Back button — visible on all views except landing */}
             <AnimatePresence>
               {showBackButton && (
                 <motion.button
-                  initial={{ opacity: 0, x: -8 }}
+                  initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -8 }}
-                  transition={{ duration: 0.15 }}
+                  exit={{ opacity: 0, x: -12 }}
+                  transition={{ duration: 0.2 }}
                   onClick={handleBack}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   style={{
-                    background: 'none',
-                    border: 'none',
+                    background: dark ? 'rgba(255,255,255,0.1)' : 'rgba(120,53,15,0.08)',
+                    border: `1.5px solid ${dark ? 'rgba(255,255,255,0.15)' : 'rgba(120,53,15,0.15)'}`,
                     cursor: 'pointer',
-                    padding: '8px',
+                    padding: '8px 14px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    minWidth: '40px',
-                    minHeight: '40px',
-                    borderRadius: T.radius,
-                    color: dark ? T.textSecondaryDark : T.textSecondary,
+                    gap: '6px',
+                    minWidth: T.touchMin,
+                    minHeight: T.touchMin,
+                    borderRadius: T.radiusFull,
+                    color: dark ? T.textDark : T.text,
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    fontFamily: T.font,
                     transition: T.transition,
                   }}
                   aria-label="Go back"
                 >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M12 4l-6 6 6 6" />
                   </svg>
+                  Back
                 </motion.button>
               )}
             </AnimatePresence>
