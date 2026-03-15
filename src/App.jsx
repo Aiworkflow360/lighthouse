@@ -127,6 +127,16 @@ function App() {
     wizard.restart();
   };
 
+  // Back navigation logic — works across all views
+  const showBackButton = staticPage || wizard.currentStep !== 'landing';
+  const handleBack = () => {
+    if (staticPage) {
+      window.location.hash = '';
+    } else {
+      wizard.back();
+    }
+  };
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -159,19 +169,52 @@ function App() {
           maxWidth: T.maxWidthFull,
           margin: '0 auto',
         }}>
-          <button
-            onClick={handleLogoClick}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 0,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-            }}
-            aria-label="Lighthouse - go to start"
-          >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            {/* Back button — visible on all views except landing */}
+            <AnimatePresence>
+              {showBackButton && (
+                <motion.button
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -8 }}
+                  transition={{ duration: 0.15 }}
+                  onClick={handleBack}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minWidth: '40px',
+                    minHeight: '40px',
+                    borderRadius: T.radius,
+                    color: dark ? T.textSecondaryDark : T.textSecondary,
+                    transition: T.transition,
+                  }}
+                  aria-label="Go back"
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 4l-6 6 6 6" />
+                  </svg>
+                </motion.button>
+              )}
+            </AnimatePresence>
+
+            <button
+              onClick={handleLogoClick}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+              }}
+              aria-label="Lighthouse - go to start"
+            >
             <img
               src="/lighthouse-header.png"
               alt=""
@@ -202,6 +245,7 @@ function App() {
               </span>
             </div>
           </button>
+          </div>
 
           {/* Dark mode toggle */}
           <motion.button
@@ -1023,14 +1067,6 @@ function StaticPageLayout({ dark, children }) {
       padding: `32px ${T.containerPad}`,
     }}>
       {children}
-      <div style={{ marginTop: '40px' }}>
-        <a href="#" style={{
-          fontFamily: T.font, fontSize: T.sizeSmall, fontWeight: 500,
-          color: T.primary, textDecoration: 'none',
-        }}>
-          {'\u2190'} Back to Lighthouse
-        </a>
-      </div>
     </div>
   );
 }

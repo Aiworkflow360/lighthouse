@@ -23,7 +23,7 @@ const STEP_AMBER_TINT = {
 };
 
 export function WizardContainer({ wizard, dark }) {
-  const { step, currentStep, back } = wizard;
+  const { step, currentStep } = wizard;
   const prevStepRef = useRef(step);
   const [transitionMsg, setTransitionMsg] = useState(null);
 
@@ -108,30 +108,6 @@ export function WizardContainer({ wizard, dark }) {
           {ENCOURAGEMENT[currentStep]}
         </motion.p>
       </AnimatePresence>
-
-      {step > 1 && (
-        <motion.button
-          onClick={back}
-          whileHover={{ x: -3, color: dark ? '#FAFAF9' : '#1C1917' }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ duration: 0.15 }}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: dark ? T.textSecondaryDark : T.textSecondary,
-            fontFamily: T.font,
-            fontSize: T.sizeSmall,
-            cursor: 'pointer',
-            padding: '12px 16px',
-            minHeight: T.touchMin,
-            marginBottom: '8px',
-            alignSelf: 'flex-start',
-          }}
-          aria-label="Go back to previous step"
-        >
-          &larr; Back
-        </motion.button>
-      )}
 
       <AnimatePresence mode="wait">
         <motion.div
